@@ -1,0 +1,2 @@
+Os pesos em arquivos/upscale/pesos/realesr-animevideov3.pth são do projeto Real-ESRGAN
+(https://github.com/xinntao/Real-ESRGAN), licença BSD 3-Clause, Copyright (c) 2021 Xintao Wang.

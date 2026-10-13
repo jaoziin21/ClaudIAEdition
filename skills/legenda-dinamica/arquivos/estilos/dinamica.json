@@ -1,0 +1,8 @@
+{
+ "nome": "Legenda dinâmica",
+ "cena": "scene_lado.html",
+ "cor": "vermelho",
+ "tamanho": 52,
+ "brilho": true,
+ "filtro": "estilos/filtro_sombra.txt"
+}

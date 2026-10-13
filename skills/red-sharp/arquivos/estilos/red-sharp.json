@@ -1,0 +1,7 @@
+{
+ "nome": "Red Sharp",
+ "cena": "scene_redsharp.html",
+ "tamanho": 42,
+ "maxch": 30,
+ "filtro": "estilos/filtro_redsharp.txt"
+}

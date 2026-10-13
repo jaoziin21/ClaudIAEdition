@@ -37,6 +37,11 @@ Claude Code NÃO funciona no plano grátis. Mínimo: Claude Pro, US$ 20/mês (ou
 Render, transcrição e mixagem rodam no computador dele com programas grátis → sem custo extra por vídeo. Dizer isso na página.
 Não usar a marca Claude/Anthropic como se fosse produto oficial.
 
+## Situação das skills (13/out)
+PRONTAS em `skills/` (testadas instalando só motor + 1 skill numa pasta vazia: Sample Yellow + VHS, 3D Invisível, Street):
+motor, comecar, roteiro, voz, post, 9 legendas, efeitos + 7 pacotes, video-gif, video-narracao, video-fala, edit-musica, video-longo, aesthetic.
+FALTA: `/musica` (esperando as músicas dele). Instalação: `bash skills/instalar.sh <pasta> [skills]`.
+
 ## Etapas
 1. Decisões: nome, ~~público~~ (qualquer nicho), formato (só skills ou skills + aulas), preço, plataforma (Kiwify/Hotmart).
 2. Skill `/musica` (testar no canal dele primeiro, com as músicas que ele mandar).

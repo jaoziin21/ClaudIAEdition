@@ -1,0 +1,21 @@
+{
+ "super8":      { "video": "super8.txt", "tela": "super8.js", "descricao": "Filme Super 8 Kodachrome: cor quente saturada, halo vermelho, tremida de projetor, flicker e grão forte + poeira, fios, riscos, vazamento laranja nos cortes e janela de cantos arredondados" },
+ "sombra":      { "video": "sombra.txt", "descricao": "Escurece com sombras densas e vinheta forte (junto do super8 = visual da Legenda dinâmica)" },
+ "luz-quente":  { "video": "luz-quente.txt", "tela": "feixes.js", "descricao": "Luz quente dourada com brilho nas altas + feixes de luz diagonais passando devagar" },
+ "manga":       { "video": "manga.txt", "texturas": ["../estilos/reticula_manga.png", "../estilos/hachura_manga.png"], "tela": "manga.js", "descricao": "Mangá: traço de tinta nas bordas, retícula e hachura nas sombras + linhas de impacto nas palavras-chave (junto da luz-quente = visual do 3D invisível)" },
+ "vhs":         { "video": "vhs.txt", "tela": "vhs.js", "descricao": "Fita VHS: imagem macia, borda colorida, grão + linhas de varredura e faixa de tracking nos cortes" },
+ "sonhador":    { "video": "sonhador.txt", "tela": "luz.js", "descricao": "Sonhador: brilho estourado suave, grão fino + vazamentos de luz passeando e clarão nos cortes" },
+ "noir":        { "video": "noir.txt", "descricao": "Escuro e dessaturado, frio, com grão (visual do Red Sharp)" },
+ "vivo":        { "video": "vivo.txt", "descricao": "Limpo e vivo: contraste e saturação na medida (visual do Mistury/Invisible)" },
+ "contraste":   { "video": "contraste.txt", "descricao": "Escuro e contrastado, sombras fundas (visual do Street)" },
+ "cinema":      { "video": "cinema.txt", "descricao": "NOVO — Cinema: sombras azul-petróleo e luzes alaranjadas (teal & orange), contraste de filme" },
+ "pb":          { "video": "pb.txt", "descricao": "NOVO — Preto e branco dramático com contraste alto e grão" },
+ "vazamento-luz": { "tela": "luz.js", "descricao": "Só os vazamentos de luz passeando + clarão nos cortes (sem mexer na cor)" },
+ "feixes":      { "tela": "feixes.js", "descricao": "Só os feixes de luz quentes diagonais" },
+ "glitch":      { "tela": "glitch.js", "descricao": "Risco verde + blocos com separação RGB nos cortes (2 quadros) e um toque nas palavras-chave" },
+ "vinheta-vermelha": { "tela": "vinheta-vermelha.js", "descricao": "Bordas pulsam em vermelho a cada palavra-chave" },
+ "flash":       { "tela": "flash.js", "descricao": "Clarão branco de 3 quadros em cada corte (opção \"chaves\": true = também nas palavras-chave)" },
+ "particulas":  { "tela": "particulas.js", "descricao": "NOVO — Poeira de luz / bokeh quente flutuando devagar (opções: forca, cor \"r,g,b\")" },
+ "chuva":       { "tela": "chuva.js", "descricao": "NOVO — Chuva fina inclinada caindo, com leve escurecida (opção forca)" },
+ "colagem":     { "tela": "colagem.js", "colagem": 28, "descricao": "Painéis com outros momentos do próprio vídeo pipocando nos cortes e nas palavras-chave (do Street)" }
+}

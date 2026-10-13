@@ -1,0 +1,144 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:CAP;src:url("node_modules/@fontsource/arimo/files/arimo-latin-400-normal.woff2");font-weight:400}
+@font-face{font-family:GRT;src:url("node_modules/@fontsource/grenze-gotisch/files/grenze-gotisch-latin-300-normal.woff2");font-weight:400}
+html,body{margin:0;background:transparent;overflow:hidden;width:100vw;height:100vh}
+#col,#dim,#big,#cap{position:absolute;inset:0}
+#dim{background:#000;opacity:0}
+.pn{position:absolute;overflow:hidden;background:#000;box-shadow:0 10px 30px rgba(0,0,0,.55)}
+.pn img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pn i{position:absolute;inset:0;background:#fff;opacity:0}
+/* legenda pequena, limpa (estilo "street"): Arimo branco, palavra-chave vermelha */
+#blk{position:absolute;left:0;top:0;font-family:CAP;color:#fff;text-align:center;line-height:1.08;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.9)) drop-shadow(0 2px 10px rgba(0,0,0,.6))}
+.ln{white-space:nowrap}
+.w{display:inline-block;margin:0 .13em}
+.w.k{color:#E3141B}
+/* grito: palavra gigante esticada na altura toda da imagem */
+#big div{position:absolute;left:50%;top:50%;font-family:GRT;white-space:nowrap;text-transform:uppercase;line-height:1;letter-spacing:-.01em}
+#big .r{color:#E3141B;filter:drop-shadow(0 0 18px rgba(0,0,0,.6))}
+#big .b{color:#fff;-webkit-text-stroke:5px #000;paint-order:stroke fill;filter:drop-shadow(0 0 14px rgba(0,0,0,.5))}
+</style></head><body><div id="col"></div><div id="dim"></div><div id="cap"><div id="blk"></div></div><div id="big"></div>
+<script src="lado_data.js"></script>
+<script>
+// "Street": legenda pequena que se escreve SÍLABA POR SÍLABA ("espa-" → "espada"), palavra-chave vermelha;
+// nas palavras de GRITO, a palavra pisca GIGANTE (gótica fina esticada na altura da imagem, vermelha ou branca com contorno),
+// e a 1ª letra da palavra seguinte dá um "eco" gigante de 2 quadros; COLAGEM: painéis com outros momentos do vídeo
+// pipocam por cima da imagem nos cortes e nos gritos (a legenda fica por cima deles).
+const D = LADO, W = innerWidth, H = innerHeight, FPS = 30;
+const BAND = (H >= 1900 && D.band) ? D.band : { y: 0, h: H };
+const blk = document.getElementById('blk'), big = document.getElementById('big'), col = document.getElementById('col'), dim = document.getElementById('dim');
+const S = D.size || 40;
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const rnd = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let x = Math.imul(seed ^ seed >>> 15, 1 | seed); x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x; return ((x ^ x >>> 14) >>> 0) / 4294967296; };
+const nucleo = w => w.replace(/[?!.,]+$/, '').toLowerCase();
+
+// ---- sílabas (português, regra simples): quebra antes de consoante+vogal; encontros br/cr/.../ch/lh/nh/qu/gu ficam juntos ----
+const V = 'aeiouáéíóúâêôãõàü', isV = c => V.includes(c.toLowerCase());
+const JUNTO = new Set('br cr dr fr gr pr tr vr bl cl fl gl pl ch lh nh qu gu'.split(' '));
+function silabas(w) {
+  const out = []; let cur = '';
+  for (let i = 0; i < w.length; i++) {
+    cur += w[i];
+    const a = w[i + 1], b = w[i + 2];
+    if (!a) break;
+    if (isV(w[i]) && !isV(a) && b && isV(b) && !(a.toLowerCase() === 'q' || a.toLowerCase() === 'g') ) { out.push(cur); cur = ''; continue; }
+    if (isV(w[i]) && !isV(a) && b && !isV(b) && w[i + 3] && isV(w[i + 3])) {
+      if (JUNTO.has((a + b).toLowerCase())) { out.push(cur); cur = ''; } else { cur += a; i++; out.push(cur); cur = ''; } continue; }
+  }
+  if (cur) out.push(cur);
+  return out.join('') === w ? out : [w];
+}
+// cada palavra vira 1–3 pedaços revelados ao longo da fala dela
+const WORDS = [];
+D.blocks.forEach((B, bi) => B.lines.forEach((l, li) => l.forEach(w => {
+  const sl = silabas(w.w.replace(/[?!.]+$/, '')), pont = w.w.slice(w.w.replace(/[?!.]+$/, '').length);
+  let parts = [w.w];
+  if (w.w.length >= 6 && sl.length >= 3) { const m = Math.ceil(sl.length / 2); parts = [sl.slice(0, m).join('') + '-', w.w]; }
+  WORDS.push({ ...w, bi, li, parts, pont });
+})));
+// gritos: lista do preset/projeto (ou as palavras-chave), no máx. 1 a cada 2,5 s
+const GR = new Set(D.gritos && D.gritos.length ? D.gritos : []);
+let lastG = -9, gIdx = 0;
+const isG = w => GR.size ? GR.has(nucleo(w.w)) : !!w.k;   // sem lista de gritos: as palavras-chave gritam
+WORDS.forEach((w, i) => { if (isG(w) && w.s - lastG > 2.5) { w.grito = gIdx++ % 2 ? 'b' : 'r'; lastG = w.s; const nx = WORDS[i + 1]; if (nx && nx.s - w.s < 2) nx.eco = 1; } });
+
+// ---- colagem: eventos nos cortes e nos gritos → 1–3 painéis com quadros de outros momentos ----
+const EV = [];
+const evAt = (t, seed) => { const r = rnd(Math.floor(t * 1000) + seed); const n = 1 + Math.floor(r() * 3), ps = [];
+  const pool = (D.stills || []).filter(s => Math.abs(s.t - t) > 4); if (!pool.length) return;
+  const slots = [[0, 0], [1, 0], [0, 1], [1, 1], [.5, .5]].sort(() => r() - .5);
+  for (let k = 0; k < n; k++) { const wv = .36 + r() * .2, hv = wv * (0.7 + r() * .25), [sx, sy] = slots[k];
+    ps.push({ src: pool[Math.floor(r() * pool.length)].src, x: sx * (1 - wv) + (r() - .5) * .08, y: sy * (1 - hv) + (r() - .5) * .08, w: wv, h: hv, t0: t + k * 0.08 }); }
+  EV.push({ t, dur: 0.75 + r() * 0.5, ps }); };
+(D.cuts || []).forEach((c, i) => { if (i % 2 === 0) evAt(c + 0.05, 11); });
+WORDS.filter(w => w.grito).forEach(w => evAt(w.s + 0.22, 29));
+EV.sort((a, b) => a.t - b.t);
+const imgs = new Map();
+for (const e of EV) for (const p of e.ps) if (!imgs.has(p.src)) { const im = new Image(); im.src = p.src; imgs.set(p.src, im); }
+let curEv = null;
+function colagem(t) {
+  const e = EV.find(e => t >= e.t && t < e.t + e.dur) || null;
+  if (e !== curEv) { curEv = e; col.innerHTML = e ? e.ps.map(p => `<div class="pn" style="left:${(p.x * W).toFixed(0)}px;top:${(BAND.y + p.y * BAND.h).toFixed(0)}px;width:${(p.w * W).toFixed(0)}px;height:${(p.h * BAND.h).toFixed(0)}px"><img src="${p.src}"><i></i></div>`).join('') : ''; }
+  if (!e) return;
+  [...col.children].forEach((el, k) => { const p = e.ps[k], dt = t - p.t0;
+    el.style.visibility = dt < 0 ? 'hidden' : 'visible';
+    const z = 1.06 + 0.06 * clamp(dt / e.dur);   // empurra devagar a imagem do painel
+    el.firstChild.style.transform = `scale(${z.toFixed(3)})`;
+    el.lastChild.style.opacity = dt >= 0 && dt < 1 / FPS ? 0.55 : 0;   // 1 quadro de clarão ao entrar
+  });
+}
+
+// ---- legenda ----
+let curB = null, spans = [];
+function legenda(t, esconde) {
+  const bi = D.blocks.findIndex(b => t >= b.start && t < b.end), B = bi >= 0 ? D.blocks[bi] : null;
+  if (B !== curB) { curB = B; blk.innerHTML = ''; spans = [];
+    if (B) {
+      const ws = WORDS.filter(w => w.bi === bi), poucas = ws.length <= 2;   // frase de 1–2 palavras: empilha e cresce
+      blk.style.fontSize = (poucas ? S * 1.45 : S) + 'px';
+      const lines = poucas ? ws.map(w => [w]) : B.lines.map((l, li) => ws.filter(w => w.li === li));
+      for (const l of lines) { const d = document.createElement('div'); d.className = 'ln';
+        for (const w of l) { const e = document.createElement('span'); e.className = 'w' + (w.k ? ' k' : ''); d.appendChild(e); spans.push([e, w]); }
+        blk.appendChild(d); }
+      // mede com as palavras inteiras para a frase não "andar" enquanto se escreve
+      spans.forEach(([e, w]) => e.textContent = w.w); const bw = blk.offsetWidth, bh = blk.offsetHeight;
+      blk.style.left = clamp(B.x * W - bw / 2, 40, W - bw - 40) + 'px'; blk.style.top = (BAND.y + clamp(B.y * BAND.h - bh / 2, 30, BAND.h - bh - 30)) + 'px';
+      spans.forEach(([e]) => { e.style.minWidth = e.offsetWidth + 'px'; e.style.textAlign = poucas ? 'center' : 'left'; });
+    } }
+  blk.style.visibility = B && !esconde ? 'visible' : 'hidden';
+  if (!B) return;
+  for (const [e, w] of spans) {
+    if (t < w.s - 0.03) { e.textContent = ''; continue; }
+    const dur = Math.max(0.12, Math.min((w.e || w.s + 0.3) - w.s, 0.6));
+    e.textContent = w.parts.length > 1 && t < w.s + dur * 0.5 ? w.parts[0] : w.w;
+  }
+}
+
+// ---- grito gigante + eco de letra ----
+function grito(t) {
+  const f = Math.round(t * FPS);
+  let on = null;
+  for (const w of WORDS) {
+    if (w.grito) { const k = f - Math.round(w.s * FPS); if (k >= 0 && k < 7 && k !== 3) { on = { txt: w.w.replace(/[?!.,]+$/, ''), c: w.grito }; break; } }
+    if (w.eco) { const k = f - Math.round(w.s * FPS); if (k >= 0 && k < 2) { on = { txt: w.w[0], c: 'b' }; break; } }
+  }
+  if (!on) { big.innerHTML = ''; dim.style.opacity = 0; return false; }
+  if (big.dataset.t !== on.txt + on.c) {
+    big.dataset.t = on.txt + on.c; big.innerHTML = `<div class="${on.c}">${on.txt}</div>`;
+    const d = big.firstChild, fs = BAND.h * 0.36; d.style.fontSize = fs + 'px';
+    const sy = (BAND.h * 0.94) / (d.offsetHeight * 0.78), sx = Math.min(1.25, (W * 0.92) / d.offsetWidth);
+    d.style.transform = `translate(-50%,-50%) translateY(${(BAND.y + BAND.h / 2 - H / 2).toFixed(0)}px) scale(${sx.toFixed(3)},${sy.toFixed(3)})`;
+  }
+  dim.style.opacity = 0.35; return true;
+}
+
+window.render = t => { colagem(t); const g = grito(t); legenda(t, g); };
+window.fontsOK = async () => {
+  await Promise.all(['400 40px CAP', '400 40px GRT'].map(f => document.fonts.load(f, 'Aãé')));
+  await Promise.all([...imgs.values()].map(im => im.complete ? 0 : new Promise(r => { im.onload = im.onerror = r; })));
+  await document.fonts.ready;
+  return document.fonts.check('400 40px CAP') && document.fonts.check('400 40px GRT') ? 'ok' : 'font missing';
+};
+</script></body></html>

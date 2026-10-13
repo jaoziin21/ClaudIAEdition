@@ -1,0 +1,17 @@
+{
+ "nome": "Mistury",
+ "cena": "scene_mistury.html",
+ "tamanho": 150,
+ "maxch": 30,
+ "medeFundo": true,
+ "filtro": "estilos/filtro_mistury.txt",
+ "looks": [
+  "didone",
+  "condensada",
+  "gotica",
+  "romana",
+  "bebas",
+  "bloco",
+  "fina"
+ ]
+}

@@ -1,0 +1,8 @@
+{
+ "nome": "Street",
+ "cena": "scene_street.html",
+ "tamanho": 40,
+ "maxch": 24,
+ "filtro": "estilos/filtro_street.txt",
+ "colagem": 28
+}

@@ -1,0 +1,5 @@
+[{I}]format=gbrp,split=4[{P}base][{P}e0][{P}h0][{P}k0];
+[{P}e0]edgedetect=low=0.05:high=0.14:mode=wires,format=gray,negate,format=gbrp[{P}ed];
+[{P}h0]format=gray[{P}hy];[{T0}]format=gray[{P}scr];[{P}hy][{P}scr]lut2=c0='if(lt(x\,y)\,30\,255)',format=gbrp[{P}ht];
+[{P}k0]format=gray[{P}ky];[{T1}]format=gray[{P}hs];[{P}ky][{P}hs]lut2=c0='if(lt(x\,y)\,25\,255)',format=gbrp[{P}hc];
+[{P}base][{P}ed]blend=all_mode=multiply:all_opacity=0.7[{P}b1];[{P}b1][{P}ht]blend=all_mode=multiply:all_opacity=0.3[{P}b2];[{P}b2][{P}hc]blend=all_mode=multiply:all_opacity=0.35,format=yuv420p[{O}]

@@ -1,0 +1,94 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:MONB;src:url("node_modules/@fontsource/montserrat/files/montserrat-latin-900-normal.woff2");font-weight:900}
+html,body{margin:0;background:transparent;overflow:hidden;width:100vw;height:100vh}
+canvas{position:absolute;inset:0}
+</style></head><body><canvas id="c"></canvas>
+<script src="lado_data.js"></script>
+<script>
+// "Invisible": a letra é feita da PRÓPRIA IMAGEM do vídeo (quadro atual, deslocado como vidro) — pega sozinha as cores de cada cena.
+// O que a separa do fundo é só o relevo: extrusão em preto translúcido (escurece a cor do fundo), sombra longa, luz em cima,
+// sombra embaixo e fio de luz na borda superior. Montserrat Black versal, centro, 1–2 linhas curtas.
+// Entrada: letras sobem em sequência quando a palavra é falada (como o 3D invisível); risco de luz atravessa a frase ao surgir;
+// palavra-chave = luz mais forte. Saída: dissolve.
+const D = LADO, W = innerWidth, H = innerHeight, FPS = 30;
+const BAND = (H >= 1900 && D.band) ? D.band : { y: 0, h: H };
+const S = D.size || 92, FONT = `900 ${S}px MONB`;
+const cv = document.getElementById('c'), g = cv.getContext('2d'); cv.width = W; cv.height = H;
+const L = new OffscreenCanvas(W, H), lg = L.getContext('2d');
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const eOut = t => 1 - Math.pow(1 - t, 3), eIO = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+const eBack = t => { const c = 1.4; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
+const Q = D.quadros || { n: 0, fps: 30 };
+
+// ---- quadro atual do vídeo (cache pequeno) ----
+const cache = new Map();
+async function quadro(t) {
+  const i = clamp(Math.round(t * Q.fps) + 1, 1, Math.max(1, Q.n)), src = `quadros/f_${String(i).padStart(5, '0')}.jpg`;
+  if (!cache.has(src)) { const im = new Image(); im.src = src; try { await im.decode(); } catch {} cache.set(src, im); if (cache.size > 8) cache.delete(cache.keys().next().value); }
+  return cache.get(src);
+}
+
+// ---- layout de cada bloco: letras com posição final ----
+const LS = 0.02 * S;   // espaçamento entre letras
+g.font = FONT;
+const layouts = D.blocks.map(B => {
+  const ws = B.lines.flat().map(w => ({ ...w, txt: w.w.toUpperCase() }));
+  const wid = s => [...s].reduce((a, c) => a + g.measureText(c).width + LS, -LS), sp = S * 0.26;
+  // 1 linha se couber em 86% da largura; senão 2 linhas equilibradas
+  const tot = ws.reduce((a, w) => a + wid(w.txt) + sp, -sp);
+  let lines = [ws];
+  if (tot > W * 0.86 && ws.length > 1) { let best = 1e9, cut = 1;
+    for (let i = 1; i < ws.length; i++) { const a = ws.slice(0, i).reduce((x, w) => x + wid(w.txt) + sp, -sp), b = ws.slice(i).reduce((x, w) => x + wid(w.txt) + sp, -sp), c = Math.max(a, b); if (c < best) { best = c; cut = i; } }
+    lines = [ws.slice(0, cut), ws.slice(cut)]; }
+  const lw = lines.map(l => l.reduce((x, w) => x + wid(w.txt) + sp, -sp)), k = Math.min(1, (W * 0.88) / Math.max(...lw));
+  const lh = S * 1.02 * k, cy = BAND.y + clamp(B.y * BAND.h, lh * lines.length / 2 + 30, BAND.h - lh * lines.length / 2 - 30);
+  const letters = [];
+  lines.forEach((l, li) => { let x = clamp(B.x * W, lw[li] * k / 2 + 30, W - lw[li] * k / 2 - 30) - lw[li] * k / 2; const y = cy - lh * lines.length / 2 + lh * (li + 0.82);
+    l.forEach(w => { [...w.txt].forEach((c, ci) => { letters.push({ c, x, y, s: w.s + ci * 0.018, k: !!w.k }); x += (g.measureText(c).width + LS) * k; }); x += sp * k; }); });
+  return { k, letters, top: cy - lh * lines.length / 2, bot: cy + lh * lines.length / 2 };
+});
+
+function letra(ctx, l, dy, a) { ctx.globalAlpha = a; ctx.fillText(l.c, l.x, l.y + dy); }
+
+window.render = async t => {
+  g.clearRect(0, 0, W, H);
+  const bi = D.blocks.findIndex(b => t >= b.start && t < b.end); if (bi < 0) return;
+  const B = D.blocks[bi], Lo = layouts[bi], im = await quadro(t);
+  const out = eIO(clamp((t - (B.end - 0.25)) / 0.25));
+  const fs = `900 ${(S * Lo.k).toFixed(1)}px MONB`;
+  const vis = Lo.letters.map(l => { const p = clamp((t - l.s + 0.03) / 0.22); return { l, a: clamp(p * 2.2) * (1 - out), dy: (1 - eBack(p)) * 22 }; }).filter(v => v.a > 0.004);
+  if (!vis.length) return;
+  g.font = fs; lg.font = fs; g.textBaseline = lg.textBaseline = 'alphabetic';
+  if (out > 0) g.filter = `blur(${(out * 6).toFixed(1)}px)`;
+  // 1) sombra longa + extrusão translúcida (escurece o próprio fundo → a profundidade também pega a cor da cena)
+  g.save(); g.shadowColor = 'rgba(0,0,0,.5)'; g.shadowBlur = 22; g.shadowOffsetY = 14; g.fillStyle = 'rgba(0,0,0,.35)';
+  vis.forEach(v => letra(g, v.l, v.dy + 9, v.a)); g.restore();
+  for (let e = 9; e >= 1; e--) { g.fillStyle = `rgba(0,0,0,${(0.07 + (9 - e) * 0.012).toFixed(3)})`; vis.forEach(v => letra(g, { ...v.l, x: v.l.x + e * 0.45 }, v.dy + e, v.a)); }
+  // contorno escuro fino (separa a letra do fundo parecido)
+  g.strokeStyle = 'rgba(0,0,0,.38)'; g.lineWidth = 3; g.lineJoin = 'round'; vis.forEach(v => { g.globalAlpha = v.a; g.strokeText(v.l.c, v.l.x, v.l.y + v.dy); }); g.globalAlpha = 1;
+  // 2) fio de luz na borda de cima
+  g.fillStyle = 'rgba(255,255,255,.55)'; vis.forEach(v => letra(g, v.l, v.dy - 2, v.a));
+  // 3) face = imagem do vídeo deslocada (vidro), com luz em cima e sombra embaixo
+  lg.clearRect(0, 0, W, H); lg.globalCompositeOperation = 'source-over';
+  if (im && im.width) {
+    const pat = lg.createPattern(im, 'no-repeat'), dx = 16 + 6 * Math.sin(t * 0.7), dy = 10 + 4 * Math.cos(t * 0.5);
+    pat.setTransform(new DOMMatrix().translate(dx, BAND.y + dy).scale(W / im.width, BAND.h / im.height)); lg.fillStyle = pat;
+  } else lg.fillStyle = '#9aa';
+  vis.forEach(v => letra(lg, v.l, v.dy, v.a)); lg.globalAlpha = 1;
+  lg.globalCompositeOperation = 'source-atop';
+  const gr = lg.createLinearGradient(0, Lo.top, 0, Lo.bot);
+  gr.addColorStop(0, 'rgba(255,255,255,.34)'); gr.addColorStop(0.45, 'rgba(255,255,255,.06)'); gr.addColorStop(0.55, 'rgba(0,0,0,.02)'); gr.addColorStop(1, 'rgba(0,0,0,.26)');
+  lg.fillStyle = gr; lg.fillRect(0, Lo.top - S, W, Lo.bot - Lo.top + 2 * S);
+  // risco de luz diagonal que atravessa a frase ao surgir (0,6 s) — mais forte na palavra-chave
+  const sw = (t - B.start) / 0.6;
+  if (sw > 0 && sw < 1) { const x = -W * 0.3 + sw * W * 1.6, sg = lg.createLinearGradient(x - 120, 0, x + 120, 0);
+    sg.addColorStop(0, 'rgba(255,255,255,0)'); sg.addColorStop(0.5, 'rgba(255,255,255,.55)'); sg.addColorStop(1, 'rgba(255,255,255,0)'); lg.fillStyle = sg; lg.fillRect(0, Lo.top - S, W, Lo.bot - Lo.top + 2 * S); }
+  vis.filter(v => v.l.k).forEach(v => { const p = Math.exp(-Math.pow((t - v.l.s - 0.25) / 0.35, 2)); if (p < 0.02) return;
+    lg.fillStyle = `rgba(255,248,225,${(0.4 * p).toFixed(3)})`; lg.globalAlpha = 1; lg.fillText(v.l.c, v.l.x, v.l.y + v.dy); });
+  g.filter = (out > 0 ? `blur(${(out * 6).toFixed(1)}px) ` : '') + 'saturate(1.35) brightness(1.18) contrast(1.08)';
+  g.globalAlpha = 1; g.drawImage(L, 0, 0); g.filter = 'none';
+};
+window.fontsOK = async () => { await document.fonts.load(FONT, 'AÉÇ'); await document.fonts.ready; return document.fonts.check(FONT) ? 'ok' : 'font missing'; };
+</script></body></html>

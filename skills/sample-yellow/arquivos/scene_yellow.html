@@ -1,0 +1,97 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:RB;src:url("node_modules/@fontsource/roboto/files/roboto-latin-300-italic.woff2");font-weight:300;font-style:italic}
+@font-face{font-family:RB;src:url("node_modules/@fontsource/roboto/files/roboto-latin-400-italic.woff2");font-weight:400;font-style:italic}
+html,body{margin:0;background:transparent;overflow:hidden;width:100vw;height:100vh}
+canvas{position:absolute;inset:0}
+/* "Sample Yellow": legenda de TV — amarela, itálico fino, caixinha escura translúcida que cresce com as palavras */
+#ln{position:absolute;left:0;top:0;white-space:nowrap;font-family:RB;font-style:italic;font-weight:300;line-height:1.18;color:#F2E24A}
+#box{position:absolute;left:0;top:0;background:#151511;border-radius:2px}
+.w{display:inline-block;margin:0 .1em}
+.w.k{font-weight:400;color:#FFF27A}
+</style></head><body><canvas id="luz"></canvas><div id="box"></div><div id="ln"></div><canvas id="fx"></canvas>
+<script src="lado_data.js"></script>
+<script>
+// Palavra por palavra no lugar final (a frase NÃO desliza); a caixa escura cresce da esquerda p/ direita junto com as palavras
+// e só aparece quando o fundo atrás é claro (medeFundo). Letras com leve separação RGB (vermelho/ciano) que treme por quadro.
+// Palavra-chave: amarelo mais claro + pulinho de brilho ao entrar. Luz: vazamentos suaves que passeiam + clarão nos cortes;
+// risco verde de glitch (2 quadros) em alguns cortes.
+const D = LADO, W = innerWidth, H = innerHeight, FPS = 30;
+const BAND = (H >= 1900 && D.band) ? D.band : { y: 0, h: H };
+const ln = document.getElementById('ln'), box = document.getElementById('box');
+const S = D.size || 46;
+ln.style.fontSize = S + 'px';
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const eOut = t => 1 - Math.pow(1 - t, 3);
+const rnd = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let x = Math.imul(seed ^ seed >>> 15, 1 | seed); x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x; return ((x ^ x >>> 14) >>> 0) / 4294967296; };
+const luma = f => f ? 0.2126 * f[0] + 0.7152 * f[1] + 0.0722 * f[2] : 0.5;
+
+// ---- luz (canvas de baixo) e glitch (canvas de cima) ----
+const lz = document.getElementById('luz').getContext('2d'), fx = document.getElementById('fx').getContext('2d');
+for (const id of ['luz', 'fx']) { const c = document.getElementById(id); c.width = W; c.height = H; }
+function luz(t) {
+  lz.clearRect(0, 0, W, H); fx.clearRect(0, 0, W, H);
+  lz.save(); lz.beginPath(); lz.rect(0, BAND.y, W, BAND.h); lz.clip(); lz.globalCompositeOperation = 'screen';
+  // dois vazamentos que passeiam devagar (quente e frio)
+  for (const [ph, cor, a] of [[0, '255,190,120', 0.16], [2.1, '140,220,255', 0.10]]) {
+    const cx = W * (0.5 + 0.55 * Math.sin(t * 0.13 + ph)), cy = BAND.y + BAND.h * (0.35 + 0.3 * Math.cos(t * 0.09 + ph));
+    const g = lz.createRadialGradient(cx, cy, 0, cx, cy, W * 0.6);
+    g.addColorStop(0, `rgba(${cor},${a})`); g.addColorStop(1, `rgba(${cor},0)`); lz.fillStyle = g; lz.fillRect(0, BAND.y, W, BAND.h);
+  }
+  // clarão de luz em cada corte (0,5 s)
+  for (const c of D.cuts || []) { const k = (t - c + 0.08) / 0.5; if (k < 0 || k > 1) continue;
+    const r = rnd(Math.floor(c * 100)), side = r() < .5 ? 0 : W, a = 0.45 * Math.sin(Math.PI * k);
+    const g = lz.createLinearGradient(side, 0, W - side, 0);
+    g.addColorStop(0, `rgba(255,236,200,${a})`); g.addColorStop(0.6, `rgba(255,200,150,${a * 0.3})`); g.addColorStop(1, 'rgba(255,200,150,0)');
+    lz.fillStyle = g; lz.fillRect(0, BAND.y, W, BAND.h); }
+  lz.restore();
+  // risco verde de glitch: 2 quadros, em cortes alternados
+  (D.cuts || []).forEach((c, i) => { if (i % 2) return; const k = Math.round((t - c) * FPS); if (k < 0 || k > 1) return;
+    const r = rnd(Math.floor(c * 1000) + 5), y = BAND.y + BAND.h * (0.25 + r() * 0.45), x = W * (0.12 + r() * 0.3), w = W * (0.35 + r() * 0.3);
+    fx.fillStyle = 'rgba(80,255,110,.85)'; fx.fillRect(x, y, w, 5); fx.fillStyle = 'rgba(80,255,110,.25)'; fx.fillRect(x - 20, y - 4, w + 40, 13); });
+}
+
+// ---- legenda ----
+let cur = null, spans = [], flat = [], alpha = 0, boxes = [];
+window.render = t => {
+  luz(t);
+  const B = D.blocks.find(b => t >= b.start && t < b.end) || null;
+  if (B !== cur) {
+    cur = B; flat = B ? B.lines.flat() : [];
+    const ML = D.multilinha && B && B.lines.length > 1;   // "multilinha": true no lado.json = bloco em 2+ linhas centralizadas (uma caixinha por linha)
+    ln.style.textAlign = ML ? 'center' : ''; flat.forEach((w, i) => { w.li = 0; }); if (B) { let j = 0; B.lines.forEach((l, li) => l.forEach(() => { flat[j++].li = li; })); }
+    ln.innerHTML = ML ? B.lines.map(l => l.map(w => `<span class="w${w.k ? ' k' : ''}">${w.w}</span>`).join('')).join('<br>') : flat.map(w => `<span class="w${w.k ? ' k' : ''}">${w.w}</span>`).join('');
+    boxes.forEach(b => b.remove()); boxes = ML ? B.lines.slice(1).map(() => { const b = box.cloneNode(); document.body.insertBefore(b, ln); return b; }) : [];
+    spans = [...ln.querySelectorAll('.w')];
+    if (B) {
+      ln.style.transform = ''; const bw = ln.offsetWidth, bh = ln.offsetHeight, k = Math.min(1, (W * 0.9) / bw);
+      const cx = clamp(B.x * W, 30 + bw * k / 2, W - 30 - bw * k / 2), cy = BAND.y + clamp(B.y * BAND.h, 24 + bh * k / 2, BAND.h - 24 - bh * k / 2);
+      ln.style.left = (cx - bw / 2) + 'px'; ln.style.top = (cy - bh / 2) + 'px'; ln.style.transform = `scale(${k})`; ln.dataset.k = k;
+      const L = luma(B.fundo); alpha = L > 0.5 ? 0.62 : L > 0.32 ? 0.38 : 0;   // fundo escuro: sem caixa
+    }
+  }
+  if (!B) { box.style.opacity = 0; return; }
+  const k = +ln.dataset.k, x0 = ln.offsetLeft + ln.offsetWidth / 2 * (1 - k), y0 = ln.offsetTop + ln.offsetHeight / 2 * (1 - k);
+  const out = clamp((t - (B.end - 0.12)) / 0.12);   // sai rápido no fim da frase
+  const nl = boxes.length + 1, R = Array(nl).fill(0), Lf = Array(nl).fill(null), T = Array(nl).fill(0);
+  let right = 0, left = null;
+  spans.forEach((e, i) => { const w = flat[i], p = eOut(clamp((t - w.s + 0.03) / 0.14));
+    e.style.opacity = (p * (1 - out)).toFixed(3);
+    const pop = w.k ? Math.exp(-Math.pow((t - w.s - 0.12) / 0.18, 2)) : 0;
+    e.style.transform = pop > 0.01 ? `scale(${(1 + 0.1 * pop).toFixed(3)})` : '';
+    // separação RGB que treme um pouco por quadro
+    const r = rnd(Math.floor(t * FPS) * 31 + i), dx = 1.6 + r() * 1.1;
+    e.style.textShadow = `${-dx}px 0 rgba(255,40,70,.55),${dx}px 0 rgba(40,230,255,.5),0 0 ${(6 + 14 * pop).toFixed(0)}px rgba(255,240,120,${(0.3 + 0.5 * pop).toFixed(2)})`;
+    if (p > 0) { if (left === null) left = e.offsetLeft; right = Math.max(right, e.offsetLeft + e.offsetWidth * (i === spans.length - 1 || p >= 1 ? 1 : p));
+      const li = nl > 1 ? w.li : 0; if (Lf[li] === null) { Lf[li] = e.offsetLeft; T[li] = e.offsetTop; } R[li] = Math.max(R[li], e.offsetLeft + e.offsetWidth * (p >= 1 || i === spans.length - 1 || (flat[i + 1] && flat[i + 1].li !== li) ? 1 : p)); }
+  });
+  if (left === null || !alpha) { box.style.opacity = 0; boxes.forEach(b => b.style.opacity = 0); return; }
+  const pad = S * 0.22;
+  if (nl > 1) { const lh = ln.offsetHeight / nl; [box, ...boxes].forEach((b, li) => { if (Lf[li] === null) { b.style.opacity = 0; return; }
+    Object.assign(b.style, { left: (x0 + (Lf[li] - pad * 0.6) * k) + 'px', top: (y0 + (li * lh + S * 0.06) * k) + 'px', width: ((R[li] - Lf[li] + pad * 1.2) * k) + 'px', height: ((lh - S * 0.08) * k) + 'px', opacity: (alpha * (1 - out)).toFixed(3) }); }); return; }
+  Object.assign(box.style, { left: (x0 + (left - pad * 0.6) * k) + 'px', top: (y0 + S * 0.06 * k) + 'px', width: ((right - left + pad * 1.2) * k) + 'px', height: ((ln.offsetHeight - S * 0.08) * k) + 'px', opacity: (alpha * (1 - out)).toFixed(3) });
+};
+window.fontsOK = async () => { await document.fonts.load(`italic 300 ${S}px RB`); await document.fonts.load(`italic 400 ${S}px RB`); await document.fonts.ready;
+  return document.fonts.check(`italic 300 ${S}px RB`) ? 'ok' : 'font missing'; };
+</script></body></html>

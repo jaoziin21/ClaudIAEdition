@@ -1,0 +1,7 @@
+{
+ "nome": "Samplerocks",
+ "cena": "scene_samplerocks.html",
+ "tamanho": 60,
+ "maxch": 30,
+ "filtro": "estilos/filtro_samplerocks.txt"
+}

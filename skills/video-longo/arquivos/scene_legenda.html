@@ -1,0 +1,83 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:"PF";src:url("node_modules/@fontsource/playfair-display/files/playfair-display-latin-500-italic.woff2");font-weight:500;font-style:italic}
+#fx{position:absolute;inset:0}
+html,body{margin:0;background:transparent;overflow:hidden;width:100vw;height:100vh}
+/* sombra escura suave atrás do texto + sombra preta nas letras (o degradê fica dentro da letra) */
+#shade{position:absolute;inset:0;background:radial-gradient(ellipse 62% 16% at 50% 50%,rgba(0,0,0,.24),rgba(0,0,0,.10) 55%,transparent 100%)}
+#wrap{position:absolute;inset:0;perspective:800px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6)) drop-shadow(0 0 9px rgba(0,0,0,.3))}
+/* a frase inteira já nasce centralizada no lugar final; as palavras só acendem no lugar delas (nada desliza) */
+#line{position:absolute;left:0;right:0;top:50%;text-align:center;white-space:nowrap;font-family:"PF";font-style:italic;font-weight:500;line-height:1}
+.w{display:inline-block;margin:0 .13em;padding:0 .06em;transform-origin:50% 80%;
+   color:transparent;-webkit-background-clip:text;background-clip:text;
+   background-image:linear-gradient(180deg,#FFFFFF 0%,#F4F1EC 45%,#C9C6C1 100%)}
+.w.k{background-image:linear-gradient(180deg,var(--k1) 0%,var(--k2) 100%)}
+/* vírgula da palavra-chave fica branca (só a palavra muda de cor) */
+.w .v{display:inline-block;font-style:inherit;color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(180deg,#FFFFFF 0%,#F4F1EC 45%,#C9C6C1 100%)}
+</style></head><body><canvas id="fx"></canvas><div id="shade"></div><div id="wrap"><div id="line"></div></div>
+<script src="legenda_data.js"></script>
+<script>
+// LEG = {size, kc:[c1,c2], lines:[{start,end,words:[{w,s,k}]}]}
+// entrada: cada palavra acende no próprio lugar quando é falada (sobe 12 px, sai do desfoque).
+// saída: onda da esquerda para a direita — cada palavra sobe, desfoca e some, uma logo após a outra.
+const line = document.getElementById('line'), shade = document.getElementById('shade').style;
+line.style.fontSize = LEG.size + 'px'; line.style.marginTop = -LEG.size * 0.55 + 'px';
+// bloco num canto livre (LEG.x = centro horizontal 0..1, LEG.w = largura máxima 0..1): quebra em linhas equilibradas, centralizado no espaço vazio
+const LX = LEG.x ?? 0.5, LY = LEG.y ?? 0.5;
+if (LEG.w) { Object.assign(line.style, { left: (LX - LEG.w / 2) * 100 + '%', right: 'auto', width: LEG.w * 100 + '%', whiteSpace: 'normal', textWrap: 'balance', lineHeight: 1.22, marginTop: 0, transform: 'translateY(-50%)' }); }
+if (LX !== 0.5 || LY !== 0.5) { line.style.top = LY * 100 + '%';
+  shade.background = `radial-gradient(ellipse ${LEG.w ? LEG.w * 60 : 62}% ${LEG.w ? 24 : 16}% at ${LX * 100}% ${LY * 100}%,rgba(0,0,0,.24),rgba(0,0,0,.10) 55%,transparent 100%)`; }
+document.documentElement.style.setProperty('--k1', LEG.kc[0]); document.documentElement.style.setProperty('--k2', LEG.kc[1]);
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const eOut = t => 1 - Math.pow(1 - t, 5), eIn = t => t * t * t;
+const IN = 0.6, OUTW = 0.42, STAG = 0.045;     // duração da entrada, da saída de cada palavra e intervalo da onda
+let cur = null, spans = [];
+// poeira e riscos de película (determinístico por quadro)
+const fx = document.getElementById('fx'), g = fx.getContext('2d'); fx.width = innerWidth; fx.height = innerHeight;
+const rnd = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let x = Math.imul(seed ^ seed >>> 15, 1 | seed); x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x; return ((x ^ x >>> 14) >>> 0) / 4294967296; };
+window.film = function (t) {
+  const W = fx.width, H = fx.height, f = Math.floor(t * 30), r = rnd(f * 7919 + 13);
+  g.clearRect(0, 0, W, H);
+  const n = Math.floor(r() * 4);                                   // 0–3 grãos de poeira por quadro
+  for (let i = 0; i < n; i++) {
+    const x = r() * W, y = r() * H, rad = 0.8 + r() * 2.2, light = r() < 0.5;
+    g.fillStyle = light ? `rgba(255,248,230,${0.18 + r() * 0.25})` : `rgba(0,0,0,${0.25 + r() * 0.3})`;
+    g.beginPath(); g.ellipse(x, y, rad, rad * (0.6 + r() * 0.8), r() * 3, 0, 7); g.fill();
+  }
+  if (r() < 0.04) {                                                // fio de cabelo ocasional
+    const x = r() * W, y = r() * H; g.strokeStyle = 'rgba(0,0,0,.35)'; g.lineWidth = 1.2;
+    g.beginPath(); g.moveTo(x, y); g.quadraticCurveTo(x + 20 - r() * 40, y + 15, x + 30 - r() * 60, y + 30 + r() * 20); g.stroke();
+  }
+  const blk = Math.floor(t / 2.7), rb = rnd(blk * 104729 + 7), on = (t % 2.7) < 0.45 && rb() < 0.6;
+  if (on) {                                                        // risco vertical de projetor, que treme de leve
+    const x = rb() * W + Math.sin(t * 40) * 1.5; g.fillStyle = `rgba(255,250,235,${0.10 + rb() * 0.12})`; g.fillRect(x, 0, 1.4, H);
+  }
+}
+window.render = t => {
+  const L = LEG.lines.find(l => t >= l.start && t < l.end) || null;
+  if (L !== cur) {
+    cur = L; line.innerHTML = L ? L.words.map(w => `<span class="w${w.k ? ' k' : ''}">${w.k ? w.w.replace(/,$/, '<i class="v">,</i>') : w.w}</span>`).join('') : '';
+    spans = [...line.querySelectorAll('.w')];
+  }
+  window.film(t);
+  if (!L) { shade.opacity = 0; return; }
+  const n = L.words.length, stag = Math.min(STAG, 0.3 / n);
+  // a onda de saída termina exatamente no fim da linha, mas nunca antes da última palavra ter aparecido
+  const exit0 = Math.max(L.words[n - 1].s + 0.35, L.end - (OUTW + stag * (n - 1)));
+  let shown = 0;
+  L.words.forEach((w, i) => {
+    const p = eOut(clamp((t - w.s) / IN));
+    const o = eIn(clamp((t - exit0 - i * stag) / OUTW));
+    const s = spans[i].style, a = t < w.s ? 0 : p * (1 - o);
+    shown = Math.max(shown, a);
+    s.opacity = a.toFixed(3);
+    const glow = L.words[i].k ? (0.35 + 0.9 * Math.sin(Math.PI * clamp((t - w.s) / 0.9))) * (1 - o) : 0;
+    s.filter = `blur(${((1 - p) * 6 + o * 7).toFixed(2)}px)` + (glow > 0 ? ` drop-shadow(0 0 ${(6 + 10 * glow).toFixed(1)}px rgba(255,45,40,${(0.45 * glow).toFixed(3)}))` : '');
+    s.transform = `translateY(${((1 - p) * 12 - o * 14).toFixed(1)}px) rotateX(${((1 - p) * 18).toFixed(1)}deg) scale(${(0.98 + 0.02 * p + 0.03 * o).toFixed(3)})`;
+  });
+  shade.opacity = (Math.min(1, (t - L.start) / 0.4) * shown).toFixed(3);
+};
+window.fontsOK = async () => { await document.fonts.load(`italic 500 ${LEG.size}px PF`); await document.fonts.ready;
+  return document.fonts.check(`italic 500 ${LEG.size}px PF`) ? 'ok' : 'font missing'; };
+</script></body></html>

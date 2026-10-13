@@ -1,0 +1,4 @@
+fps=30,crop=1534:1080:193:0,hqdn3d=1.2:1.2:3:3,scale=1080:760:flags=lanczos,
+eq=brightness=0.025:contrast=0.97:saturation=1.08:gamma=1.02,
+format=gbrp,split[a][b];[b]gblur=sigma=16[g];[a][g]blend=all_mode=screen:all_opacity=0.26,format=yuv420p,
+noise=alls=7:allf=t,vignette=PI/6

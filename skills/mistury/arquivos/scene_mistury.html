@@ -1,0 +1,170 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:DID;src:url("node_modules/@fontsource/abril-fatface/files/abril-fatface-latin-400-normal.woff2")}
+@font-face{font-family:GOT;src:url("node_modules/@fontsource/unifrakturmaguntia/files/unifrakturmaguntia-latin-400-normal.woff2")}
+@font-face{font-family:ROM;src:url("node_modules/@fontsource/cinzel/files/cinzel-latin-700-normal.woff2");font-weight:700}
+@font-face{font-family:ROM;src:url("node_modules/@fontsource/cinzel/files/cinzel-latin-900-normal.woff2");font-weight:900}
+@font-face{font-family:CON;src:url("node_modules/@fontsource/oranienbaum/files/oranienbaum-latin-400-normal.woff2")}
+@font-face{font-family:BEB;src:url("node_modules/@fontsource/bebas-neue/files/bebas-neue-latin-400-normal.woff2")}
+@font-face{font-family:MON;src:url("node_modules/@fontsource/montserrat/files/montserrat-latin-500-normal.woff2");font-weight:500}
+@font-face{font-family:MON;src:url("node_modules/@fontsource/montserrat/files/montserrat-latin-900-normal.woff2");font-weight:900}
+@font-face{font-family:BOD;src:url("node_modules/@fontsource/bodoni-moda/files/bodoni-moda-latin-500-normal.woff2");font-weight:500}
+@font-face{font-family:SCR;src:url("node_modules/@fontsource/kaushan-script/files/kaushan-script-latin-400-normal.woff2")}
+@font-face{font-family:MRD;src:url("node_modules/@fontsource/mr-dafoe/files/mr-dafoe-latin-400-normal.woff2")}
+@font-face{font-family:GV;src:url("node_modules/@fontsource/great-vibes/files/great-vibes-latin-400-normal.woff2")}
+html,body{margin:0;background:transparent;overflow:hidden;width:100vw;height:100vh}
+/* sombra média: as letras descolam da imagem sem virar "caixa" */
+#wrap{position:absolute;inset:0;filter:drop-shadow(0 2px 2px rgba(0,0,0,.8)) drop-shadow(0 6px 18px rgba(0,0,0,.5))}
+#wrap.claro{filter:drop-shadow(0 1px 1px rgba(0,0,0,.9)) drop-shadow(0 3px 6px rgba(0,0,0,.7)) drop-shadow(0 8px 26px rgba(0,0,0,.55))}
+#blk{position:absolute;left:0;top:0;transform-origin:50% 50%}
+.ln{white-space:nowrap;line-height:1}
+.w{display:inline-block;will-change:transform,opacity,filter}
+.g{color:transparent;-webkit-background-clip:text;background-clip:text}
+/* cursiva: folga para os rabiscos não serem cortados pelo "escrever" (clip-path) */
+.tail{padding:.12em .28em .22em .1em;margin:-.12em -.06em -.22em .06em}
+</style></head><body><div id="wrap"><div id="blk"></div></div>
+<script src="lado_data.js"></script>
+<script>
+// "Mistury": cada frase vira um CARTAZ tipográfico novo — mistura de 2–3 fontes por frase, trocando a cada fala.
+//   herói  = palavra-chave (ou a palavra mais forte) grande, fonte de destaque e cor própria do "visual" da frase
+//   apoio  = conectores antes/depois em letra pequena (versal espaçada ou serifa fina)
+//   remate = última palavra em cursiva de pincel branca, cruzando por baixo do herói (como "o teu próximo")
+// Cada palavra só aparece quando é falada: herói chega desfocado e encaixa; apoio sobe leve; cursiva é "escrita" da esquerda p/ direita.
+const D = LADO, W = innerWidth, H = innerHeight, blk = document.getElementById('blk');
+const BAND = (H >= 1900 && D.band) ? D.band : { y: 0, h: H };
+const S = D.size || 150;   // tamanho do herói (px na faixa de 760)
+const grad = (a, b) => `linear-gradient(180deg,${a} 0%,${b} 100%)`;
+const VERM = grad('#FF4B45', '#B80F14'), OURO = grad('#FFF0A8', '#E2A421'), AMAR = grad('#FFF6B8', '#EBC63E'), PRATA = grad('#FFFFFF', '#A9B1BA'),
+  BRANCO = grad('#FFFFFF', '#E9E4DA'), VINHO = grad('#E0262B', '#7E0A10'), CARVAO = grad('#3B4049', '#0D1015'), BRONZE = grad('#C4561F', '#6E1E08');
+// visuais (fonte do herói + cor + caixa, estilo do apoio e da cursiva). Ordem embaralhada por vídeo, nunca repete em seguida.
+const LOOKS = {
+  didone:     { hero: ['DID', 400, 1.00, 'cap'],       cor: [VERM, VINHO],   lead: 'versal', tail: 'MRD' },  // "Amarás / o teu próximo"
+  condensada: { hero: ['CON', 400, 1.12, 'low', 1.28], cor: [AMAR, VINHO],  lead: 'serifa', tail: 'SCR' },  // "e odiarás / o teu inimigo"
+  gotica:     { hero: ['GOT', 400, 0.95, 'cap'],       cor: [VERM, VINHO],   lead: 'versal', tail: 'GV' },   // "Amai / A VOSSOS / Inimigos"
+  romana:     { hero: ['ROM', 900, 0.80, 'up'],        cor: [OURO, BRONZE],  lead: 'serifa', tail: 'SCR' },  // "porque faz / que o seu / SOL"
+  bebas:      { hero: ['BEB', 400, 0.98, 'up'],        cor: [PRATA, CARVAO], lead: 'espaco', tail: 'GV' },   // "E A CHUVA"
+  bloco:      { hero: ['MON', 900, 0.80, 'up'],        cor: [BRANCO, CARVAO], lead: 'gotico', tail: 'SCR' }, // "Fazei / BEM / aos que vos odeiam"
+  fina:       { hero: ['BOD', 500, 0.80, 'up'],        cor: [VERM, VINHO],   lead: 'espaco', tail: 'SCR' },  // "e orai pelos que vos / MALTRATAM / e vos perseguem"
+};
+// fundo claro (céu, luz) → herói em cor escura/forte; letra pequena branca ganha sombra mais densa
+const luma = f => f ? 0.2126 * f[0] + 0.7152 * f[1] + 0.0722 * f[2] : 0.4;
+const LEAD = {   // linha de apoio (pequena)
+  versal: { f: 'ROM', wg: 700, sz: .30, up: 1, ls: '.18em', cor: BRANCO },
+  serifa: { f: 'BOD', wg: 500, sz: .33, up: 0, ls: '.01em', cor: BRANCO },
+  espaco: { f: 'MON', wg: 500, sz: .26, up: 0, ls: '.16em', cor: BRANCO },
+  gotico: { f: 'GOT', wg: 400, sz: .40, up: 0, ls: '0', cor: OURO, corClaro: VINHO },
+};
+const TAIL = { MRD: .74, SCR: .54, GV: .72 };   // tamanho da cursiva (fração do herói)
+const DANGLE = new Set('a o as os um uma e de do da dos das em no na nos nas por para pra com que se me te lhe à ao aos não mas pois é eu tu ele ela meu teu seu sua vos vosso vossa vossos nós quem foi já só'.split(' '));
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const eOut = t => 1 - Math.pow(1 - t, 3), eIO = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+const rnd = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let x = Math.imul(seed ^ seed >>> 15, 1 | seed); x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x; return ((x ^ x >>> 14) >>> 0) / 4294967296; };
+const caso = (w, c) => c === 'up' ? w.toUpperCase() : c === 'cap' ? w[0].toUpperCase() + w.slice(1) : w;
+const nucleo = w => w.replace(/[?!]+$/, '').toLowerCase();
+
+// ordem dos visuais: lista do preset (ou todos), embaralhada com semente fixa, sem repetir em seguida
+const NOMES = (D.looks && D.looks.length ? D.looks : Object.keys(LOOKS)).filter(n => LOOKS[n]);
+const seq = []; { const r = rnd(7); let prev = null;
+  for (let i = 0; i < D.blocks.length; i++) { let n, tries = 0; do { n = NOMES[Math.floor(r() * NOMES.length)]; } while ((n === prev || (seq.at(-2) === n && NOMES.length > 2)) && ++tries < 20); seq.push(n); prev = n; } }
+
+// monta o cartaz de cada frase: linhas = [{papel, palavras}]
+function cartaz(B, bi) {
+  const ws = B.lines.flat(), look = LOOKS[B.look] ? B.look : seq[bi];
+  const forte = ws.map((w, i) => [i, nucleo(w.w)]).filter(([, n]) => !DANGLE.has(n) && n.length >= 3);
+  let h = ws.findIndex(w => w.k);
+  if (h < 0) h = forte.length ? forte.reduce((a, b) => (b[1].length >= a[1].length ? b : a))[0] : ws.length - 1;
+  const pre = ws.slice(0, h), post = ws.slice(h + 1), L = [];
+  // palavras antes do herói: linhas curtas de apoio (≤ 20 letras); se não houver nada depois, a 1ª palavra forte vira cursiva em cima
+  const chunk = (arr, max) => { const out = []; let cur = [];
+    for (const w of arr) { if (cur.length && cur.reduce((a, x) => a + x.w.length + 1, 0) + w.w.length > max) { out.push(cur); cur = []; } cur.push(w); }
+    if (cur.length) out.push(cur); return out; };
+  // sem nada depois do herói: a palavra forte mais longa ANTES dele vira a cursiva (todo cartaz tem um toque escrito à mão)
+  const forPre = forte.filter(([i]) => i < h);
+  if (!post.length && forPre.length) {
+    const c = forPre.reduce((a, b) => (b[1].length >= a[1].length ? b : a))[0];
+    const antes = chunk(pre.slice(0, c), 20), ult = antes.length && antes.at(-1).reduce((a, x) => a + x.w.length + 1, 0) <= 14 ? antes.pop() : [];
+    antes.forEach(l => L.push({ p: 'lead', ws: l }));
+    const depois = pre.slice(c + 1), dep = depois.reduce((a, x) => a + x.w.length + 1, 0) <= 10 ? depois : [];
+    L.push({ p: 'mix', ws: [...ult.map(w => ({ ...w, r: 'lead' })), { ...pre[c], r: 'tail' }, ...dep.map(w => ({ ...w, r: 'lead' }))] });
+    if (!dep.length && depois.length) chunk(depois, 20).forEach(l => L.push({ p: 'lead', ws: l }));
+  } else chunk(pre, 20).forEach(l => L.push({ p: 'lead', ws: l }));
+  L.push({ p: 'hero', ws: [ws[h]] });
+  if (post.length) {
+    // depois do herói: conectores pequenos + última palavra forte em cursiva, na mesma linha ("o teu próximo")
+    let tailI = post.length - 1; while (tailI > 0 && DANGLE.has(nucleo(post[tailI].w))) tailI--;
+    const antes = post.slice(0, tailI), depois = post.slice(tailI + 1), lines = chunk(antes, 18);
+    const ult = lines.length && lines.at(-1).reduce((a, x) => a + x.w.length + 1, 0) <= 12 ? lines.pop() : [];
+    lines.forEach(l => L.push({ p: 'lead', ws: l }));
+    L.push({ p: 'mix', ws: [...ult.map(w => ({ ...w, r: 'lead' })), { ...post[tailI], r: 'tail' }, ...depois.map(w => ({ ...w, r: 'lead' }))] });
+  }
+  return { look, L };
+}
+
+let cur = null, items = [];
+function monta(B, bi) {
+  const { look, L } = cartaz(B, bi), K = LOOKS[look], LD = LEAD[K.lead], claro = luma(B.fundo) > 0.55, HC = K.cor[claro ? 1 : 0];
+  document.getElementById('wrap').className = claro ? 'claro' : '';
+  const [hf, hw, hsz, hcase, hsy] = K.hero;
+  items = [];
+  blk.innerHTML = ''; blk.style.transform = ''; blk.style.textAlign = B.align || 'center';
+  const span = (w, role, idx) => {
+    const e = document.createElement('span'); e.className = 'w g'; let txt = w.w, st = e.style;
+    if (role === 'hero') { txt = caso(txt, hcase); Object.assign(st, { fontFamily: hf, fontWeight: hw, fontSize: S * hsz + 'px', backgroundImage: HC, lineHeight: .95 });
+      if (hsy) st.transform = `scaleY(${hsy})`; }
+    else if (role === 'tail') { e.classList.add('tail'); txt = idx === 0 ? caso(txt, 'cap') : txt;
+      Object.assign(st, { fontFamily: K.tail, fontSize: S * TAIL[K.tail] + 'px', backgroundImage: BRANCO, lineHeight: 1 }); }
+    else { txt = LD.up ? txt.toUpperCase() : txt; Object.assign(st, { fontFamily: LD.f, fontWeight: LD.wg, fontSize: S * LD.sz + 'px', letterSpacing: LD.ls,
+      backgroundImage: w.k ? HC : (claro && LD.corClaro) || LD.cor, margin: '0 .14em' }); }
+    e.textContent = txt; items.push({ e, s: w.s, role, hsy }); return e;
+  };
+  L.forEach((ln, li) => {
+    const d = document.createElement('div'); d.className = 'ln';
+    ln.ws.forEach((w, j) => d.appendChild(span(w, ln.p === 'mix' ? w.r : ln.p, li === 0 && j === 0 ? 0 : 1)));
+    // cursiva cruza a borda do herói (sobe por cima dele); apoio logo abaixo do herói encosta
+    // cursiva depois do herói cruza a borda de baixo dele; cursiva antes do herói encosta no topo dele
+    const prev = L[li - 1], next = L[li + 1];
+    if (prev && prev.p === 'hero') d.style.marginTop = (ln.p === 'mix' ? -S * .16 : -S * .02) + 'px';
+    if (ln.p === 'hero') d.style.margin = `${-S * .04}px 0 ${-S * .02}px`;
+    if (ln.p === 'mix' && next && next.p === 'hero') d.style.marginBottom = -S * .12 + 'px';
+    if (ln.p === 'mix' && next && next.p === 'lead') d.style.marginBottom = S * .03 + 'px';
+    blk.appendChild(d);
+  });
+  // cabe na imagem: escala o cartaz inteiro se passar da largura/altura disponível
+  const bw = blk.offsetWidth, bh = blk.offsetHeight, maxW = W * Math.min(.9, Math.max(B.maxw || .62, .5) * 1.25), maxH = BAND.h * .82;
+  const k = Math.min(1, maxW / bw, maxH / bh);
+  const cx = clamp(B.x * W, 40 + bw * k / 2, W - 40 - bw * k / 2), cy = BAND.y + clamp(B.y * BAND.h, 30 + bh * k / 2, BAND.h - 30 - bh * k / 2);
+  blk.style.left = (cx - bw / 2) + 'px'; blk.style.top = (cy - bh / 2) + 'px';
+  blk.dataset.k = k;
+}
+
+window.render = t => {
+  const bi = D.blocks.findIndex(b => t >= b.start && t < b.end), B = bi >= 0 ? D.blocks[bi] : null;
+  if (B !== cur) { cur = B; if (B) monta(B, bi); else { blk.innerHTML = ''; items = []; } }
+  if (!B) return;
+  // saída: o cartaz inteiro some junto (desfoca e cresce um pouco) nos últimos 0,22 s
+  const o = eIO(clamp((t - (B.end - 0.22)) / 0.22)), k = +blk.dataset.k;
+  blk.style.transform = `scale(${(k * (1 + o * 0.05)).toFixed(4)})`; blk.style.opacity = (1 - o).toFixed(3); blk.style.filter = o > 0 ? `blur(${(o * 10).toFixed(1)}px)` : '';
+  for (const it of items) {
+    const s = it.e.style, dt = t - it.s + 0.04;
+    if (dt < 0) { s.opacity = 0; if (it.role === 'tail') s.clipPath = 'inset(0 100% 0 0)'; continue; }
+    if (it.role === 'hero') {   // chega desfocado e grande, com um "eco" de luz, e encaixa
+      const p = eOut(clamp(dt / 0.32));
+      s.opacity = p.toFixed(3); s.filter = p < 1 ? `blur(${((1 - p) * 14).toFixed(1)}px)` : '';
+      s.transform = `scale(${(1 + (1 - p) * 0.22).toFixed(3)})` + (it.hsy ? ` scaleY(${it.hsy})` : '');
+    } else if (it.role === 'tail') {   // cursiva sendo escrita da esquerda p/ direita
+      const p = eIO(clamp(dt / 0.45)); s.opacity = 1; s.filter = '';
+      s.clipPath = p < 1 ? `inset(-30% ${((1 - p) * 100).toFixed(1)}% -30% -10%)` : 'none';
+      s.transform = `translateX(${((1 - p) * -6).toFixed(1)}px)`;
+    } else {   // apoio: sobe 10 px e acende
+      const p = eOut(clamp(dt / 0.25)); s.opacity = p.toFixed(3);
+      s.transform = `translateY(${((1 - p) * 10).toFixed(1)}px)`; s.filter = p < 1 ? `blur(${((1 - p) * 5).toFixed(1)}px)` : '';
+    }
+  }
+};
+window.fontsOK = async () => {
+  const req = ['400 40px DID', '400 40px GOT', '700 40px ROM', '900 40px ROM', '400 40px CON', '400 40px BEB', '500 40px MON', '900 40px MON', '500 40px BOD', '400 40px SCR', '400 40px MRD', '400 40px GV'];
+  await Promise.all(req.map(f => document.fonts.load(f, 'Aáçõ'))); await document.fonts.ready;
+  const miss = req.filter(f => !document.fonts.check(f, 'Aáçõ')); return miss.length ? 'font missing: ' + miss.join(', ') : 'ok';
+};
+</script></body></html>

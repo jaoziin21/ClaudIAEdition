@@ -1,0 +1,9 @@
+{
+ "nome": "Sample Yellow",
+ "cena": "scene_yellow.html",
+ "tamanho": 46,
+ "maxch": 32,
+ "maxw": 0.9,
+ "medeFundo": true,
+ "filtro": "estilos/filtro_yellow.txt"
+}

@@ -1,0 +1,101 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+html,body{margin:0;background:transparent;overflow:hidden;width:100vw;height:100vh}
+canvas{position:absolute;inset:0}
+/* "3D invisível" (v3): limpo e minimalista, com PROFUNDIDADE. Cada letra = 2 camadas:
+   .b = corpo em relevo (8 camadas finas que escurecem para o ardósia + sombra longa suave)
+   .f = face da letra com degradê (luz em cima) e um fio de luz na borda superior. */
+#wd{position:absolute;left:0;top:0;white-space:nowrap;text-transform:uppercase;line-height:1}
+#wd .l{position:relative;display:inline-block;will-change:transform,opacity,filter}
+#wd .b{color:var(--e1);text-shadow:0 1px 0 var(--e1),0 2px 0 var(--e2),0 3px 0 var(--e2),0 4px 0 var(--e3),0 5px 0 var(--e3),0 6px 0 var(--e4),0 7px 0 var(--e4),0 8px 0 var(--e5),
+   0 12px 10px rgba(0,0,0,.35),0 18px 30px rgba(0,0,0,.4)}
+#wd .f{position:absolute;left:0;top:0;color:transparent;-webkit-background-clip:text;background-clip:text;background-image:var(--face);
+   filter:drop-shadow(0 -1px 0 rgba(255,255,255,.55))}
+#wd.k .b{color:var(--k1);text-shadow:0 1px 0 var(--k1),0 2px 0 var(--k2),0 3px 0 var(--k2),0 4px 0 var(--k3),0 5px 0 var(--k3),0 6px 0 var(--k4),0 7px 0 var(--k4),0 8px 0 var(--k5),
+   0 12px 10px rgba(0,0,0,.35),0 18px 30px rgba(0,0,0,.4),0 0 34px var(--kglow)}
+#wd.k .f{background-image:var(--kface)}
+</style></head><body><canvas id="luz"></canvas><div id="wd"></div>
+<script src="lado_data.js"></script>
+<script>
+// UMA palavra por vez. Entrada: letras sobem e acendem em sequência (18 ms), espaçamento fecha. Saída: dissolve suave
+// (só opacidade + leve desfoque, sem movimento) — quase imperceptível. Luz: feixes quentes bem sutis atravessando a imagem.
+const D = LADO, W = innerWidth, H = innerHeight, wd = document.getElementById('wd');
+const PAL = { e1: '#E3E6EA', e2: '#C3CBD5', e3: '#A2AFBE', e4: '#8293A8', e5: '#647690',
+  face: 'linear-gradient(180deg,#FFFFFF 0%,#FBF8F2 45%,#E9E3D8 100%)',
+  k1: '#B9DCF6', k2: '#93C2EA', k3: '#73A6D6', k4: '#5889BE', k5: '#406E9F', kglow: 'rgba(150,205,255,.42)',
+  kface: 'linear-gradient(180deg,#E6F4FF 0%,#B8DDF8 50%,#93C5EE 100%)' };
+for (const [k, v] of Object.entries(PAL)) document.documentElement.style.setProperty('--' + k, v);
+const FONTS = { 'montserrat-black': ['MONB', 'montserrat', 900], outfit: ['OUT', 'outfit', 800], urbanist: ['URB', 'urbanist', 800], montserrat: ['MON', 'montserrat', 800], lexend: ['LEX', 'lexend', 700] };
+const [FAM, PKG, WG] = FONTS[D.fonte || 'outfit'];
+const st = document.createElement('style');
+st.textContent = `@font-face{font-family:${FAM};src:url("node_modules/@fontsource/${PKG}/files/${PKG}-latin-${WG}-normal.woff2");font-weight:${WG}}`;
+document.head.appendChild(st);
+Object.assign(wd.style, { fontFamily: FAM, fontWeight: WG });
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const eOut = t => 1 - Math.pow(1 - t, 3), eBack = t => { const c = 1.4; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
+const eIO = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+// palavras: cada uma fica da hora em que é falada até a próxima (máx. 1,6 s); posição/escala vêm da cena (padrão: centro)
+const WS = [];
+for (const b of D.blocks) { const f = b.lines.flat(); f.forEach((w, i) => WS.push({ w: w.w.replace(/[?!…]/g, ''), k: w.k, s: w.s - 0.04, bend: b.end, x: b.x ?? .5, y: b.y ?? .5, esc: b.esc || 1 })); }
+WS.forEach((w, i) => { const nx = WS[i + 1]; w.last = !nx || nx.s - w.s > 0.9; w.end = Math.min(nx ? nx.s - 0.01 : 1e9, w.bend, w.s + 1.6); });
+
+// ---- luz: feixes quentes diagonais que passam devagar + respiro de luz no alto (só dentro da imagem) ----
+const cv = document.getElementById('luz'), g = cv.getContext('2d'); cv.width = W; cv.height = H;
+const BAND = (H >= 1900 && D.band) ? D.band : { y: 0, h: H };   // página = só a faixa (normal) ou tela cheia
+function luz(t) {
+  g.clearRect(0, 0, W, H); g.save(); g.beginPath(); g.rect(0, BAND.y, W, BAND.h); g.clip();
+  const a0 = 0.10 + 0.04 * Math.sin(t * 0.5);
+  const rg = g.createRadialGradient(W * 0.78, BAND.y - 40, 0, W * 0.78, BAND.y - 40, W * 0.95);
+  rg.addColorStop(0, `rgba(255,214,160,${a0})`); rg.addColorStop(1, 'rgba(255,200,140,0)'); g.fillStyle = rg; g.fillRect(0, BAND.y, W, BAND.h);
+  for (const [sp, off, wid, al] of [[0.035, 0.0, 120, 0.075], [0.022, 0.45, 200, 0.055], [0.05, 0.75, 70, 0.06]]) {
+    const ph = ((t * sp + off) % 1.4) - 0.2, cx = BAND.y + 0;   // posição do feixe atravessando da direita p/ esquerda
+    const x = W * (1.15 - ph * 1.1);
+    g.save(); g.translate(x, BAND.y + BAND.h / 2); g.rotate(-0.42);
+    const lg = g.createLinearGradient(-wid, 0, wid, 0);
+    lg.addColorStop(0, 'rgba(255,225,180,0)'); lg.addColorStop(0.5, `rgba(255,225,180,${al})`); lg.addColorStop(1, 'rgba(255,225,180,0)');
+    g.fillStyle = lg; g.fillRect(-wid, -BAND.h * 1.5, wid * 2, BAND.h * 3); g.restore();
+  }
+  g.restore();
+}
+// linhas de impacto (mangá): quando entra uma palavra-chave, traços finos convergem para o centro e somem em 0,6 s
+const KEYS = WS.filter(w => w.k).map(w => w.s);
+function impacto(t) {
+  const k = KEYS.find(s => t >= s && t < s + 0.6); if (k === undefined) return;
+  const p = (t - k) / 0.6, a = Math.sin(Math.PI * Math.min(1, p * 1.6)) * (1 - p), r = (() => { let x = Math.floor(k * 1000); return () => (x = (x * 16807) % 2147483647) / 2147483647; })();
+  const cx = W / 2, cy = BAND.y + BAND.h / 2, R = Math.hypot(W, BAND.h) * 0.6;
+  g.save(); g.beginPath(); g.rect(0, BAND.y, W, BAND.h); g.clip();
+  for (let i = 0; i < 70; i++) {
+    const ang = r() * Math.PI * 2, r0 = R * (0.55 + r() * 0.25 - p * 0.12), wd2 = 1 + r() * 2.5;
+    g.strokeStyle = `rgba(15,18,24,${(0.55 * a).toFixed(3)})`; g.lineWidth = wd2;
+    g.beginPath(); g.moveTo(cx + Math.cos(ang) * r0, cy + Math.sin(ang) * r0); g.lineTo(cx + Math.cos(ang) * R * 1.2, cy + Math.sin(ang) * R * 1.2); g.stroke();
+  }
+  g.restore();
+}
+let cur = null, letters = [];
+window.render = t => {
+  luz(t); impacto(t);
+  const w = WS.find(x => t >= x.s && t < x.end) || null;
+  if (w !== cur) {
+    cur = w; wd.className = w && w.k ? 'k' : '';
+    wd.innerHTML = w ? [...w.w].map(c => { const ch = c === ' ' ? '&nbsp;' : c; return `<span class="l"><span class="b">${ch}</span><span class="f">${ch}</span></span>`; }).join('') : '';
+    letters = [...wd.children];
+    if (w) wd.style.fontSize = (D.size * w.esc) + 'px';
+  }
+  if (!w) return;
+  const dt = t - w.s, OUTD = w.last ? 0.32 : 0.16, out = eIO(clamp((t - (w.end - OUTD)) / OUTD));
+  wd.style.letterSpacing = (0.02 + 0.10 * (1 - eOut(clamp(dt / 0.28)))).toFixed(3) + 'em';
+  const bw = wd.offsetWidth, bh = wd.offsetHeight;
+  wd.style.left = clamp(W * w.x - bw / 2, 30, W - bw - 30) + 'px';
+  wd.style.top = clamp((BAND.y + BAND.h * w.y) - bh / 2, BAND.y + 20, BAND.y + BAND.h - bh - 30) + 'px';
+  // saída: dissolve (opacidade + desfoque leve), sem deslocar
+  wd.style.opacity = (1 - out).toFixed(3); wd.style.filter = out > 0 ? `blur(${(out * 5).toFixed(2)}px)` : 'none';
+  letters.forEach((l, i) => {
+    const p = clamp((dt - i * 0.018) / 0.22), q = eBack(p);
+    l.style.opacity = clamp(p * 2.2).toFixed(3);
+    l.style.transform = `translateY(${((1 - q) * 22).toFixed(1)}px)`;
+  });
+};
+window.fontsOK = async () => { await document.fonts.load(`${WG} ${D.size}px ${FAM}`); await document.fonts.ready;
+  return document.fonts.check(`${WG} ${D.size}px ${FAM}`) ? 'ok' : 'font missing'; };
+</script></body></html>

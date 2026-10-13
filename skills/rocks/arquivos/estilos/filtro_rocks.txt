@@ -1,0 +1,5 @@
+fps=30,crop=1534:1080:193:0,scale=1080:760:flags=lanczos,
+eq=contrast=1.08:brightness=-0.02:saturation=0.92:gamma=0.97,
+scale=600:422:flags=bilinear,scale=1080:760:flags=bicubic,
+chromashift=cbh=4:crh=-4,
+noise=alls=9:allf=t,vignette=PI/5

@@ -1,0 +1,4 @@
+[{I}]eq=contrast=1.1:saturation=1.08:gamma=0.97,
+colorbalance=rs=-0.08:gs=-0.01:bs=0.09:rm=0.03:bm=-0.02:rh=0.09:gh=0.02:bh=-0.09,
+curves=all='0/0.02 0.25/0.21 0.5/0.5 0.75/0.79 1/0.97',
+vignette=PI/5[{O}]

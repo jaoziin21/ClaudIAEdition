@@ -1,0 +1,7 @@
+{
+ "nome": "Rocks",
+ "cena": "scene_rocks.html",
+ "tamanho": 78,
+ "maxch": 22,
+ "filtro": "estilos/filtro_rocks.txt"
+}

@@ -1,0 +1,8 @@
+{
+ "nome": "Invisible",
+ "cena": "scene_invisible.html",
+ "tamanho": 96,
+ "maxch": 18,
+ "quadros": true,
+ "filtro": "estilos/filtro_mistury.txt"
+}

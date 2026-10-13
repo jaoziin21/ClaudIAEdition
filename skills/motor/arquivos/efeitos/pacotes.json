@@ -1,0 +1,9 @@
+{
+ "filme-antigo": { "efeitos": ["super8", "sombra"], "de": "Escravos v4 (Legenda dinâmica, aprovado)", "descricao": "Filme Super 8 escuro: cor quente saturada, sombras densas, grão forte, poeira, riscos, vazamento laranja nos cortes, janela de projetor arredondada" },
+ "manga":        { "efeitos": ["luz-quente", "manga"], "de": "Eu não tenho inimigos v4 (3D invisível, aprovado)", "descricao": "Luz quente dourada + traço de tinta, retícula e hachura de mangá + feixes de luz + linhas de impacto nas palavras-chave" },
+ "sonho":        { "efeitos": ["sonhador", "particulas", "glitch"], "de": "Sample Yellow (aprovado: 'essa ficou boa') + partículas", "descricao": "Sonhador: brilho estourado suave, grão fino, vazamentos de luz, clarão nos cortes, poeira de luz flutuando e risco verde de glitch" },
+ "vhs":          { "efeitos": ["vhs", "flash"], "de": "Rocks (aprovado)", "descricao": "Fita VHS: imagem macia, borda colorida, grão, varredura, faixa de tracking + clarão branco nos cortes" },
+ "sombrio":      { "efeitos": ["noir", "vinheta-vermelha", "chuva"], "de": "Red Sharp (aprovado) + chuva", "descricao": "Escuro, frio e sem cor, chuva fina caindo e bordas pulsando em vermelho nas palavras-chave — para vídeos pesados/de luta" },
+ "cinema":       { "efeitos": ["cinema", "feixes", "particulas"], "de": "luz do 3D invisível + partículas (novo)", "descricao": "Cor de cinema (sombras azul-petróleo, luzes alaranjadas), feixes de luz quentes passando e poeira de luz — épico e limpo" },
+ "rua":          { "efeitos": ["contraste", "colagem", "glitch"], "de": "Street (aprovado)", "descricao": "Escuro e contrastado, painéis de colagem com outros momentos do vídeo nos cortes e palavras-chave, glitch nos cortes" }
+}

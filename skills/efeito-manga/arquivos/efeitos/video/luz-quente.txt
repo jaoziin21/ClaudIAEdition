@@ -1,0 +1,5 @@
+[{I}]eq=contrast=1.08:saturation=0.84:gamma=1.03,
+curves=r='0/0.015 0.5/0.5 1/0.99':g='0/0.02 0.5/0.5 1/0.97':b='0/0.045 0.5/0.5 1/0.93',
+colorbalance=rs=-0.04:gs=-0.01:bs=0.05:rh=0.04:gh=0.01:bh=-0.03,
+split[{P}a][{P}b];[{P}b]curves=all='0/0 0.55/0 1/1',gblur=sigma=26,colorchannelmixer=rr=1:gg=0.88:bb=0.72[{P}h];[{P}a][{P}h]blend=all_mode=screen:all_opacity=0.5,
+vignette=PI/6[{O}]

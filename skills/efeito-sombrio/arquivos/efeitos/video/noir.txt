@@ -1,0 +1,3 @@
+[{I}]eq=contrast=1.12:brightness=-0.055:saturation=0.62:gamma=0.92,
+colorbalance=rs=-0.02:bs=0.03:rh=0.02,
+noise=alls=6:allf=t,vignette=PI/4[{O}]
