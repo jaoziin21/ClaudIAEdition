@@ -65,6 +65,7 @@ nome-da-skill/
 | <img src="samplerocks/exemplo.jpg" width="160"> | `samplerocks` | `/samplerocks` | O layout inclinado do Rocks com letra sem serifa branca e palavras amarelas que entram esticadas. | motor |
 | <img src="invisible/exemplo.jpg" width="160"> | `invisible` | `/invisible` | A letra é feita da própria imagem do vídeo, como vidro, e pega as cores de cada cena. | motor |
 | <img src="red-sharp/exemplo.jpg" width="160"> | `red-sharp` | `/red-sharp` | Legenda pequena numa tarja preta e frases de impacto vermelhas empilhadas, com soco e tremida. | motor |
+| <img src="fontes/mostruario.jpg" width="160"> | `fontes` | `/fontes` | Troca a fonte de qualquer legenda: 37 fontes prontas (mostruário) ou qualquer uma do Google Fonts. | motor + uma legenda |
 
 ## Efeitos (somam com qualquer legenda)
 

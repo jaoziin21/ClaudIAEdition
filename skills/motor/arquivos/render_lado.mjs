@@ -128,12 +128,31 @@ const LADO = ({ size: SIZE, kc: CORES[cfg.cor || 'vermelho'], cuts: cortes, burn
 blocks.forEach(b => console.log(`${cfg.estilo || ''} ${b.start.toFixed(2)}-${b.end.toFixed(2)} [${b.x},${b.y}]${b.fundo ? ' fundo ' + b.fundo : ''} ${b.lines.map(l => l.map(w => w.k ? '*' + w.w + '*' : w.w).join(' ')).join(' / ')}`));
 return { cfg, LADO };
 }
+// "trocaFonte": "bebas-neue" troca a fonte PRINCIPAL da legenda (1ª família da cena) por outra @fontsource instalada;
+//   {"RB": "bebas-neue", "GRT": "pirata-one"} troca família por família (nomes das famílias: skill /fontes). Sem a chave fica igual.
+//   Usa o mesmo peso/estilo se a fonte nova tiver; senão o mais perto.
+const trocaFontes = (html, troca) => {
+  if (!troca) return html;
+  const fams = [...html.matchAll(/@font-face\{font-family:"?(\w+)"?;/g)].map(m => m[1]);
+  const mapa = typeof troca === 'string' ? { [fams[0]]: troca } : troca;
+  return html.replace(/@font-face\{font-family:"?(\w+)"?;src:url\("([^"]+)"\)([^}]*)\}/g, (all, fam, url, resto) => {
+    const pkg = mapa[fam]; if (!pkg) return all;
+    const dir = `node_modules/@fontsource/${pkg}/files`;
+    if (!fs.existsSync(dir)) { console.error(`fonte não instalada: ${pkg} → cd motor && npm install @fontsource/${pkg}`); process.exit(1); }
+    const w = +((resto.match(/font-weight:(\d+)/) || [])[1] || 400), it = /italic/.test(resto) ? 'italic' : 'normal';
+    const opc = fs.readdirSync(dir).map(f => { const m = f.match(/-latin-(\d+)-(normal|italic)\.woff2$/); return m && { f, w: +m[1], st: m[2] }; }).filter(Boolean)
+      .sort((a, b) => ((a.st !== it) - (b.st !== it)) || (Math.abs(a.w - w) - Math.abs(b.w - w)));
+    if (!opc.length) { console.error(`fonte sem arquivos latin: ${pkg}`); process.exit(1); }
+    return `@font-face{font-family:${fam};src:url("${dir}/${opc[0].f}")${resto}}`;
+  });
+};
 const ESTILOS = [...new Set([estiloCena(cenas[0]), ...cenas.map(estiloCena)])];
 const DADOS = ESTILOS.map(e => dados(carrega(e)));
 DADOS.forEach(({ cfg: c, LADO }, i) => {
   const nome = `lado_data_${i}.js`; fs.writeFileSync(nome, 'const LADO=' + JSON.stringify(LADO) + ';');
   if (i === 0) fs.writeFileSync('lado_data.js', 'const LADO=' + JSON.stringify(LADO) + ';');
-  const html = fs.readFileSync(c.cena || process.env.SCENE || 'scene_lado.html', 'utf8').replace('src="lado_data.js"', `src="${nome}"`);
+  let html = fs.readFileSync(c.cena || process.env.SCENE || 'scene_lado.html', 'utf8').replace('src="lado_data.js"', `src="${nome}"`);
+  html = trocaFontes(html, c.trocaFonte);
   fs.writeFileSync(`_cena_${i}.html`, html);
 });
 const FULL = !!cfg.telaCheia;   // overlay do quadro inteiro (legenda fora da imagem, no preto) — vale o estilo principal
