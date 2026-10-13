@@ -1,15 +1,16 @@
 <title>Editor no Piloto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=UnifrakturMaguntia&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Bebas+Neue&family=Playfair+Display:ital,wght@1,600&family=Kaushan+Script&family=Luckiest+Guy&family=Cinzel:wght@700&family=DM+Sans:wght@700&family=Bangers&family=Great+Vibes&family=Metal+Mania&family=Abril+Fatface&family=Montserrat:wght@900&family=Roboto:ital,wght@1,300&display=swap">
 <style>
-/* Layout: página clara de ferramenta de criação, com "telas" escuras onde os vídeos rodam (como o celular de quem posta).
-   Cobalto só nas ações; verde só no "feito". Cards grandes de canto arredondado em grade (bento). Um só visual, cores definidas aqui. */
+/* Layout: página clara de ferramenta de criação, com "telas" escuras onde os vídeos rodam. Profundidade 3D em cada seção
+   (celular inclinado, cartões que se juntam, viradas, carrossel). Cobalto só nas ações; verde só no "feito". */
 :root{
   color-scheme:light;
   --bg:#f3f4f6; --card:#ffffff; --ink:#0c0e13; --muted:#5b6070; --line:#e2e4ea; --soft:#eceef3;
   --stage:#0c0e13; --stage-2:#161922; --stage-ink:#eef0f5; --stage-muted:#9aa0b0; --stage-line:#262a35;
-  --blue:#2b5cff; --blue-d:#1f47d6; --blue-soft:#e6ecff; --green:#18b26b;
+  --blue:#2b5cff; --blue-d:#1f47d6; --blue-soft:#e6ecff; --blue-l:#7d9cff; --green:#18b26b; --red:#e5484d; --yellow:#f2e24a;
   --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
   --f-body:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:"Geist Mono",ui-monospace,Menlo,monospace;
@@ -22,17 +23,18 @@ a{color:inherit}
 h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.02em}
 p{margin:0}
 .wrap{max-width:1180px;margin:0 auto;padding-inline:20px}
-section{padding-block:84px}
+section{padding-block:88px}
 .kicker{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .kicker b{width:8px;height:8px;border-radius:50%;background:var(--blue);display:inline-block}
-.h2{font-size:clamp(34px,5.2vw,60px);font-weight:800;line-height:1.02;margin-top:14px;max-width:18ch}
+.h2{font-size:clamp(34px,5.2vw,62px);font-weight:800;line-height:1.02;margin-top:14px;max-width:18ch}
 .h2 .u{color:var(--blue)}
 .lead{font-size:clamp(18px,2vw,20px);color:var(--muted);max-width:56ch;margin-top:16px}
 .lead b{color:var(--ink);font-weight:600}
 .dark{background:var(--stage);color:var(--stage-ink)}
 .dark .kicker,.dark .lead{color:var(--stage-muted)}
 .dark .lead b{color:var(--stage-ink)}
-.dark .h2 .u{color:#7d9cff}
+.dark .h2 .u{color:var(--blue-l)}
+.center{text-align:center}.center .h2,.center .lead{margin-inline:auto}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--blue);color:#fff;font-family:var(--f-body);font-weight:600;font-size:18px;
   text-decoration:none;padding:17px 28px;border-radius:999px;border:0;cursor:pointer;transition:background .15s,transform .15s}
@@ -41,9 +43,10 @@ section{padding-block:84px}
 .btn .arr{transition:transform .15s}
 .btn:hover .arr{transform:translateX(3px)}
 .link{color:var(--ink);font-weight:600;text-decoration:none;border-bottom:2px solid var(--line);padding-bottom:2px}
-.btn:focus-visible,.link:focus-visible,.chip:focus-visible,.opt:focus-visible,.sound:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.btn:focus-visible,.link:focus-visible,.chip:focus-visible,.sound:focus-visible,summary:focus-visible,.flip:focus-visible,.cmp:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 .checks{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:20px;font-size:14.5px;color:var(--muted)}
 .checks span::before{content:"✓";color:var(--green);font-weight:700;margin-right:6px}
+.tilt{transition:transform .2s ease-out,box-shadow .2s;will-change:transform}
 
 /* topo */
 .nav{display:flex;justify-content:space-between;align-items:center;padding-block:18px;gap:12px}
@@ -52,28 +55,46 @@ section{padding-block:84px}
 .logo i::after{content:"";border-left:10px solid #fff;border-top:6px solid transparent;border-bottom:6px solid transparent;margin-left:3px}
 .nav .btn{padding:11px 18px;font-size:15px}
 
-/* hero */
+/* hero 3D */
 .hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:48px;align-items:center;padding-block:40px 64px}
 .hero h1{font-size:clamp(46px,7.4vw,92px);font-weight:800;line-height:1;letter-spacing:-.022em;margin-top:18px}
 .hero h1 .u{color:var(--blue)}
 .hero .sub{margin-top:22px;font-size:19.5px;color:var(--muted);max-width:48ch}
 .hero .sub b{color:var(--ink);font-weight:600}
 .actions{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;margin-top:30px}
-.phone{justify-self:center;position:relative;width:min(330px,100%)}
-.screen{aspect-ratio:9/16;border-radius:38px;overflow:hidden;background:#000;position:relative;border:10px solid #0c0e13;box-shadow:0 30px 60px -30px rgba(12,14,19,.45)}
+.stage{justify-self:center;width:min(420px,100%);perspective:1100px;position:relative;padding:30px 0}
+.rig{position:relative;transform-style:preserve-3d;transform:rotateY(-18deg) rotateX(8deg);will-change:transform}
+.phone3d{width:min(320px,80vw);margin-inline:auto}
+.screen{aspect-ratio:9/16;border-radius:38px;overflow:hidden;background:#000;position:relative;border:10px solid #0c0e13;box-shadow:0 50px 80px -30px rgba(12,14,19,.55)}
 .screen video{width:100%;height:100%;object-fit:cover;display:block}
 .sound{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);background:rgba(255,255,255,.94);color:var(--ink);border:0;
   font-family:var(--f-body);font-weight:600;font-size:13px;padding:9px 15px;border-radius:999px;cursor:pointer;white-space:nowrap}
-.badge{position:absolute;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 14px;font-size:13.5px;box-shadow:0 12px 30px -12px rgba(12,14,19,.25);line-height:1.3;max-width:220px}
-.badge small{display:block;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
-.badge.a{left:-62px;top:18%} .badge.b{right:-52px;bottom:20%}
-.badge .ok{color:var(--green);font-weight:700}
-
-/* números */
+.pop{position:absolute;white-space:nowrap;pointer-events:none}
+.p1{left:-14%;bottom:24%;transform:translateZ(120px);background:#000;color:var(--yellow);font-style:italic;font-weight:500;font-size:clamp(14px,1.6vw,18px);padding:6px 12px;border-radius:6px;box-shadow:0 20px 40px -10px rgba(0,0,0,.5)}
+.p2{right:-2%;top:6%;transform:translateZ(180px) rotate(-6deg);font-family:"UnifrakturMaguntia",serif;font-size:clamp(46px,6vw,72px);color:var(--yellow);text-shadow:0 2px 0 #000,0 18px 30px rgba(0,0,0,.45)}
+.p3,.p4,.p5{font-family:var(--f-mono);font-size:13.5px;color:#fff;background:var(--blue);padding:7px 12px;border-radius:999px;box-shadow:0 16px 30px -10px rgba(43,92,255,.6)}
+.p3{left:-20%;top:20%;transform:translateZ(90px)}
+.p4{left:-8%;top:31%;transform:translateZ(150px);background:#111}
+.p5{right:-16%;top:46%;transform:translateZ(110px);background:#111}
+.p6{right:-6%;bottom:8%;transform:translateZ(70px);background:#fff;color:var(--ink);font-size:13.5px;border:1px solid var(--line);border-radius:14px;padding:9px 13px;box-shadow:0 20px 40px -14px rgba(12,14,19,.35)}
+.p6 b{color:var(--green)}
+.glow{position:absolute;left:10%;right:10%;bottom:-6%;height:60px;transform:translateZ(-80px) rotateX(80deg);background:radial-gradient(closest-side,rgba(43,92,255,.45),transparent);filter:blur(10px)}
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px 22px}
 .stat b{display:block;font-family:var(--f-display);font-size:40px;font-weight:800;letter-spacing:-.03em;line-height:1}
 .stat span{color:var(--muted);font-size:14.5px}
+
+/* tudo em uma skill só */
+.merge{position:relative;height:clamp(440px,52vw,580px);perspective:1200px;margin-top:30px}
+#tudo{overflow:hidden}
+.mcard{position:absolute;left:50%;top:50%;width:min(300px,62vw);height:120px;margin:-60px 0 0 calc(min(300px,62vw) / -2);border-radius:22px;background:var(--card);
+  border:1px solid var(--line);display:flex;align-items:center;gap:16px;padding:0 22px;box-shadow:0 24px 50px -24px rgba(12,14,19,.35);will-change:transform}
+.mcard i{width:52px;height:52px;border-radius:15px;flex:none;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:24px}
+.mcard b{font-family:var(--f-display);font-size:24px;font-weight:800;letter-spacing:-.02em}
+.mcard small{display:block;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.mcard.final{background:var(--ink);color:#fff;border-color:var(--ink);justify-content:center;flex-direction:column;gap:2px;height:150px;margin-top:-75px}
+.mcard.final b{font-size:30px}
+.mcard.final small{color:#aab0c0}
 
 /* misturador */
 .mixer{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:20px;margin-top:40px}
@@ -92,112 +113,173 @@ section{padding-block:84px}
 .say b{color:#9db5ff;font-weight:600}
 .note{font-size:13.5px;color:var(--stage-muted)}
 
-/* combinações reais */
-.subt{font-family:var(--f-display);font-size:clamp(24px,3vw,32px);font-weight:800;margin:64px 0 6px}
-.subp{color:var(--stage-muted);max-width:60ch}
-.combos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:24px}
-.combo{background:var(--stage-2);border:1px solid var(--stage-line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;min-width:0}
-.combo video{width:100%;aspect-ratio:540/500;object-fit:cover;display:block;background:#000}
-.combo .b{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
-.recipe{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.recipe span{font-family:var(--f-mono);font-size:12.5px;background:#0c0e13;border:1px solid var(--stage-line);border-radius:8px;padding:4px 8px}
-.recipe i{font-style:normal;color:var(--stage-muted)}
-.combo p{color:var(--stage-muted);font-size:14.5px}
-.combo .src{font-family:var(--f-mono);font-size:11.5px;color:#6f7587}
+/* dores que viram */
+.flips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:40px;perspective:1200px}
+.flip{position:relative;height:270px;border:0;background:none;padding:0;cursor:pointer;font:inherit;text-align:left;color:inherit;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.flip.on{transform:rotateY(180deg)}
+.side{position:absolute;inset:0;border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:10px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.side.a{background:var(--card);border:1px solid var(--line)}
+.side.b{background:var(--ink);color:#fff;transform:rotateY(180deg)}
+.side .big{font-family:var(--f-display);font-size:46px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.side.a .big{color:var(--red)}
+.side.b .big{color:#5be39a}
+.side h3{font-size:19px;font-weight:700}
+.side p{font-size:15px;color:var(--muted)}
+.side.b p{color:#b9bfcc}
+.side .hint{margin-top:auto;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.side.b .hint{color:#7d849a}
 
-/* dor */
-.pains{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:40px}
-.pain{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:8px;min-width:0}
-.pain b{font-family:var(--f-display);font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1}
-.pain h3{font-size:18px;font-weight:700;letter-spacing:-.01em}
-.pain p{color:var(--muted);font-size:15px}
-.quiz{margin-top:24px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px 26px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:center}
-.quiz h3{font-size:24px;font-weight:800}
-.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.opt{font:inherit;font-size:15px;font-weight:600;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:10px 16px;cursor:pointer;color:var(--ink)}
-.opt[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
-.answer{font-size:18px;line-height:1.5;color:var(--muted)}
-.answer b{color:var(--ink)}
+/* calculadora */
+.calc{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:28px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:30px;align-items:center}
+.calc h3{font-size:26px;font-weight:800}
+.ctl{margin-top:20px}
+.ctl label{display:flex;justify-content:space-between;font-weight:600;font-size:15px}
+.ctl label output{font-family:var(--f-mono);color:var(--blue)}
+.ctl input{width:100%;margin-top:10px;accent-color:var(--blue)}
+.res{background:var(--ink);color:#fff;border-radius:22px;padding:26px;display:flex;flex-direction:column;gap:8px}
+.res .num{font-family:var(--f-display);font-size:clamp(54px,7vw,84px);font-weight:800;letter-spacing:-.04em;line-height:1}
+.res .num small{font-size:.38em;letter-spacing:0;color:#aab0c0;margin-left:6px}
+.res p{color:#b9bfcc;font-size:15.5px}
+.res p b{color:#fff}
 
 /* demos */
-.demos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:40px}
-.demo{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:22px;align-items:center;background:var(--stage-2);border:1px solid var(--stage-line);border-radius:var(--r);padding:18px;min-width:0}
-.demo .screen{border-width:6px;border-radius:24px;box-shadow:none}
+.demos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;margin-top:44px;perspective:1400px}
+.demo{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:24px;align-items:center;background:var(--stage-2);border:1px solid var(--stage-line);border-radius:var(--r);padding:20px;min-width:0;transform-style:preserve-3d}
+.demo .screen{border-width:6px;border-radius:24px;box-shadow:0 30px 50px -20px rgba(0,0,0,.8);transform:translateZ(40px)}
 .demo .sound{font-size:12px;padding:7px 12px;bottom:10px}
-.demo h3{font-size:28px;font-weight:800}
+.demo h3{font-size:30px;font-weight:800}
 .demo p{color:var(--stage-muted);font-size:15px;margin-top:8px}
+.demo .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.demo .tags span{font-family:var(--f-mono);font-size:11.5px;border:1px solid var(--stage-line);border-radius:999px;padding:3px 9px;color:var(--stage-ink)}
 
-/* passos */
-.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:40px}
-.step{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:8px;min-width:0}
-.step .n{font-family:var(--f-mono);font-size:12.5px;color:var(--blue)}
-.step h3{font-size:21px;font-weight:700;letter-spacing:-.015em}
-.step p{color:var(--muted);font-size:15.5px}
+/* conversa (como funciona) */
+.thread{max-width:820px;margin:44px auto 0;display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:12px;align-items:flex-end;opacity:0;transform:translateY(24px) scale(.98);transition:opacity .5s,transform .5s cubic-bezier(.2,.8,.2,1)}
+.row.in{opacity:1;transform:none}
+.row.you{justify-content:flex-end}
+.av{width:38px;height:38px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:12px;font-weight:600}
+.row.you .av{background:var(--blue);color:#fff;order:2}
+.row.ai .av{background:var(--ink);color:#fff}
+.bub{max-width:min(560px,82%);padding:16px 18px;border-radius:22px;font-size:16px;line-height:1.5}
+.row.you .bub{background:var(--blue);color:#fff;border-bottom-right-radius:6px}
+.row.ai .bub{background:var(--card);border:1px solid var(--line);border-bottom-left-radius:6px}
+.bub .cmd{display:inline-block;font-family:var(--f-mono);font-size:12.5px;padding:3px 9px;border-radius:999px;margin-bottom:8px}
+.row.you .cmd{background:rgba(255,255,255,.18)}
+.row.ai .cmd{background:var(--blue-soft);color:var(--blue)}
+.bub ul{margin:8px 0 0;padding-left:18px}
+.bub .vidmini{margin-top:10px;display:flex;gap:10px;align-items:center;background:var(--soft);border-radius:14px;padding:8px}
+.bub .vidmini video{width:64px;height:110px;object-fit:cover;border-radius:10px;background:#000}
+.bub .vidmini small{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.bub .ok{color:var(--green);font-weight:700}
 
-/* pacote */
-.ghead{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin:56px 0 16px}
-.ghead h3{font-size:clamp(24px,3vw,32px);font-weight:800}
-.ghead p{color:var(--muted);max-width:52ch;font-size:15.5px}
-.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.tile{position:relative;border-radius:22px;overflow:hidden;background:#000;min-width:0}
-.tile video{width:100%;aspect-ratio:480/418;object-fit:cover;display:block}
-.tile .lab{position:absolute;left:10px;bottom:10px;right:10px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.tile .lab b{background:#fff;color:var(--ink);font-size:13.5px;font-weight:700;padding:5px 10px;border-radius:999px}
-.tile .lab code{font-family:var(--f-mono);font-size:11.5px;color:#fff;background:rgba(0,0,0,.6);padding:4px 8px;border-radius:8px}
-.team{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
-.role{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:6px;min-width:0}
+/* equipe */
+.team{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;perspective:1000px}
+.role{position:relative;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0;overflow:hidden}
+.role .ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--blue-soft);color:var(--blue)}
+.role .ic svg{width:24px;height:24px}
 .role .r{font-family:var(--f-mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-.role h4{font-size:16px;font-weight:600;font-family:var(--f-mono);color:var(--blue);letter-spacing:0}
+.role h4{font-size:16px;font-weight:600;font-family:var(--f-mono);color:var(--ink);letter-spacing:0}
 .role p{color:var(--muted);font-size:14px}
-.fontes{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
-.fontes img{width:100%;border-radius:16px;display:block}
-.fontes h4{font-size:26px;font-weight:800}
-.fontes p{color:var(--muted);margin-top:10px}
-.fontes p b{color:var(--ink)}
-.fontes .ex{margin-top:14px;background:var(--soft);border-radius:14px;padding:14px 16px;font-size:15.5px;color:var(--ink)}
-.formats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.fmt{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ghead{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin:60px 0 16px}
+.ghead h3{font-size:clamp(24px,3vw,34px);font-weight:800}
+.ghead p{color:var(--muted);max-width:52ch;font-size:15.5px}
+
+/* carrosséis 3D */
+.ring-wrap{perspective:1400px;height:clamp(300px,34vw,400px);display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:pan-y;cursor:grab;
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.ring{position:relative;width:clamp(220px,24vw,300px);aspect-ratio:480/418;transform-style:preserve-3d;--rz:clamp(330px,40vw,520px)}
+.face{position:absolute;inset:0;border-radius:22px;overflow:hidden;background:#000;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 30px 50px -25px rgba(12,14,19,.6)}
+.face video{width:100%;height:100%;object-fit:cover;display:block}
+.lab{position:absolute;left:10px;bottom:10px;right:10px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.lab b{background:#fff;color:var(--ink);font-size:13px;font-weight:700;padding:5px 10px;border-radius:999px}
+.lab code{font-family:var(--f-mono);font-size:11px;color:#fff;background:rgba(0,0,0,.6);padding:4px 8px;border-radius:8px}
+.cover{position:relative;height:clamp(280px,30vw,360px);perspective:1200px;overflow:hidden}
+.cv{position:absolute;left:50%;top:50%;width:clamp(240px,30vw,380px);aspect-ratio:480/418;border-radius:22px;overflow:hidden;background:#000;cursor:pointer;
+  transition:transform .6s cubic-bezier(.2,.8,.2,1),opacity .6s,filter .6s;box-shadow:0 30px 60px -25px rgba(12,14,19,.6)}
+.cv video{width:100%;height:100%;object-fit:cover;display:block}
+.cnav{display:flex;justify-content:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.cnav .chip{color:var(--ink);border-color:var(--line);background:var(--card)}
+.cnav .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* testador de fontes */
+.tester{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:20px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.tframe{position:relative;border-radius:20px;overflow:hidden;background:#0d1016 url("img/tester-bg.jpg") center/cover;aspect-ratio:480/418;display:flex;align-items:flex-end;justify-content:center;padding:0 16px 13%}
+.tframe::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,14,19,.15),rgba(12,14,19,.55))}
+.tout{position:relative;text-align:center;line-height:1.25;max-width:92%}
+.tout.sy span{background:rgba(0,0,0,.72);color:var(--yellow);padding:.04em .28em;font-size:clamp(20px,3vw,32px);box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.tout.st{font-size:clamp(46px,8vw,92px);color:#fff;-webkit-text-stroke:2px #000;text-shadow:0 6px 0 #000;transform:scaleY(1.25);text-transform:uppercase;margin-bottom:8%}
+.tout.st span{color:#fff}
+.tout.rs span{display:inline-block;color:var(--red);font-size:clamp(34px,6vw,64px);line-height:.95;text-shadow:0 4px 14px rgba(0,0,0,.5)}
+.tctl{display:flex;flex-direction:column;gap:14px;min-width:0}
+.tctl input[type=text]{font:inherit;font-size:17px;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:var(--soft);color:var(--ink);width:100%}
+.tchips{display:flex;flex-wrap:wrap;gap:8px}
+.tchips .chip{color:var(--ink);border-color:var(--line);background:var(--card)}
+.tchips .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tctl .say{background:var(--soft);border-color:var(--line);color:var(--ink)}
+.tctl .say small{color:var(--muted)}
+.tctl .say b{color:var(--blue)}
+
+/* formatos */
+.formats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.fmt{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;min-width:0}
+.shape{border:3px solid var(--ink);border-radius:8px;position:relative;background:linear-gradient(135deg,var(--blue-soft),#fff)}
+.shape.v{width:38px;height:66px}.shape.h{width:70px;height:40px}
+.shape::after{content:"";position:absolute;left:18%;right:18%;bottom:18%;height:5px;border-radius:3px;background:var(--blue)}
 .fmt code{font-family:var(--f-mono);font-size:12.5px;color:var(--blue)}
 .fmt h4{font-size:19px;font-weight:700}
 .fmt p{color:var(--muted);font-size:14.5px}
 
-/* prova */
-.proof{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin-top:40px}
-.chat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:12px}
+/* prova: arraste antes/depois */
+.proof{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin-top:40px;align-items:stretch}
+.chat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:12px;justify-content:center}
 .msg{max-width:88%;padding:12px 16px;border-radius:20px;font-size:15.5px;line-height:1.45}
 .msg small{display:block;font-family:var(--f-mono);font-size:11px;opacity:.75;margin-bottom:3px}
 .msg.you{align-self:flex-end;background:var(--blue);color:#fff;border-bottom-right-radius:6px}
 .msg.ai{align-self:flex-start;background:var(--soft);border-bottom-left-radius:6px}
-.ba{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.ba figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:10px}
-.ba .ref{background:#0c0e13;color:#eee;border-radius:16px;height:120px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;letter-spacing:.05em;font-size:clamp(17px,2.2vw,22px);text-align:center;padding:8px}
-.ba .old{font-variant-numeric:oldstyle-nums} .ba .new{font-variant-numeric:lining-nums}
-.ba figcaption{font-size:13.5px;color:var(--muted)}
-.ba figcaption b{color:var(--ink)}
+.cmp{position:relative;border-radius:var(--r);overflow:hidden;background:#0c0e13;min-height:280px;cursor:ew-resize;touch-action:none;user-select:none}
+.cmp .lay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Georgia,"Times New Roman",serif;letter-spacing:.05em;font-size:clamp(24px,3.4vw,38px);color:#f3f1ea}
+.cmp .old{font-variant-numeric:oldstyle-nums;background:#1a1012}
+.cmp .new{font-variant-numeric:lining-nums;background:#0c1220;clip-path:inset(0 0 0 var(--x,50%))}
+.cmp .bar{position:absolute;top:0;bottom:0;left:var(--x,50%);width:3px;background:#fff;transform:translateX(-50%)}
+.cmp .bar::after{content:"⇆";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:50%;background:#fff;color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:18px}
+.cmp .t{position:absolute;top:14px;font-family:var(--f-mono);font-size:11.5px;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff}
+.cmp .t.l{left:14px}.cmp .t.r{right:14px;background:var(--green)}
 
-/* nichos e comparação */
-.niches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:36px}
-.niche{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.niche h3{font-size:20px;font-weight:800}
-.niche .q{font-size:16px;line-height:1.45}
-.niche .r{font-family:var(--f-mono);font-size:12px;color:var(--blue)}
-.tbl{overflow-x:auto;margin-top:24px;background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
-table{border-collapse:collapse;width:100%;min-width:660px;font-size:15px}
-th,td{text-align:left;padding:15px 18px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:500}
-td:first-child{color:var(--muted)}
-th.us{color:var(--blue)} td.us{background:var(--blue-soft);font-weight:600}
-tr:last-child td{border-bottom:0}
+/* nichos */
+.niches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:36px;perspective:1000px}
+.niche{position:relative;border-radius:24px;overflow:hidden;min-height:330px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:20px;background:#000}
+.niche video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.niche::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.85));z-index:1}
+.niche>*:not(video){position:relative;z-index:2}
+.niche h3{font-size:26px;font-weight:800}
+.niche .q{font-size:15.5px;line-height:1.45;margin-top:6px;color:#e7e9ef}
+.niche .r{font-family:var(--f-mono);font-size:11.5px;margin-top:10px;color:#cdd7ff}
 
-/* precisa + oferta */
-.need{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:36px}
-.need .main{background:var(--ink);color:#fff;border-radius:22px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;gap:16px}
-.need .main b{font-family:var(--f-display);font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.05}
+/* comparação em 3 colunas */
+.vs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:36px;align-items:center;perspective:1200px}
+.col{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.col h3{font-size:21px;font-weight:800}
+.col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;font-size:15px}
+.col li{display:flex;gap:10px;align-items:flex-start;color:var(--muted)}
+.col li::before{content:"✕";font-weight:700;color:var(--red);flex:none}
+.col.us{background:var(--ink);color:#fff;border-color:var(--ink);transform:translateZ(40px) scale(1.04);box-shadow:0 40px 80px -30px rgba(43,92,255,.55)}
+.col.us li{color:#e3e6ee}
+.col.us li::before{content:"✓";color:#5be39a}
+.col.us .tagp{align-self:flex-start;font-family:var(--f-mono);font-size:11.5px;background:var(--blue);padding:4px 10px;border-radius:999px}
+
+/* precisa + bônus */
+.need{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:36px;perspective:1000px}
+.need .main{background:var(--ink);color:#fff;border-radius:24px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;gap:16px}
+.need .main b{font-family:var(--f-display);font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.05}
 .need .main p{color:#b9bfcc;font-size:14.5px}
-.bon{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:6px}
+.bon{position:relative;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
 .bon .k{font-family:var(--f-mono);font-size:11.5px;color:var(--green);text-transform:uppercase;letter-spacing:.06em}
 .bon h4{font-size:19px;font-weight:700}
 .bon p{color:var(--muted);font-size:14.5px}
+.bon .gift{position:absolute;right:-14px;top:-14px;width:70px;height:70px;border-radius:20px;background:var(--blue-soft);transform:rotate(14deg)}
+
+/* oferta */
+.offer-wrap{position:relative;border-radius:38px;padding:3px;background:conic-gradient(from var(--a,0deg),#2b5cff,#7d9cff,#5be39a,#2b5cff)}
 .offer{background:var(--stage);color:var(--stage-ink);border-radius:36px;padding:clamp(26px,5vw,60px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:36px;align-items:center;position:relative;overflow:hidden}
 .offer::before{content:"";position:absolute;right:-140px;top:-140px;width:440px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(43,92,255,.42),transparent 65%)}
 .offer h2{font-size:clamp(34px,5vw,58px);font-weight:800;line-height:1.02;position:relative}
@@ -206,73 +288,52 @@ tr:last-child td{border-bottom:0}
 .offer .buy{display:flex;flex-direction:column;gap:12px;position:relative}
 .offer .btn{font-size:19px;padding:20px}
 .offer .fine{font-size:13.5px;color:var(--stage-muted);text-align:center}
+.offer .stack{display:flex;justify-content:center;margin-bottom:6px}
+.offer .stack span{width:44px;height:58px;border-radius:9px;border:2px solid #0c0e13;margin-left:-14px;background:linear-gradient(135deg,#2b5cff,#7d9cff)}
+.offer .stack span:nth-child(2){background:linear-gradient(135deg,#18b26b,#5be39a)}
+.offer .stack span:nth-child(3){background:linear-gradient(135deg,#f2e24a,#ffb347)}
+.offer .stack span:nth-child(4){background:linear-gradient(135deg,#e5484d,#ff8a8a)}
 
 /* faq e final */
-.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 32px;margin-top:30px}
-details{border-bottom:1px solid var(--line);padding-block:16px}
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:30px}
+details{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 20px}
 summary{cursor:pointer;font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:12px}
 summary::-webkit-details-marker{display:none}
-summary::after{content:"+";color:var(--blue);font-family:var(--f-mono);font-size:20px;line-height:1}
-details[open] summary::after{content:"−"}
+summary::after{content:"+";color:var(--blue);font-family:var(--f-mono);font-size:20px;line-height:1;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
 details p{color:var(--muted);margin-top:10px;font-size:15.5px}
-.final{text-align:center;padding-block:100px}
-.final .h2{margin-inline:auto}
-.final .btn{margin-top:30px}
+.final{text-align:center;padding-block:110px;overflow:hidden}
+.t3d{font-family:var(--f-display);font-weight:800;letter-spacing:-.03em;line-height:.95;font-size:clamp(46px,9vw,120px);color:var(--ink);margin-top:16px;
+  text-shadow:1px 1px 0 #c9cfdc,2px 2px 0 #c2c8d6,3px 3px 0 #bac1d0,4px 4px 0 #b3bacb,5px 5px 0 #abb3c5,6px 6px 0 #a4acbf,7px 7px 0 #9ca5b9,8px 8px 0 #959eb3,18px 26px 30px rgba(12,14,19,.25)}
+.t3d .u{color:var(--blue);text-shadow:1px 1px 0 #2147cc,2px 2px 0 #1f43c2,3px 3px 0 #1d3fb7,4px 4px 0 #1a3bac,5px 5px 0 #1837a2,6px 6px 0 #163397,7px 7px 0 #142f8d,8px 8px 0 #122b82,18px 26px 30px rgba(43,92,255,.35)}
+.final .btn{margin-top:40px}
 footer{border-top:1px solid var(--line);padding-block:26px 100px;font-size:13px;color:var(--muted)}
 footer .wrap{display:flex;flex-direction:column;gap:6px}
 .sticky{position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(243,244,246,.94);
   border-top:1px solid var(--line);display:none;justify-content:center;z-index:5;backdrop-filter:blur(8px)}
 .sticky .btn{width:100%;max-width:480px;padding:14px;font-size:16.5px}
 
-
-/* ── 3D ── */
-.stage{justify-self:center;width:min(420px,100%);perspective:1100px;position:relative;padding:30px 0}
-.rig{position:relative;transform-style:preserve-3d;transform:rotateY(-18deg) rotateX(8deg);transition:transform .25s ease-out;will-change:transform}
-.phone3d{width:min(320px,80vw);margin-inline:auto;transform-style:preserve-3d;transform:translateZ(0)}
-.phone3d .screen{box-shadow:0 50px 80px -30px rgba(12,14,19,.55),0 0 0 1px rgba(0,0,0,.2)}
-.pop{position:absolute;white-space:nowrap;pointer-events:none;transform-style:preserve-3d}
-.p1{left:-14%;bottom:24%;transform:translateZ(120px);background:#000;color:#f2e24a;font-style:italic;font-weight:500;font-size:clamp(14px,1.6vw,18px);padding:6px 12px;border-radius:6px;box-shadow:0 20px 40px -10px rgba(0,0,0,.5)}
-.p2{right:-2%;top:6%;transform:translateZ(180px) rotate(-6deg);font-family:"UnifrakturMaguntia","Pirata One",serif;font-size:clamp(46px,6vw,72px);color:#f2e24a;text-shadow:0 2px 0 #000,0 18px 30px rgba(0,0,0,.45);font-weight:400;letter-spacing:.02em}
-.p3,.p4,.p5{font-family:var(--f-mono);font-size:13.5px;color:#fff;background:var(--blue);padding:7px 12px;border-radius:999px;box-shadow:0 16px 30px -10px rgba(43,92,255,.6)}
-.p3{left:-20%;top:20%;transform:translateZ(90px)}
-.p4{left:-8%;top:31%;transform:translateZ(150px);background:#111}
-.p5{right:-16%;top:46%;transform:translateZ(110px);background:#111}
-.p6{right:-6%;bottom:8%;transform:translateZ(70px);background:#fff;color:var(--ink);font-size:13.5px;border:1px solid var(--line);border-radius:14px;padding:9px 13px;box-shadow:0 20px 40px -14px rgba(12,14,19,.35)}
-.p6 b{color:var(--green)}
-.glow{position:absolute;left:10%;right:10%;bottom:-6%;height:60px;transform:translateZ(-80px) rotateX(80deg);background:radial-gradient(closest-side,rgba(43,92,255,.45),transparent);filter:blur(10px)}
-.ring-wrap{perspective:1400px;height:clamp(300px,34vw,400px);display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:pan-y;cursor:grab;
-  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
-.ring{position:relative;width:clamp(220px,24vw,300px);aspect-ratio:480/418;transform-style:preserve-3d;--rz:clamp(330px,40vw,520px)}
-.face{position:absolute;inset:0;border-radius:22px;overflow:hidden;background:#000;transform:rotateY(calc(var(--i) * 40deg)) translateZ(var(--rz));backface-visibility:hidden;
-  box-shadow:0 30px 50px -25px rgba(12,14,19,.6)}
-.face video{width:100%;height:100%;object-fit:cover;display:block}
-.face .lab{position:absolute;left:10px;bottom:10px;right:10px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.face .lab b{background:#fff;color:var(--ink);font-size:13px;font-weight:700;padding:5px 10px;border-radius:999px}
-.face .lab code{font-family:var(--f-mono);font-size:11px;color:#fff;background:rgba(0,0,0,.6);padding:4px 8px;border-radius:8px}
-.tilt{transform-style:preserve-3d;transition:transform .2s ease-out;will-change:transform}
-.stat,.step,.role,.fmt,.niche,.bon,.pain{transition:transform .2s ease-out,box-shadow .2s}
-@media (max-width:640px){.p1{left:-2%}.p2{right:0}.p3{left:-4%}.p4{left:0}.p5{right:-2%}.p6{right:0}}
-@media (prefers-reduced-motion:reduce){.rig,.tilt{transition:none}}
-
 @media (max-width:1000px){
-  .hero,.mixer,.proof,.offer,.quiz,.fontes{grid-template-columns:1fr}
-  .stats,.pains,.niches,.need{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero,.mixer,.proof,.offer,.calc,.tester{grid-template-columns:1fr}
+  .stats,.flips,.niches,.need{grid-template-columns:repeat(2,minmax(0,1fr))}
   .team{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .steps,.formats,.gal,.combos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .formats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .demos{grid-template-columns:1fr}
-  .badge.a{left:-10px} .badge.b{right:-10px}
+  .vs{grid-template-columns:1fr}
+  .col.us{transform:none}
 }
 @media (max-width:640px){
-  section{padding-block:60px}
-  .pains,.niches,.steps,.formats,.faq,.combos,.need{grid-template-columns:1fr}
+  section{padding-block:64px}
+  .flips,.niches,.formats,.faq,.need{grid-template-columns:1fr}
   .team{grid-template-columns:repeat(2,minmax(0,1fr))}
   .demo{grid-template-columns:1fr}
   .demo .screen{max-width:250px;margin-inline:auto}
-  .badge{display:none}
   .sticky{display:flex}
   .nav .btn{display:none}
+  .p1{left:-2%}.p2{right:0}.p3{left:-4%}.p4{left:0}.p5{right:-2%}.p6{right:0}
+  .flip{height:240px}
 }
-@media (prefers-reduced-motion:reduce){.btn,.btn .arr{transition:none}}
+@media (prefers-reduced-motion:reduce){.btn,.btn .arr,.tilt,.flip,.cv{transition:none}.row{opacity:1;transform:none;transition:none}}
 </style>
 
 <header class="wrap nav">
@@ -293,12 +354,10 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
   </div>
   <div class="stage" id="stage">
     <div class="rig" id="rig">
-      <div class="phone3d">
-        <div class="screen">
-          <video id="v-hero" src="vid/mandei.mp4" poster="vid/mandei.jpg" autoplay muted loop playsinline preload="metadata"></video>
-          <button class="sound" data-v="v-hero" type="button">Ativar som</button>
-        </div>
-      </div>
+      <div class="phone3d"><div class="screen">
+        <video id="v-hero" src="vid/mandei.mp4" poster="vid/mandei.jpg" autoplay muted loop playsinline preload="metadata"></video>
+        <button class="sound" data-v="v-hero" type="button">Ativar som</button>
+      </div></div>
       <span class="pop p1" aria-hidden="true">recomeçar não tem cara de filme</span>
       <span class="pop p2" aria-hidden="true">HOJE</span>
       <span class="pop p3" aria-hidden="true">/sample-yellow</span>
@@ -309,18 +368,37 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
     </div>
   </div>
 </div>
-</div>
 
 <div class="wrap">
   <div class="stats">
-    <div class="stat"><b>9</b><span>estilos de legenda</span></div>
-    <div class="stat"><b>37+</b><span>fontes para usar em qualquer legenda</span></div>
-    <div class="stat"><b>7</b><span>pacotes de efeitos que se somam</span></div>
-    <div class="stat"><b>+40 mil</b><span>combinações possíveis</span></div>
+    <div class="stat tilt"><b>9</b><span>estilos de legenda</span></div>
+    <div class="stat tilt"><b>37+</b><span>fontes para usar em qualquer legenda</span></div>
+    <div class="stat tilt"><b>7</b><span>pacotes de efeitos que se somam</span></div>
+    <div class="stat tilt"><b>+40 mil</b><span>combinações possíveis</span></div>
   </div>
 </div>
 
-<section class="dark" id="misturar" style="margin-top:72px">
+<section id="tudo">
+  <div class="wrap center">
+    <span class="kicker"><b></b>Já pensou?</span>
+    <h2 class="h2">Roteiro, texto, áudio, legenda, edição, música e efeitos. <span class="u">Tudo em uma skill só.</span></h2>
+    <p class="lead">É isso que o Editor no Piloto faz. Role a tela e veja as sete partes virarem uma.</p>
+  </div>
+  <div class="wrap">
+    <div class="merge" id="merge">
+      <div class="mcard" data-k="0"><i style="background:#e6ecff"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0c0e13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg></i><div><b>Roteiro</b><small>3 opções, 3 ganchos</small></div></div>
+      <div class="mcard" data-k="1"><i style="background:#fff3c4"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0c0e13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6M9 18h4"/></svg></i><div><b>Texto</b><small>o seu, palavra por palavra</small></div></div>
+      <div class="mcard" data-k="2"><i style="background:#ffe1e1"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0c0e13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></i><div><b>Áudio</b><small>voz gerada ou sua</small></div></div>
+      <div class="mcard" data-k="3"><i style="background:#e1f7ea"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0c0e13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></i><div><b>Legenda</b><small>9 estilos + 37 fontes</small></div></div>
+      <div class="mcard" data-k="4"><i style="background:#ece6ff"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0c0e13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 7.5L20 18M8.5 16.5L20 6"/></svg></i><div><b>Edição</b><small>cortes, fundo, enquadramento</small></div></div>
+      <div class="mcard" data-k="5"><i style="background:#ffe9d6"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0c0e13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></i><div><b>Música</b><small>no ponto certo, baixinha</small></div></div>
+      <div class="mcard" data-k="6"><i style="background:#dff3ff"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0c0e13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></i><div><b>Efeitos</b><small>7 pacotes que se somam</small></div></div>
+      <div class="mcard final" data-k="7"><b>Editor no Piloto</b><small>uma conversa · um vídeo pronto</small></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="misturar">
   <div class="wrap">
     <span class="kicker"><b></b>Misture do seu jeito</span>
     <h2 class="h2">Legenda + fonte + efeitos. <span class="u">Junte o que quiser.</span></h2>
@@ -367,7 +445,6 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
         <p class="note">O vídeo mostra o estilo da legenda. A fonte e os efeitos que você escolher entram por cima, no seu vídeo.</p>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -375,21 +452,27 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
   <div class="wrap">
     <span class="kicker"><b></b>O que trava o canal</span>
     <h2 class="h2">Ter ideia é fácil. <span class="u">Virar vídeo</span> é que cansa.</h2>
-    <div class="pains">
-      <div class="pain"><b>2h</b><h3>para editar 40 segundos</h3><p>Cortar, sincronizar legenda palavra por palavra, achar música, exportar de novo.</p></div>
-      <div class="pain"><b>1×</b><h3>a mesma legenda de todo mundo</h3><p>O template que passa mil vezes por dia. Quem rola a tela nem para.</p></div>
-      <div class="pain"><b>0</b><h3>roteiro escrito</h3><p>Você sabe o assunto, mas a abertura que prende nos 2 primeiros segundos não sai.</p></div>
-      <div class="pain"><b>3 dias</b><h3>sem postar</h3><p>Quem posta todo dia aprende rápido o que funciona. Quem posta quando sobra tempo, para.</p></div>
+    <p class="lead">Toque em cada cartão para ver como fica no piloto.</p>
+    <div class="flips">
+      <button class="flip" type="button" aria-pressed="false"><span class="side a"><span class="big">2h</span><h3>para editar 40 segundos</h3><p>Cortar, sincronizar legenda palavra por palavra, achar música, exportar de novo.</p><span class="hint">toque para virar ↻</span></span>
+        <span class="side b"><span class="big">1 frase</span><h3>e o vídeo volta pronto</h3><p>Você conta a ideia. Corte, legenda, música e exportação ficam com ele.</p><span class="hint">no piloto</span></span></button>
+      <button class="flip" type="button" aria-pressed="false"><span class="side a"><span class="big">1×</span><h3>a mesma legenda de todo mundo</h3><p>O template que passa mil vezes por dia. Quem rola a tela nem para.</p><span class="hint">toque para virar ↻</span></span>
+        <span class="side b"><span class="big">+40 mil</span><h3>combinações</h3><p>Legenda, fonte e efeitos do seu jeito. O seu canal fica com a sua cara.</p><span class="hint">no piloto</span></span></button>
+      <button class="flip" type="button" aria-pressed="false"><span class="side a"><span class="big">0</span><h3>roteiro escrito</h3><p>Você sabe o assunto, mas a abertura que prende nos 2 primeiros segundos não sai.</p><span class="hint">toque para virar ↻</span></span>
+        <span class="side b"><span class="big">3 × 3</span><h3>roteiros e ganchos</h3><p>3 roteiros com 3 aberturas cada, com linguagem de gente. Você só escolhe.</p><span class="hint">no piloto</span></span></button>
+      <button class="flip" type="button" aria-pressed="false"><span class="side a"><span class="big">3 dias</span><h3>sem postar</h3><p>Quem posta todo dia aprende rápido o que funciona. Quem posta quando sobra tempo, para.</p><span class="hint">toque para virar ↻</span></span>
+        <span class="side b"><span class="big">todo dia</span><h3>com post pronto</h3><p>Vídeo, título, legenda, tags e o melhor horário a cada aprovação.</p><span class="hint">no piloto</span></span></button>
     </div>
-    <div class="quiz">
-      <div><h3>Quanto tempo você leva para editar 40 segundos?</h3>
-        <div class="opts" role="group" aria-label="Tempo para editar">
-          <button class="opt" type="button" data-r="30" aria-pressed="false">Uns 30 min</button>
-          <button class="opt" type="button" data-r="60" aria-pressed="false">Mais de 1 hora</button>
-          <button class="opt" type="button" data-r="120" aria-pressed="false">A tarde inteira</button>
-          <button class="opt" type="button" data-r="0" aria-pressed="false">Nem começo</button>
-        </div></div>
-      <p class="answer" id="answer" aria-live="polite">Toque numa resposta. Seja qual for, aqui o seu trabalho é <b>contar a ideia e dizer "aprovado"</b>.</p>
+    <div class="calc">
+      <div>
+        <h3>Quanto tempo a edição come da sua semana?</h3>
+        <div class="ctl"><label for="q-vid">Vídeos por semana <output id="o-vid">7</output></label><input id="q-vid" type="range" min="1" max="21" value="7"></div>
+        <div class="ctl"><label for="q-min">Minutos editando cada um <output id="o-min">60</output></label><input id="q-min" type="range" min="10" max="240" step="5" value="60"></div>
+      </div>
+      <div class="res" aria-live="polite">
+        <span class="num" id="r-h">28<small>h por mês</small></span>
+        <p id="r-t">É o tempo que vai para cortar e legendar. <b>No piloto, o seu trabalho é contar a ideia e aprovar.</b></p>
+      </div>
     </div>
   </div>
 </section>
@@ -400,25 +483,34 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
     <h2 class="h2">A mesma cena. <span class="u">16 visuais.</span></h2>
     <p class="lead">Um trecho com a fala original. A cada poucos segundos muda a legenda, ou muda o efeito. É isso que você aplica com um comando.</p>
     <div class="demos">
-      <div class="demo"><div class="screen"><video id="v-leg" src="vid/legendas.mp4" autoplay muted loop playsinline preload="metadata"></video><button class="sound" data-v="v-leg" type="button">Som</button></div>
-        <div><h3>9 legendas</h3><p>Street, Sample Yellow, Rocks, Samplerocks, Mistury, Dinâmica, Invisible, 3D Invisível e Red Sharp. Cada palavra aparece no tempo exato da fala.</p></div></div>
-      <div class="demo"><div class="screen"><video id="v-efe" src="vid/efeitos.mp4" autoplay muted loop playsinline preload="metadata"></video><button class="sound" data-v="v-efe" type="button">Som</button></div>
-        <div><h3>7 efeitos</h3><p>Filme antigo, Mangá, Sonho, VHS, Sombrio, Cinema e Rua. Use um ou vários juntos, com qualquer legenda.</p></div></div>
+      <div class="demo tilt"><div class="screen"><video id="v-leg" src="vid/legendas.mp4" autoplay muted loop playsinline preload="metadata"></video><button class="sound" data-v="v-leg" type="button">Som</button></div>
+        <div><h3>9 legendas</h3><p>Cada palavra aparece no tempo exato da fala, com as palavras-chave em destaque.</p>
+        <div class="tags"><span>street</span><span>sample-yellow</span><span>rocks</span><span>samplerocks</span><span>mistury</span><span>dinâmica</span><span>invisible</span><span>3d-invisível</span><span>red-sharp</span></div></div></div>
+      <div class="demo tilt"><div class="screen"><video id="v-efe" src="vid/efeitos.mp4" autoplay muted loop playsinline preload="metadata"></video><button class="sound" data-v="v-efe" type="button">Som</button></div>
+        <div><h3>7 efeitos</h3><p>Use um ou vários juntos, com qualquer legenda. Mudam a cor, a textura e o clima do vídeo inteiro.</p>
+        <div class="tags"><span>filme antigo</span><span>mangá</span><span>sonho</span><span>vhs</span><span>sombrio</span><span>cinema</span><span>rua</span></div></div></div>
     </div>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
+<section id="como">
+  <div class="wrap center">
     <span class="kicker"><b></b>Como funciona</span>
-    <h2 class="h2">Você fala. Ele faz. <span class="u">Você aprova.</span></h2>
-    <div class="steps">
-      <div class="step"><span class="n">01 · /comecar</span><h3>Conta a ideia do canal</h3><p>"Canal de motivação com voz grave." Ele monta o seu padrão de legenda, fonte, efeitos e formato.</p></div>
-      <div class="step"><span class="n">02 · /roteiro</span><h3>Escolhe o roteiro</h3><p>3 roteiros com 3 ganchos de abertura cada, no tamanho certo para Shorts.</p></div>
-      <div class="step"><span class="n">03 · /voz</span><h3>A voz sai pronta</h3><p>Pelo ElevenLabs conectado ao Claude, ou uma voz de personagem do Fish Audio.</p></div>
-      <div class="step"><span class="n">04 · /buscar-midia</span><h3>Ele acha o fundo</h3><p>GIFs, fotos e cenas da internet, com opções para você escolher e a fonte anotada.</p></div>
-      <div class="step"><span class="n">05 · edição</span><h3>O vídeo é montado</h3><p>Legenda, fonte, efeitos e trilha. Ajuste falando: "legenda mais à esquerda".</p></div>
-      <div class="step"><span class="n">06 · /post</span><h3>Aprovou, posta</h3><p>Vídeo final com título, legenda, descrição, tags e o melhor horário.</p></div>
+    <h2 class="h2">Uma conversa. <span class="u">Um vídeo pronto.</span></h2>
+    <p class="lead">É assim que fica no Claude Code, do começo ao post.</p>
+  </div>
+  <div class="wrap">
+    <div class="thread" id="thread">
+      <div class="row you"><span class="av">você</span><div class="bub"><span class="cmd">/comecar</span><br>Quero um canal de motivação com voz grave e imagens épicas.</div></div>
+      <div class="row ai"><span class="av">AI</span><div class="bub"><span class="cmd">padrão do canal</span><br>Fechado. Legenda <b>Red Sharp</b> com efeito <b>sombrio</b>, vídeos de 40 s, voz grave. Postar às 19h.</div></div>
+      <div class="row you"><span class="av">você</span><div class="bub"><span class="cmd">/roteiro</span><br>Faz um sobre começar de novo depois de perder tudo.</div></div>
+      <div class="row ai"><span class="av">AI</span><div class="bub"><span class="cmd">3 roteiros · 3 ganchos cada</span><br>Mandei as três opções. A 2 abre com: "Ninguém aplaude o primeiro dia."</div></div>
+      <div class="row you"><span class="av">você</span><div class="bub">Vai na 2.</div></div>
+      <div class="row ai"><span class="av">AI</span><div class="bub"><span class="cmd">/voz · /buscar-midia · edição</span><br><span class="ok">✓</span> voz gerada &nbsp;<span class="ok">✓</span> fundo escolhido &nbsp;<span class="ok">✓</span> legenda e trilha
+        <div class="vidmini"><video src="vid/t-red-sharp.mp4" autoplay muted loop playsinline preload="none"></video><small>versão 1 · quadros de teste</small></div></div></div>
+      <div class="row you"><span class="av">você</span><div class="bub">Sobe um pouco a música.</div></div>
+      <div class="row ai"><span class="av">AI</span><div class="bub"><span class="cmd">/post</span><br>Feito, e anotei para os próximos. Aqui estão o vídeo final, o título, a legenda e as tags.</div></div>
+      <div class="row you"><span class="av">você</span><div class="bub">Aprovado.</div></div>
     </div>
   </div>
 </section>
@@ -427,38 +519,82 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
   <div class="wrap">
     <span class="kicker"><b></b>O que vem no pacote</span>
     <h2 class="h2">29 skills. <span class="u">Instale todas ou só as que usar.</span></h2>
-    <div class="ghead"><h3>A equipe</h3></div>
+    <div class="ghead"><h3>A equipe</h3><p>Seis funções que trabalham juntas na mesma conversa.</p></div>
     <div class="team">
-      <div class="role"><span class="r">Diretor</span><h4>/comecar</h4><p>Monta o padrão do canal.</p></div>
-      <div class="role"><span class="r">Roteirista</span><h4>/roteiro</h4><p>3 roteiros, 3 ganchos cada.</p></div>
-      <div class="role"><span class="r">Locutor</span><h4>/voz</h4><p>ElevenLabs ou Fish Audio.</p></div>
-      <div class="role"><span class="r">Produtor</span><h4>/buscar-midia</h4><p>Acha GIFs, fotos e cenas.</p></div>
-      <div class="role"><span class="r">Tipógrafo</span><h4>/fontes</h4><p>Troca a letra de qualquer legenda.</p></div>
-      <div class="role"><span class="r">Social media</span><h4>/post</h4><p>Título, legenda, tags, horário.</p></div>
+      <div class="role tilt"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg></span><span class="r">Diretor</span><h4>/comecar</h4><p>Monta o padrão do canal.</p></div>
+      <div class="role tilt"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6M9 18h4"/></svg></span><span class="r">Roteirista</span><h4>/roteiro</h4><p>3 roteiros, 3 ganchos cada.</p></div>
+      <div class="role tilt"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></span><span class="r">Locutor</span><h4>/voz</h4><p>ElevenLabs ou Fish Audio.</p></div>
+      <div class="role tilt"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span><span class="r">Produtor</span><h4>/buscar-midia</h4><p>Acha GIFs, fotos e cenas.</p></div>
+      <div class="role tilt"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20L11 4h2l6 16M8 14h8"/></svg></span><span class="r">Tipógrafo</span><h4>/fontes</h4><p>Troca a letra de qualquer legenda.</p></div>
+      <div class="role tilt"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12l16-8-6 16-2-6z"/></svg></span><span class="r">Social media</span><h4>/post</h4><p>Título, legenda, tags, horário.</p></div>
     </div>
-    <div class="ghead"><h3>9 legendas</h3><p>Gira sozinho. Passe o dedo ou o mouse para girar.</p></div>
-    <div class="ring-wrap" id="ringwrap"><div class="ring" id="ring"><div class="face" style="--i:0"><video src="vid/t-street.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Street</b><code>/street</code></div></div><div class="face" style="--i:1"><video src="vid/t-sample-yellow.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Sample Yellow</b><code>/sample-yellow</code></div></div><div class="face" style="--i:2"><video src="vid/t-red-sharp.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Red Sharp</b><code>/red-sharp</code></div></div><div class="face" style="--i:3"><video src="vid/t-mistury.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Mistury</b><code>/mistury</code></div></div><div class="face" style="--i:4"><video src="vid/t-rocks.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Rocks</b><code>/rocks</code></div></div><div class="face" style="--i:5"><video src="vid/t-3d-invisivel.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>3D Invisível</b><code>/legenda-3d-invisivel</code></div></div><div class="face" style="--i:6"><video src="vid/t-samplerocks.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Samplerocks</b><code>/samplerocks</code></div></div><div class="face" style="--i:7"><video src="vid/t-dinamica.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Dinâmica</b><code>/legenda-dinamica</code></div></div><div class="face" style="--i:8"><video src="vid/t-invisible.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Invisible</b><code>/invisible</code></div></div></div></div>
-    <div class="ghead"><h3>37 fontes prontas</h3><p>E qualquer outra do Google Fonts.</p></div>
-    <div class="fontes">
-      <img src="img/fontes.jpg" alt="Mostruário com as 37 fontes instaladas, cada uma escrevendo 'A fé move montanhas'">
-      <div><h4>Troque a letra sem perder o estilo</h4>
-        <p>Cada legenda tem a sua animação, posição e cor. Com <b>/fontes</b> você mantém tudo isso e só troca a letra. Na Street e na Red Sharp, dá para trocar cada parte separada.</p>
-        <p class="ex">"Faz com a <b>/sample-yellow</b>, só que com a fonte <b>pirata-one</b>."</p></div>
+
+    <div class="ghead"><h3>9 legendas</h3><p>Gira sozinho. Arraste para girar.</p></div>
+    <div class="ring-wrap" id="ringwrap"><div class="ring" id="ring">
+      <div class="face"><video src="vid/t-street.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Street</b><code>/street</code></div></div>
+      <div class="face"><video src="vid/t-sample-yellow.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Sample Yellow</b><code>/sample-yellow</code></div></div>
+      <div class="face"><video src="vid/t-red-sharp.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Red Sharp</b><code>/red-sharp</code></div></div>
+      <div class="face"><video src="vid/t-mistury.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Mistury</b><code>/mistury</code></div></div>
+      <div class="face"><video src="vid/t-rocks.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Rocks</b><code>/rocks</code></div></div>
+      <div class="face"><video src="vid/t-3d-invisivel.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>3D Invisível</b><code>/legenda-3d-invisivel</code></div></div>
+      <div class="face"><video src="vid/t-samplerocks.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Samplerocks</b><code>/samplerocks</code></div></div>
+      <div class="face"><video src="vid/t-dinamica.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Dinâmica</b><code>/legenda-dinamica</code></div></div>
+      <div class="face"><video src="vid/t-invisible.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Invisible</b><code>/invisible</code></div></div>
+    </div></div>
+
+    <div class="ghead"><h3>Teste as fontes</h3><p>Escreva uma frase, escolha a letra e o estilo. Com <b>/fontes</b> qualquer legenda usa qualquer uma das 37 fontes.</p></div>
+    <div class="tester">
+      <div class="tframe"><div class="tout sy" id="t-out"><span id="t-txt">recomeçar não tem cara de filme</span></div></div>
+      <div class="tctl">
+        <label for="t-in" class="kicker" style="color:var(--muted)">Sua frase</label>
+        <input id="t-in" type="text" maxlength="60" value="recomeçar não tem cara de filme" autocomplete="off">
+        <span class="kicker" style="color:var(--muted)">Estilo</span>
+        <div class="tchips" id="t-est">
+          <button class="chip" data-v="sy" aria-pressed="true" type="button">Sample Yellow</button>
+          <button class="chip" data-v="st" type="button">Grito da Street</button>
+          <button class="chip" data-v="rs" type="button">Impacto Red Sharp</button>
+        </div>
+        <span class="kicker" style="color:var(--muted)">Fonte</span>
+        <div class="tchips" id="t-fon">
+          <button class="chip" data-f="'Roboto',sans-serif" data-i="1" data-n="original" aria-pressed="true" type="button">Original</button>
+          <button class="chip" data-f="'Pirata One',serif" data-n="pirata-one" type="button">Pirata One</button>
+          <button class="chip" data-f="'UnifrakturMaguntia',serif" data-n="unifrakturmaguntia" type="button">Unifraktur</button>
+          <button class="chip" data-f="'Bebas Neue',sans-serif" data-n="bebas-neue" type="button">Bebas Neue</button>
+          <button class="chip" data-f="'Playfair Display',serif" data-i="1" data-n="playfair-display" type="button">Playfair</button>
+          <button class="chip" data-f="'Kaushan Script',cursive" data-n="kaushan-script" type="button">Kaushan</button>
+          <button class="chip" data-f="'Luckiest Guy',cursive" data-n="luckiest-guy" type="button">Luckiest Guy</button>
+          <button class="chip" data-f="'Bangers',cursive" data-n="bangers" type="button">Bangers</button>
+          <button class="chip" data-f="'Cinzel',serif" data-n="cinzel" type="button">Cinzel</button>
+          <button class="chip" data-f="'Metal Mania',cursive" data-n="metal-mania" type="button">Metal Mania</button>
+          <button class="chip" data-f="'Great Vibes',cursive" data-n="great-vibes" type="button">Great Vibes</button>
+          <button class="chip" data-f="'Abril Fatface',serif" data-n="abril-fatface" type="button">Abril</button>
+          <button class="chip" data-f="'Montserrat',sans-serif" data-n="montserrat" type="button">Montserrat</button>
+          <button class="chip" data-f="'DM Sans',sans-serif" data-n="dm-sans" type="button">DM Sans</button>
+        </div>
+        <div class="say" aria-live="polite"><small>Você manda para o Claude</small><span id="t-say"></span></div>
+      </div>
     </div>
-    <div class="ghead"><h3>7 efeitos</h3><p>Um ou vários juntos, com qualquer legenda.</p></div>
-    <div class="gal">
-      <div class="tile"><video src="vid/t-filme-antigo.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Filme antigo</b><code>/efeito-filme-antigo</code></div></div>
-      <div class="tile"><video src="vid/t-vhs.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>VHS</b><code>/efeito-vhs</code></div></div>
-      <div class="tile"><video src="vid/t-sombrio.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Sombrio</b><code>/efeito-sombrio</code></div></div>
+
+    <div class="ghead"><h3>7 efeitos</h3><p>Toque num efeito para trazer para a frente.</p></div>
+    <div class="cover" id="cover">
+      <div class="cv" data-n="Filme antigo"><video src="vid/t-filme-antigo.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Filme antigo</b><code>/efeito-filme-antigo</code></div></div>
+      <div class="cv" data-n="Mangá"><video src="vid/t-manga.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Mangá</b><code>/efeito-manga</code></div></div>
+      <div class="cv" data-n="Sonho"><video src="vid/t-sonho.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Sonho</b><code>/efeito-sonho</code></div></div>
+      <div class="cv" data-n="VHS"><video src="vid/t-vhs.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>VHS</b><code>/efeito-vhs</code></div></div>
+      <div class="cv" data-n="Sombrio"><video src="vid/t-sombrio.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Sombrio</b><code>/efeito-sombrio</code></div></div>
+      <div class="cv" data-n="Cinema"><video src="vid/t-cinema.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Cinema</b><code>/efeito-cinema</code></div></div>
+      <div class="cv" data-n="Rua"><video src="vid/t-rua.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Rua</b><code>/efeito-rua</code></div></div>
     </div>
-    <div class="ghead"><h3>6 formatos de vídeo</h3></div>
+    <div class="cnav" id="cnav"></div>
+
+    <div class="ghead"><h3>6 formatos de vídeo</h3><p>Cada um sabe o que pedir, como enquadrar e onde a legenda fica.</p></div>
     <div class="formats">
-      <div class="fmt"><code>/video-gif</code><h4>Shorts de GIF</h4><p>GIF em loop sem emenda, ampliado com IA, legenda ao lado do personagem.</p></div>
-      <div class="fmt"><code>/video-narracao</code><h4>Narração</h4><p>Roteiro narrado sobre cenas de fundo, com a referência no topo.</p></div>
-      <div class="fmt"><code>/video-fala</code><h4>Personagem falando</h4><p>Áudio original e legenda ao lado de quem fala, nunca no rosto.</p></div>
-      <div class="fmt"><code>/edit-musica</code><h4>Edit com música</h4><p>Digite "Goku" ou "Neymar": ele anima artes que já existem na batida.</p></div>
-      <div class="fmt"><code>/video-longo</code><h4>Vídeo longo</h4><p>Horizontal para o YouTube, de 10 a 30 minutos, com capítulos.</p></div>
-      <div class="fmt"><code>/aesthetic</code><h4>Aesthetic</h4><p>Imagens paradas que ganham vida em quadrinhos e cortes na batida.</p></div>
+      <div class="fmt tilt"><span class="shape v"></span><div><code>/video-gif</code><h4>Shorts de GIF</h4><p>GIF em loop sem emenda, ampliado com IA, legenda ao lado do personagem.</p></div></div>
+      <div class="fmt tilt"><span class="shape v"></span><div><code>/video-narracao</code><h4>Narração</h4><p>Roteiro narrado sobre cenas de fundo, com a referência no topo.</p></div></div>
+      <div class="fmt tilt"><span class="shape v"></span><div><code>/video-fala</code><h4>Personagem falando</h4><p>Áudio original e legenda ao lado de quem fala, nunca no rosto.</p></div></div>
+      <div class="fmt tilt"><span class="shape v"></span><div><code>/edit-musica</code><h4>Edit com música</h4><p>Digite "Goku" ou "Neymar": ele anima artes que já existem na batida.</p></div></div>
+      <div class="fmt tilt"><span class="shape h"></span><div><code>/video-longo</code><h4>Vídeo longo</h4><p>Horizontal para o YouTube, de 10 a 30 minutos, com capítulos.</p></div></div>
+      <div class="fmt tilt"><span class="shape v"></span><div><code>/aesthetic</code><h4>Aesthetic</h4><p>Imagens paradas que ganham vida em quadrinhos e cortes na batida.</p></div></div>
     </div>
   </div>
 </section>
@@ -474,9 +610,11 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
         <div class="msg ai"><small>Claude Code</small>Pronto: agora está 1 Samuel 16:1-13, com os números do tamanho das letras. Anotei como regra para os próximos vídeos.</div>
         <div class="msg you"><small>dono do canal</small>Aprovado, meu bom.</div>
       </div>
-      <div class="ba">
-        <figure><div class="ref old">1 Samuel 16</div><figcaption><b>Antes:</b> sem versículo, "1" pequeno</figcaption></figure>
-        <figure><div class="ref new">1 Samuel 16:1-13</div><figcaption><b>Depois:</b> como na Bíblia</figcaption></figure>
+      <div class="cmp" id="cmp" tabindex="0" role="slider" aria-label="Arraste para comparar antes e depois" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+        <div class="lay old">1 Samuel 16</div>
+        <div class="lay new">1 Samuel 16:1-13</div>
+        <span class="t l">antes</span><span class="t r">depois</span>
+        <span class="bar"></span>
       </div>
     </div>
   </div>
@@ -487,23 +625,22 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
     <span class="kicker"><b></b>Qualquer nicho</span>
     <h2 class="h2">Se dá para falar, <span class="u">dá para virar vídeo.</span></h2>
     <div class="niches">
-      <div class="niche"><h3>Fé</h3><p class="q">"Versículos narrados com a referência no topo."</p><p class="r">/video-narracao + /sample-yellow</p></div>
-      <div class="niche"><h3>Motivação</h3><p class="q">"Frases fortes, voz grave, clima pesado."</p><p class="r">/red-sharp + /efeito-sombrio</p></div>
-      <div class="niche"><h3>Anime</h3><p class="q">"Edit do Itachi na batida de um phonk."</p><p class="r">/edit-musica + /street</p></div>
-      <div class="niche"><h3>Futebol</h3><p class="q">"Lances do Neymar com narração."</p><p class="r">/edit-musica + /legenda-3d-invisivel</p></div>
+      <div class="niche tilt"><video src="vid/t-sample-yellow.mp4" autoplay muted loop playsinline preload="none"></video><h3>Fé</h3><p class="q">"Versículos narrados com a referência no topo."</p><p class="r">/video-narracao + /sample-yellow</p></div>
+      <div class="niche tilt"><video src="vid/t-red-sharp.mp4" autoplay muted loop playsinline preload="none"></video><h3>Motivação</h3><p class="q">"Frases fortes, voz grave, clima pesado."</p><p class="r">/red-sharp + /efeito-sombrio</p></div>
+      <div class="niche tilt"><video src="vid/t-street.mp4" autoplay muted loop playsinline preload="none"></video><h3>Anime</h3><p class="q">"Edit do Itachi na batida de um phonk."</p><p class="r">/edit-musica + /street</p></div>
+      <div class="niche tilt"><video src="vid/t-3d-invisivel.mp4" autoplay muted loop playsinline preload="none"></video><h3>Futebol</h3><p class="q">"Lances do Neymar com narração."</p><p class="r">/edit-musica + /legenda-3d-invisivel</p></div>
     </div>
-    <div class="tbl">
-      <table>
-        <thead><tr><th></th><th>Editar sozinho</th><th>Contratar editor</th><th class="us">Editor no Piloto</th></tr></thead>
-        <tbody>
-          <tr><td>Seu tempo por vídeo</td><td>Horas no editor</td><td>Briefing, espera e revisão</td><td class="us">Contar a ideia e aprovar</td></tr>
-          <tr><td>Roteiro</td><td>Você escreve</td><td>Normalmente não inclui</td><td class="us">3 propostas com 3 ganchos</td></tr>
-          <tr><td>Voz</td><td>Você grava</td><td>À parte</td><td class="us">Gerada na conversa</td></tr>
-          <tr><td>Fundo (GIFs, cenas)</td><td>Você procura</td><td>Você manda</td><td class="us">Ele busca e mostra opções</td></tr>
-          <tr><td>Estilo</td><td>Templates de aplicativo</td><td>Depende do editor</td><td class="us">+40 mil combinações</td></tr>
-          <tr><td>Às 2 da manhã</td><td>Se você estiver acordado</td><td>Não</td><td class="us">Sim</td></tr>
-        </tbody>
-      </table>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <span class="kicker"><b></b>Compare</span>
+    <h2 class="h2">Três jeitos de ter <span class="u">vídeo todo dia.</span></h2>
+    <div class="vs">
+      <div class="col"><h3>Editar sozinho</h3><ul><li>Horas no editor por vídeo</li><li>Você escreve o roteiro</li><li>Você grava a voz</li><li>Templates iguais aos de todo mundo</li><li>Título e tags por sua conta</li></ul></div>
+      <div class="col us tilt"><span class="tagp">Editor no Piloto</span><h3>Uma conversa</h3><ul><li>Você conta a ideia e aprova</li><li>3 roteiros com 3 ganchos</li><li>Voz gerada na conversa</li><li>+40 mil combinações de estilo</li><li>Post pronto a cada vídeo</li><li>Funciona às 2 da manhã</li></ul></div>
+      <div class="col"><h3>Contratar editor</h3><ul><li>Briefing, espera e revisão</li><li>Roteiro normalmente não inclui</li><li>Voz à parte</li><li>Estilo depende de quem edita</li><li>Fim de semana, só se ele puder</li></ul></div>
     </div>
   </div>
 </section>
@@ -513,17 +650,17 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
     <span class="kicker"><b></b>Do que você precisa</span>
     <h2 class="h2">Só de uma coisa: <span class="u">Claude Code.</span></h2>
     <div class="need">
-      <div class="main"><b>Claude Code</b><p>No computador ou na nuvem, pelo navegador ou pelo celular. Instale as skills, digite /comecar e conte a sua ideia.</p></div>
-      <div class="bon"><span class="k">Bônus</span><h4>Voz de qualquer personagem</h4><p>Passo a passo do Fish Audio, gratuito, com vozes de anime e narradores.</p></div>
-      <div class="bon"><span class="k">Bônus</span><h4>Ele acha o fundo</h4><p>GIFs, fotos e cenas buscados na internet, com a fonte anotada.</p></div>
-      <div class="bon"><span class="k">Bônus</span><h4>Instale só o que usar</h4><p>Cada skill é independente. Um comando instala as escolhidas.</p></div>
+      <div class="main tilt"><b>Claude Code</b><p>No computador ou na nuvem, pelo navegador ou pelo celular. Instale as skills, digite /comecar e conte a sua ideia.</p></div>
+      <div class="bon tilt"><i class="gift"></i><span class="k">Bônus</span><h4>Voz de qualquer personagem</h4><p>Passo a passo do Fish Audio, gratuito, com vozes de anime e narradores.</p></div>
+      <div class="bon tilt"><i class="gift"></i><span class="k">Bônus</span><h4>Ele acha o fundo</h4><p>GIFs, fotos e cenas buscados na internet, com a fonte anotada.</p></div>
+      <div class="bon tilt"><i class="gift"></i><span class="k">Bônus</span><h4>Instale só o que usar</h4><p>Cada skill é independente. Um comando instala as escolhidas.</p></div>
     </div>
   </div>
 </section>
 
 <section id="oferta" style="padding-top:0">
   <div class="wrap">
-    <div class="offer">
+    <div class="offer-wrap" id="offerwrap"><div class="offer">
       <div>
         <h2>Seu canal no piloto a partir de hoje.</h2>
         <ul>
@@ -534,10 +671,11 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
         </ul>
       </div>
       <div class="buy">
+        <div class="stack" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
         <a class="btn" href="#oferta" id="comprar">Quero o Editor no Piloto <span class="arr">→</span></a>
         <p class="fine">Acesso imediato · Garantia de 7 dias</p>
       </div>
-    </div>
+    </div></div>
   </div>
 </section>
 
@@ -561,7 +699,7 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
 <section class="final">
   <div class="wrap">
     <span class="kicker"><b></b>A ideia você já tem</span>
-    <h2 class="h2">Deixa o resto <span class="u">no piloto.</span></h2>
+    <h2 class="t3d">Deixa o resto <span class="u">no piloto.</span></h2>
     <a class="btn" href="#oferta">Quero meu canal no piloto <span class="arr">→</span></a>
   </div>
 </section>
@@ -574,75 +712,150 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
 
 <script>
 (function(){
+  var calmo=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $=function(s){return document.querySelector(s);}, $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s));};
+  var toca=function(v){var p=v.play();if(p&&p.catch)p.catch(function(){});};
+
   // som: só depois de um toque; um vídeo com som por vez
   var rotulo=function(b){return b.dataset.v==='v-hero'?'Ativar som':'Som';};
-  document.querySelectorAll('.sound').forEach(function(b){
-    b.addEventListener('click',function(){
-      var v=document.getElementById(b.dataset.v); if(!v) return; var liga=v.muted;
-      document.querySelectorAll('video').forEach(function(o){o.muted=true;});
-      document.querySelectorAll('.sound').forEach(function(o){o.textContent=rotulo(o);});
-      if(liga){v.muted=false;var p=v.play();if(p&&p.catch)p.catch(function(){});b.textContent='Tirar som';}
-    });
-  });
-  // misturador: monta a frase que a pessoa manda para o Claude
+  $$('.sound').forEach(function(b){ b.addEventListener('click',function(){
+    var v=document.getElementById(b.dataset.v); if(!v) return; var liga=v.muted;
+    $$('video').forEach(function(o){o.muted=true;}); $$('.sound').forEach(function(o){o.textContent=rotulo(o);});
+    if(liga){v.muted=false;toca(v);b.textContent='Tirar som';}
+  });});
+
+  // misturador
   var leg='sample-yellow',fon='',efe=[];
   var cmd={dinamica:'legenda-dinamica','3d-invisivel':'legenda-3d-invisivel'};
   var nomes={cinema:'cinema',sonho:'sonho',vhs:'VHS','filme-antigo':'filme antigo',sombrio:'sombrio',manga:'mangá',rua:'rua'};
-  var vid=document.getElementById('mix-v'), txt=document.getElementById('mix-txt');
+  var vid=$('#mix-v'), txt=$('#mix-txt');
   function pinta(){
     var s='Faz o vídeo com a <b>/'+(cmd[leg]||leg)+'</b>';
     if(fon) s+=', só que com a fonte <b>'+fon+'</b>';
     if(efe.length) s+=(fon?',':'')+' e '+(efe.length>1?'os efeitos ':'o efeito ')+efe.map(function(e){return '<b>'+nomes[e]+'</b>';}).join(' + ');
     txt.innerHTML=s+'.';
   }
-  function grupo(id,multi,cb){
-    var bs=document.querySelectorAll('#'+id+' .chip');
+  function grupo(sel,multi,cb){
+    var bs=$$(sel+' .chip');
     bs.forEach(function(b){ if(!b.hasAttribute('aria-pressed')) b.setAttribute('aria-pressed','false');
       b.addEventListener('click',function(){
         if(multi) b.setAttribute('aria-pressed', b.getAttribute('aria-pressed')==='true'?'false':'true');
         else { bs.forEach(function(x){x.setAttribute('aria-pressed','false');}); b.setAttribute('aria-pressed','true'); }
-        cb(b,bs); pinta();
+        cb(b,bs);
       });});
   }
-  grupo('c-leg',false,function(b){ leg=b.dataset.v; var src='vid/t-'+leg+'.mp4'; if(vid.getAttribute('src')!==src){vid.setAttribute('src',src); var p=vid.play(); if(p&&p.catch)p.catch(function(){});} });
-  grupo('c-fon',false,function(b){ fon=b.dataset.v; });
-  grupo('c-efe',true,function(b,bs){ efe=[]; bs.forEach(function(x){ if(x.getAttribute('aria-pressed')==='true') efe.push(x.dataset.v); }); });
+  grupo('#c-leg',false,function(b){ leg=b.dataset.v; var src='vid/t-'+leg+'.mp4'; if(vid.getAttribute('src')!==src){vid.setAttribute('src',src); toca(vid);} pinta(); });
+  grupo('#c-fon',false,function(b){ fon=b.dataset.v; pinta(); });
+  grupo('#c-efe',true,function(b,bs){ efe=bs.filter(function(x){return x.getAttribute('aria-pressed')==='true';}).map(function(x){return x.dataset.v;}); pinta(); });
   pinta();
-  // quiz
-  var ans=document.getElementById('answer');
-  var t={'30':'30 minutos por vídeo são <b>3 horas e meia por semana</b> postando todo dia. Aqui isso vira contar a ideia e dizer "aprovado".',
-         '60':'Mais de 1 hora por vídeo são <b>7 horas por semana</b> só editando. Aqui o seu trabalho é contar a ideia e aprovar.',
-         '120':'A tarde inteira por vídeo não fecha a conta de postar todo dia. <b>Aqui você conta a ideia e recebe o vídeo pronto.</b>',
-         '0':'É o mais comum: a ideia fica parada porque editar dá preguiça. <b>Aqui a ideia vira vídeo numa conversa.</b>'};
-  document.querySelectorAll('.opt').forEach(function(o){ o.addEventListener('click',function(){
-    document.querySelectorAll('.opt').forEach(function(x){x.setAttribute('aria-pressed','false');}); o.setAttribute('aria-pressed','true'); ans.innerHTML=t[o.dataset.r]; }); });
 
-  // ── 3D: celular acompanha o mouse (ou mexe sozinho), cards inclinam, carrossel gira ──
-  var calmo=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var rig=document.getElementById('rig'), stage=document.getElementById('stage'), mouse=false;
-  if(rig&&!calmo){
+  // cartões que viram
+  $$('.flip').forEach(function(f){ f.addEventListener('click',function(){ var on=f.classList.toggle('on'); f.setAttribute('aria-pressed',on?'true':'false'); }); });
+
+  // calculadora
+  var qv=$('#q-vid'), qm=$('#q-min');
+  function conta(){ var v=+qv.value, m=+qm.value, h=Math.round(v*m*4.3/60);
+    $('#o-vid').textContent=v; $('#o-min').textContent=m;
+    $('#r-h').innerHTML=h+'<small>h por mês</small>';
+    $('#r-t').innerHTML='São '+v+' vídeos por semana × '+m+' min, cerca de <b>'+Math.round(h/8)+' dias de trabalho</b> por mês só cortando e legendando. No piloto, o seu trabalho é contar a ideia e aprovar.'; }
+  qv.addEventListener('input',conta); qm.addEventListener('input',conta); conta();
+
+  // conversa aparecendo ao rolar
+  var rows=$$('.row');
+  if(calmo||!('IntersectionObserver' in window)) rows.forEach(function(r){r.classList.add('in');});
+  else { var io2=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io2.unobserve(e.target);} });},{threshold:.4,rootMargin:'0px 0px -8% 0px'});
+    rows.forEach(function(r){io2.observe(r);}); }
+
+  // testador de fontes
+  var tin=$('#t-in'), tout=$('#t-out'), ttx=$('#t-txt'), tsay=$('#t-say'), est='sy', fnt=$('#t-fon .chip[aria-pressed="true"]');
+  function tpinta(){
+    var t=(tin.value||'escreva sua frase').trim();
+    tout.className='tout '+est;
+    if(est==='rs'){ var w=t.split(/\s+/).slice(-4); ttx.innerHTML=w.map(function(x){return '<span>'+x.replace(/[<>&]/g,'')+'</span>';}).join('<br>'); }
+    else if(est==='st'){ ttx.textContent=t.split(/\s+/).sort(function(a,b){return b.length-a.length;})[0]||t; }
+    else ttx.textContent=t;
+    tout.style.fontFamily=fnt.dataset.f; tout.style.fontStyle=fnt.dataset.i?'italic':'normal';
+    var nome={sy:'/sample-yellow',st:'/street (nos gritos)',rs:'/red-sharp (no impacto)'}[est];
+    tsay.innerHTML=fnt.dataset.n==='original'?'Faz com a <b>'+nome+'</b>.':'Faz com a <b>'+nome+'</b>, só que com a fonte <b>'+fnt.dataset.n+'</b>.';
+  }
+  grupo('#t-est',false,function(b){ est=b.dataset.v; tpinta(); });
+  grupo('#t-fon',false,function(b){ fnt=b; tpinta(); });
+  tin.addEventListener('input',tpinta); tpinta();
+
+  // antes/depois arrastável
+  var cmp=$('#cmp');
+  function poe(x){ x=Math.max(0,Math.min(100,x)); cmp.style.setProperty('--x',x+'%'); cmp.setAttribute('aria-valuenow',Math.round(x)); }
+  var arr=false;
+  cmp.addEventListener('pointerdown',function(e){arr=true;cmp.setPointerCapture(e.pointerId);var r=cmp.getBoundingClientRect();poe((e.clientX-r.left)/r.width*100);});
+  cmp.addEventListener('pointermove',function(e){if(!arr)return;var r=cmp.getBoundingClientRect();poe((e.clientX-r.left)/r.width*100);});
+  cmp.addEventListener('pointerup',function(){arr=false;}); cmp.addEventListener('pointercancel',function(){arr=false;});
+  cmp.addEventListener('keydown',function(e){var v=+cmp.getAttribute('aria-valuenow'); if(e.key==='ArrowLeft'){poe(v-5);e.preventDefault();} if(e.key==='ArrowRight'){poe(v+5);e.preventDefault();}});
+  poe(50);
+
+  // capa de efeitos (coverflow)
+  var cvs=$$('.cv'), cnav=$('#cnav'), atual=3;
+  cvs.forEach(function(c,i){ var b=document.createElement('button'); b.className='chip'; b.type='button'; b.textContent=c.dataset.n; b.setAttribute('aria-pressed','false');
+    b.addEventListener('click',function(){atual=i;capa();}); cnav.appendChild(b); c.addEventListener('click',function(){atual=i;capa();}); });
+  function capa(){ var w=window.innerWidth<640?120:210;
+    cvs.forEach(function(c,i){ var d=i-atual, a=Math.abs(d);
+      c.style.transform='translate(-50%,-50%) translateX('+(d*w)+'px) translateZ('+(-a*160)+'px) rotateY('+(d<0?42:d>0?-42:0)+'deg)';
+      c.style.zIndex=20-a; c.style.opacity=a>3?0:1; c.style.filter=a?'brightness(.55)':'none'; });
+    $$('#cnav .chip').forEach(function(b,i){b.setAttribute('aria-pressed',i===atual?'true':'false');}); }
+  capa(); window.addEventListener('resize',capa);
+  if(!calmo) setInterval(function(){ if(document.hidden) return; atual=(atual+1)%cvs.length; capa(); },3200);
+
+  if(calmo){ $('#offerwrap').style.setProperty('--a','45deg'); }
+
+  // 3D: celular acompanha o mouse (ou balança sozinho), cartões inclinam, carrossel gira, cartões se juntam, borda da oferta gira
+  var rig=$('#rig'), stage=$('#stage'), mouse=false;
+  if(!calmo){
     stage.addEventListener('pointermove',function(e){ if(e.pointerType!=='mouse')return; mouse=true; var r=stage.getBoundingClientRect();
       var x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5; rig.style.transform='rotateY('+(x*36-6)+'deg) rotateX('+(-y*22+6)+'deg)'; });
     stage.addEventListener('pointerleave',function(){ mouse=false; });
-    var t0=performance.now();
-    (function vai(t){ if(!mouse){ var k=(t-t0)/1000; rig.style.transform='rotateY('+(-16+Math.sin(k*.6)*14)+'deg) rotateX('+(7+Math.sin(k*.9)*4)+'deg)'; } requestAnimationFrame(vai); })(t0);
+    $$('.tilt,.panel,.tester').forEach(function(c){
+      c.addEventListener('pointermove',function(e){ if(e.pointerType!=='mouse')return; var r=c.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+        var base=c.classList.contains('us')&&window.innerWidth>1000?' translateZ(40px) scale(1.04)':'';
+        c.style.transform='perspective(900px) rotateY('+(x*8)+'deg) rotateX('+(-y*8)+'deg) translateZ(6px)'+base; });
+      c.addEventListener('pointerleave',function(){ c.style.transform=''; });
+    });
   }
-  if(!calmo) document.querySelectorAll('.stat,.step,.role,.fmt,.niche,.bon,.pain,.panel,.fontes').forEach(function(c){
-    c.addEventListener('pointermove',function(e){ if(e.pointerType!=='mouse')return; var r=c.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
-      c.style.transform='perspective(800px) rotateY('+(x*8)+'deg) rotateX('+(-y*8)+'deg) translateZ(6px)'; });
-    c.addEventListener('pointerleave',function(){ c.style.transform=''; });
-  });
-  var ring=document.getElementById('ring'), rw=document.getElementById('ringwrap');
-  if(ring){ var ang=0, vel=calmo?0:-0.12, arrasto=null, ultimo=performance.now();
-    rw.addEventListener('pointerdown',function(e){ arrasto={x:e.clientX,a:ang}; rw.setPointerCapture(e.pointerId); rw.style.cursor='grabbing'; });
-    rw.addEventListener('pointermove',function(e){ if(arrasto){ ang=arrasto.a+(e.clientX-arrasto.x)*0.35; } });
-    var solta=function(){ arrasto=null; rw.style.cursor=''; }; rw.addEventListener('pointerup',solta); rw.addEventListener('pointercancel',solta);
-    (function gira(t){ var dt=Math.min(50,t-ultimo); ultimo=t; if(!arrasto) ang+=vel*dt*0.06*10/6; ring.style.transform='translateZ(calc(var(--rz) * -1)) rotateY('+ang+'deg)'; requestAnimationFrame(gira); })(ultimo);
+  var ring=$('#ring'), rw=$('#ringwrap'), faces=$$('.face'), ang=0, arr2=null;
+  faces.forEach(function(f,i){ f.style.transform='rotateY('+(i*360/faces.length)+'deg) translateZ(var(--rz))'; });
+  rw.addEventListener('pointerdown',function(e){ arr2={x:e.clientX,a:ang}; rw.setPointerCapture(e.pointerId); rw.style.cursor='grabbing'; });
+  rw.addEventListener('pointermove',function(e){ if(arr2) ang=arr2.a+(e.clientX-arr2.x)*0.35; });
+  var solta=function(){ arr2=null; rw.style.cursor=''; }; rw.addEventListener('pointerup',solta); rw.addEventListener('pointercancel',solta);
+
+  var merge=$('#merge'), mcards=$$('.mcard'), offer=$('#offerwrap');
+  var ESP=[[-330,-150,-120,-14],[300,-170,-60,12],[-380,40,-40,8],[360,30,-140,-10],[-200,170,-90,-6],[220,180,-30,9],[0,-210,-200,4]];
+  function juntar(){
+    var r=merge.getBoundingClientRect(), vh=window.innerHeight;
+    var p=Math.max(0,Math.min(1,(vh-r.top)/(vh*0.55+r.height*0.5)));
+    var e2=function(a,b,x){var t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t);};
+    var sc=window.innerWidth<640?0.42:window.innerWidth<1000?0.7:1;
+    mcards.forEach(function(c,i){
+      if(i===7){ var q=e2(0.82,1,p); c.style.transform='translateZ('+(q*60)+'px) scale('+(0.7+0.3*q)+')'; c.style.opacity=q; c.style.visibility=q>0.01?'visible':'hidden'; return; }
+      var e=ESP[i], k=1-e2(0.25,0.85,p);
+      c.style.transform='translate3d('+(e[0]*sc*k)+'px,'+(e[1]*sc*k+(i-3)*6*p)+'px,'+(e[2]*k-(7-i)*4*p)+'px) rotate('+(e[3]*k)+'deg) scale('+(1-0.06*p)+')';
+      c.style.opacity=1-e2(0.8,0.95,p);
+    });
   }
+  if(calmo){ mcards.forEach(function(c,i){ if(i<7){ c.style.display='none'; } else { c.style.transform='none'; c.style.opacity=1; } }); }
+  else { window.addEventListener('scroll',juntar,{passive:true}); window.addEventListener('resize',juntar); juntar(); }
+
+  var t0=performance.now(), ult=t0, giro=0;
+  (function quadro(t){
+    var dt=Math.min(50,t-ult); ult=t;
+    if(!calmo && !mouse){ var k=(t-t0)/1000; rig.style.transform='rotateY('+(-16+Math.sin(k*.6)*14)+'deg) rotateX('+(7+Math.sin(k*.9)*4)+'deg)'; }
+    if(!calmo && !arr2) ang-=dt*0.012;
+    ring.style.transform='translateZ(calc(var(--rz) * -1)) rotateY('+ang+'deg)';
+    if(!calmo){ giro=(giro+dt*0.04)%360; offer.style.setProperty('--a',giro+'deg'); }
+    requestAnimationFrame(quadro);
+  })(t0);
+
   // vídeos fora da tela pausam
   if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){var p=v.play();if(p&&p.catch)p.catch(function(){});}else v.pause();});},{threshold:.15});
-    document.querySelectorAll('video').forEach(function(v){io.observe(v);});
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting) toca(e.target); else e.target.pause(); });},{threshold:.1});
+    $$('video').forEach(function(v){io.observe(v);});
   }
 })();
 </script>
