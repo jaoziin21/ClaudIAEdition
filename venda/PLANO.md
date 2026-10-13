@@ -53,3 +53,7 @@ FALTA: `/musica` (esperando as músicas dele). Instalação: `bash skills/instal
 ## Onde fica cada coisa
 - PRODUTO e venda: este repositório (`jaoziin21/ClaudIAEdition`).
 - Canal dele: `jaoziin21/getsemani---canal-` (motor, legendas, projetos). O produto copia de lá só a versão limpa dos comandos e do motor.
+
+## Estado em 13/out (fim da sessão)
+Ver `CLAUDE.md` na raiz: o que está pronto, regras que ele cobrou e próximos passos (vídeo dele falando, Kirvano + Netlify,
+ZIP de entrega, termos/privacidade, legendas e efeitos novos, repositório privado, músicas para a /musica).
