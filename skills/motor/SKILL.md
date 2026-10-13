@@ -22,6 +22,7 @@ pasta-do-canal/
 1. `bash motor/setup.sh`. Se faltar Node.js, Python ou ffmpeg, explique ao usuário como instalar no sistema dele
    (Windows: `winget install OpenJS.NodeJS.LTS Python.Python.3.12 Gyan.FFmpeg`; Mac: `brew install node python ffmpeg`).
 2. Leia `canal.md` e `regras.md` se existirem. Se não existir `canal.md`, sugira o `/comecar`.
+3. Faltou fundo (GIF, foto, cena)? Use a skill **/buscar-midia** antes de pedir ao usuário.
 
 ## Regras fixas
 - Antes de editar, leia `regras.md`. O que o usuário aprovou vira padrão; o que ele rejeitou não se repete.

@@ -49,6 +49,7 @@ nome-da-skill/
 |  | `comecar` | `/comecar` | Você conta a ideia do canal ("quero um canal de motivação com cenas de anime"). O Claude faz poucas perguntas, cria o perfil do canal e sugere legenda, efeito, formato e voz. | — |
 |  | `roteiro` | `/roteiro` | A partir de um tema, entrega 3 roteiros com 3 ganchos cada, de 45 a 60 segundos, com linguagem de gente e sem cara de texto de IA. | — |
 |  | `voz` | `/voz` | Gera a narração pelo ElevenLabs conectado ao Claude, ou passa o passo a passo do Fish Audio (gratuito, vozes de personagens), ou usa a sua voz gravada. | conta no ElevenLabs ou Fish Audio |
+|  | `buscar-midia` | `/buscar-midia` | Procura GIFs, fotos, animações e cenas na internet (Pixabay, Pexels, Wikimedia, GIPHY, YouTube...), mostra as opções, baixa a escolhida e anota a fonte. Diz quais domínios liberar se a rede bloquear. | acesso à internet |
 |  | `post` | `/post` | Quando o vídeo é aprovado, entrega título, legenda do Instagram/TikTok, descrição e tags do YouTube, além de horários para postar. | — |
 
 ## Legendas
