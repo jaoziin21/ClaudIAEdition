@@ -1,7 +1,7 @@
 <title>Editor no Piloto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: página clara de ferramenta de criação, com "telas" escuras onde os vídeos rodam (como o celular de quem posta).
    Cobalto só nas ações; verde só no "feito". Cards grandes de canto arredondado em grade (bento). Um só visual, cores definidas aqui. */
@@ -224,6 +224,36 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
   border-top:1px solid var(--line);display:none;justify-content:center;z-index:5;backdrop-filter:blur(8px)}
 .sticky .btn{width:100%;max-width:480px;padding:14px;font-size:16.5px}
 
+
+/* ── 3D ── */
+.stage{justify-self:center;width:min(420px,100%);perspective:1100px;position:relative;padding:30px 0}
+.rig{position:relative;transform-style:preserve-3d;transform:rotateY(-18deg) rotateX(8deg);transition:transform .25s ease-out;will-change:transform}
+.phone3d{width:min(320px,80vw);margin-inline:auto;transform-style:preserve-3d;transform:translateZ(0)}
+.phone3d .screen{box-shadow:0 50px 80px -30px rgba(12,14,19,.55),0 0 0 1px rgba(0,0,0,.2)}
+.pop{position:absolute;white-space:nowrap;pointer-events:none;transform-style:preserve-3d}
+.p1{left:-14%;bottom:24%;transform:translateZ(120px);background:#000;color:#f2e24a;font-style:italic;font-weight:500;font-size:clamp(14px,1.6vw,18px);padding:6px 12px;border-radius:6px;box-shadow:0 20px 40px -10px rgba(0,0,0,.5)}
+.p2{right:-2%;top:6%;transform:translateZ(180px) rotate(-6deg);font-family:"UnifrakturMaguntia","Pirata One",serif;font-size:clamp(46px,6vw,72px);color:#f2e24a;text-shadow:0 2px 0 #000,0 18px 30px rgba(0,0,0,.45);font-weight:400;letter-spacing:.02em}
+.p3,.p4,.p5{font-family:var(--f-mono);font-size:13.5px;color:#fff;background:var(--blue);padding:7px 12px;border-radius:999px;box-shadow:0 16px 30px -10px rgba(43,92,255,.6)}
+.p3{left:-20%;top:20%;transform:translateZ(90px)}
+.p4{left:-8%;top:31%;transform:translateZ(150px);background:#111}
+.p5{right:-16%;top:46%;transform:translateZ(110px);background:#111}
+.p6{right:-6%;bottom:8%;transform:translateZ(70px);background:#fff;color:var(--ink);font-size:13.5px;border:1px solid var(--line);border-radius:14px;padding:9px 13px;box-shadow:0 20px 40px -14px rgba(12,14,19,.35)}
+.p6 b{color:var(--green)}
+.glow{position:absolute;left:10%;right:10%;bottom:-6%;height:60px;transform:translateZ(-80px) rotateX(80deg);background:radial-gradient(closest-side,rgba(43,92,255,.45),transparent);filter:blur(10px)}
+.ring-wrap{perspective:1400px;height:clamp(300px,34vw,400px);display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:pan-y;cursor:grab;
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.ring{position:relative;width:clamp(220px,24vw,300px);aspect-ratio:480/418;transform-style:preserve-3d;--rz:clamp(330px,40vw,520px)}
+.face{position:absolute;inset:0;border-radius:22px;overflow:hidden;background:#000;transform:rotateY(calc(var(--i) * 40deg)) translateZ(var(--rz));backface-visibility:hidden;
+  box-shadow:0 30px 50px -25px rgba(12,14,19,.6)}
+.face video{width:100%;height:100%;object-fit:cover;display:block}
+.face .lab{position:absolute;left:10px;bottom:10px;right:10px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.face .lab b{background:#fff;color:var(--ink);font-size:13px;font-weight:700;padding:5px 10px;border-radius:999px}
+.face .lab code{font-family:var(--f-mono);font-size:11px;color:#fff;background:rgba(0,0,0,.6);padding:4px 8px;border-radius:8px}
+.tilt{transform-style:preserve-3d;transition:transform .2s ease-out;will-change:transform}
+.stat,.step,.role,.fmt,.niche,.bon,.pain{transition:transform .2s ease-out,box-shadow .2s}
+@media (max-width:640px){.p1{left:-2%}.p2{right:0}.p3{left:-4%}.p4{left:0}.p5{right:-2%}.p6{right:0}}
+@media (prefers-reduced-motion:reduce){.rig,.tilt{transition:none}}
+
 @media (max-width:1000px){
   .hero,.mixer,.proof,.offer,.quiz,.fontes{grid-template-columns:1fr}
   .stats,.pains,.niches,.need{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -261,14 +291,24 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
     </div>
     <div class="checks"><span>Qualquer nicho</span><span>Computador ou celular</span><span>Sem saber editar</span></div>
   </div>
-  <div class="phone">
-    <div class="screen">
-      <video id="v-hero" src="vid/mandei.mp4" poster="vid/mandei.jpg" autoplay muted loop playsinline preload="metadata"></video>
-      <button class="sound" data-v="v-hero" type="button">Ativar som</button>
+  <div class="stage" id="stage">
+    <div class="rig" id="rig">
+      <div class="phone3d">
+        <div class="screen">
+          <video id="v-hero" src="vid/mandei.mp4" poster="vid/mandei.jpg" autoplay muted loop playsinline preload="metadata"></video>
+          <button class="sound" data-v="v-hero" type="button">Ativar som</button>
+        </div>
+      </div>
+      <span class="pop p1" aria-hidden="true">recomeçar não tem cara de filme</span>
+      <span class="pop p2" aria-hidden="true">HOJE</span>
+      <span class="pop p3" aria-hidden="true">/sample-yellow</span>
+      <span class="pop p4" aria-hidden="true">+ fonte gótica</span>
+      <span class="pop p5" aria-hidden="true">+ cinema + sonho</span>
+      <span class="pop p6" aria-hidden="true"><b>✓</b> roteiro · voz · trilha</span>
+      <i class="glow" aria-hidden="true"></i>
     </div>
-    <div class="badge a"><small>você manda</small>"vídeo de motivação sobre recomeçar"</div>
-    <div class="badge b"><small>volta na conversa</small><span class="ok">✓</span> roteiro · voz · legenda · trilha</div>
   </div>
+</div>
 </div>
 
 <div class="wrap">
@@ -328,25 +368,6 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
       </div>
     </div>
 
-    <h3 class="subt">Combinações reais, mesma narração</h3>
-    <p class="subp">Três misturas feitas com o pacote a partir da mesma voz. Duas delas com imagens livres.</p>
-    <div class="combos">
-      <div class="combo">
-        <video src="vid/combo-a.mp4" autoplay muted loop playsinline preload="metadata"></video>
-        <div class="b"><div class="recipe"><span>/sample-yellow</span><i>+</i><span>fonte gótica</span><i>+</i><span>cinema</span><i>+</i><span>sonho</span></div>
-        <p>A legenda baixinha da Sample Yellow com a letra da Street, cor de cinema e brilho de sonho.</p><span class="src">Fundo: NASA, domínio público</span></div>
-      </div>
-      <div class="combo">
-        <video src="vid/combo-b.mp4" autoplay muted loop playsinline preload="metadata"></video>
-        <div class="b"><div class="recipe"><span>/red-sharp</span><i>+</i><span>filme antigo</span><i>+</i><span>vhs</span></div>
-        <p>Tarja preta e impacto em vermelho sobre um desenho de 1939, com película e fita VHS ao mesmo tempo.</p><span class="src">Fundo: As Viagens de Gulliver (1939), domínio público</span></div>
-      </div>
-      <div class="combo">
-        <video src="vid/combo-c.mp4" autoplay muted loop playsinline preload="metadata"></video>
-        <div class="b"><div class="recipe"><span>/street</span><i>+</i><span>fonte bebas-neue</span><i>+</i><span>rua</span><i>+</i><span>flash</span></div>
-        <p>A Street com a legenda em Bebas Neue, gritos gigantes, colagem e clarão nos cortes.</p><span class="src">Fundo: anime</span></div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -415,18 +436,8 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
       <div class="role"><span class="r">Tipógrafo</span><h4>/fontes</h4><p>Troca a letra de qualquer legenda.</p></div>
       <div class="role"><span class="r">Social media</span><h4>/post</h4><p>Título, legenda, tags, horário.</p></div>
     </div>
-    <div class="ghead"><h3>9 legendas</h3><p>Todas estão rodando: é o vídeo de verdade.</p></div>
-    <div class="gal">
-      <div class="tile"><video src="vid/t-street.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Street</b><code>/street</code></div></div>
-      <div class="tile"><video src="vid/t-sample-yellow.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Sample Yellow</b><code>/sample-yellow</code></div></div>
-      <div class="tile"><video src="vid/t-red-sharp.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Red Sharp</b><code>/red-sharp</code></div></div>
-      <div class="tile"><video src="vid/t-mistury.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Mistury</b><code>/mistury</code></div></div>
-      <div class="tile"><video src="vid/t-rocks.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Rocks</b><code>/rocks</code></div></div>
-      <div class="tile"><video src="vid/t-3d-invisivel.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>3D Invisível</b><code>/legenda-3d-invisivel</code></div></div>
-      <div class="tile"><video src="vid/t-samplerocks.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Samplerocks</b><code>/samplerocks</code></div></div>
-      <div class="tile"><video src="vid/t-dinamica.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Dinâmica</b><code>/legenda-dinamica</code></div></div>
-      <div class="tile"><video src="vid/t-invisible.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Invisible</b><code>/invisible</code></div></div>
-    </div>
+    <div class="ghead"><h3>9 legendas</h3><p>Gira sozinho. Passe o dedo ou o mouse para girar.</p></div>
+    <div class="ring-wrap" id="ringwrap"><div class="ring" id="ring"><div class="face" style="--i:0"><video src="vid/t-street.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Street</b><code>/street</code></div></div><div class="face" style="--i:1"><video src="vid/t-sample-yellow.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Sample Yellow</b><code>/sample-yellow</code></div></div><div class="face" style="--i:2"><video src="vid/t-red-sharp.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Red Sharp</b><code>/red-sharp</code></div></div><div class="face" style="--i:3"><video src="vid/t-mistury.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Mistury</b><code>/mistury</code></div></div><div class="face" style="--i:4"><video src="vid/t-rocks.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Rocks</b><code>/rocks</code></div></div><div class="face" style="--i:5"><video src="vid/t-3d-invisivel.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>3D Invisível</b><code>/legenda-3d-invisivel</code></div></div><div class="face" style="--i:6"><video src="vid/t-samplerocks.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Samplerocks</b><code>/samplerocks</code></div></div><div class="face" style="--i:7"><video src="vid/t-dinamica.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Dinâmica</b><code>/legenda-dinamica</code></div></div><div class="face" style="--i:8"><video src="vid/t-invisible.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Invisible</b><code>/invisible</code></div></div></div></div>
     <div class="ghead"><h3>37 fontes prontas</h3><p>E qualquer outra do Google Fonts.</p></div>
     <div class="fontes">
       <img src="img/fontes.jpg" alt="Mostruário com as 37 fontes instaladas, cada uma escrevendo 'A fé move montanhas'">
@@ -557,7 +568,7 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
 
 <footer><div class="wrap">
   <span>Editor no Piloto é um pacote independente de skills para o Claude Code. Não é um produto da Anthropic. Claude é marca da Anthropic.</span>
-  <span>Vídeos feitos com o próprio pacote. Fundos livres: NASA (domínio público) e As Viagens de Gulliver, 1939 (domínio público).</span>
+  <span>Vídeos feitos com o próprio pacote. Fundo do vídeo de abertura: NASA (domínio público).</span>
 </div></footer>
 <div class="sticky"><a class="btn" href="#oferta">Quero meu canal no piloto</a></div>
 
@@ -605,6 +616,29 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
          '0':'É o mais comum: a ideia fica parada porque editar dá preguiça. <b>Aqui a ideia vira vídeo numa conversa.</b>'};
   document.querySelectorAll('.opt').forEach(function(o){ o.addEventListener('click',function(){
     document.querySelectorAll('.opt').forEach(function(x){x.setAttribute('aria-pressed','false');}); o.setAttribute('aria-pressed','true'); ans.innerHTML=t[o.dataset.r]; }); });
+
+  // ── 3D: celular acompanha o mouse (ou mexe sozinho), cards inclinam, carrossel gira ──
+  var calmo=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var rig=document.getElementById('rig'), stage=document.getElementById('stage'), mouse=false;
+  if(rig&&!calmo){
+    stage.addEventListener('pointermove',function(e){ if(e.pointerType!=='mouse')return; mouse=true; var r=stage.getBoundingClientRect();
+      var x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5; rig.style.transform='rotateY('+(x*36-6)+'deg) rotateX('+(-y*22+6)+'deg)'; });
+    stage.addEventListener('pointerleave',function(){ mouse=false; });
+    var t0=performance.now();
+    (function vai(t){ if(!mouse){ var k=(t-t0)/1000; rig.style.transform='rotateY('+(-16+Math.sin(k*.6)*14)+'deg) rotateX('+(7+Math.sin(k*.9)*4)+'deg)'; } requestAnimationFrame(vai); })(t0);
+  }
+  if(!calmo) document.querySelectorAll('.stat,.step,.role,.fmt,.niche,.bon,.pain,.panel,.fontes').forEach(function(c){
+    c.addEventListener('pointermove',function(e){ if(e.pointerType!=='mouse')return; var r=c.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+      c.style.transform='perspective(800px) rotateY('+(x*8)+'deg) rotateX('+(-y*8)+'deg) translateZ(6px)'; });
+    c.addEventListener('pointerleave',function(){ c.style.transform=''; });
+  });
+  var ring=document.getElementById('ring'), rw=document.getElementById('ringwrap');
+  if(ring){ var ang=0, vel=calmo?0:-0.12, arrasto=null, ultimo=performance.now();
+    rw.addEventListener('pointerdown',function(e){ arrasto={x:e.clientX,a:ang}; rw.setPointerCapture(e.pointerId); rw.style.cursor='grabbing'; });
+    rw.addEventListener('pointermove',function(e){ if(arrasto){ ang=arrasto.a+(e.clientX-arrasto.x)*0.35; } });
+    var solta=function(){ arrasto=null; rw.style.cursor=''; }; rw.addEventListener('pointerup',solta); rw.addEventListener('pointercancel',solta);
+    (function gira(t){ var dt=Math.min(50,t-ultimo); ultimo=t; if(!arrasto) ang+=vel*dt*0.06*10/6; ring.style.transform='translateZ(calc(var(--rz) * -1)) rotateY('+ang+'deg)'; requestAnimationFrame(gira); })(ultimo);
+  }
   // vídeos fora da tela pausam
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){var p=v.play();if(p&&p.catch)p.catch(function(){});}else v.pause();});},{threshold:.15});
