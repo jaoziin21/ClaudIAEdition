@@ -1,0 +1,50 @@
+<html><head><meta charset="utf-8"><style>
+@font-face{font-family:AR;src:url("/home/user/getsemani---canal-/getsemani-videos/engine/node_modules/@fontsource/archivo/files/archivo-latin-500-normal.woff2");font-weight:500}
+@font-face{font-family:AR;src:url("/home/user/getsemani---canal-/getsemani-videos/engine/node_modules/@fontsource/archivo/files/archivo-latin-800-normal.woff2");font-weight:800}
+@font-face{font-family:JB;src:url("/home/user/getsemani---canal-/getsemani-videos/engine/node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2")}
+html,body{margin:0;width:1080px;height:1920px;background:#0e0f13;color:#eef0f4;font-family:AR,sans-serif;overflow:hidden}
+.top{position:absolute;top:120px;left:80px;right:80px;display:flex;justify-content:space-between;align-items:center;font-family:JB;font-size:30px;color:#8b90a0}
+.top b{color:#eef0f4;font-family:AR;font-weight:800;font-size:38px;letter-spacing:.02em}
+.dot{display:inline-block;width:16px;height:16px;border-radius:50%;background:#3ddc84;margin-right:12px;vertical-align:middle}
+.chat{position:absolute;top:260px;left:70px;right:70px;display:flex;flex-direction:column;gap:34px}
+.you{align-self:flex-end;max-width:820px;background:#2b5cff;color:#fff;border-radius:40px 40px 10px 40px;padding:34px 40px;font-size:44px;line-height:1.3;font-weight:500}
+.cur{display:inline-block;width:4px;height:46px;background:#fff;vertical-align:-8px;margin-left:4px}
+.ai{align-self:flex-start;max-width:900px;background:#1b1d24;border:2px solid #2a2d38;border-radius:40px 40px 40px 10px;padding:34px 40px;font-size:38px;line-height:1.35}
+.ai .h{font-family:JB;font-size:28px;color:#8b90a0;margin-bottom:18px}
+.it{display:flex;gap:20px;align-items:flex-start;margin:14px 0;opacity:0;transform:translateY(14px)}
+.it i{font-style:normal;flex:none;width:52px;height:52px;border-radius:50%;background:#3ddc84;color:#0e0f13;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:32px}
+.it span{padding-top:4px}
+.big{position:absolute;left:0;right:0;bottom:250px;text-align:center;font-weight:800;font-size:96px;letter-spacing:-.01em;opacity:0}
+.big em{font-style:normal;color:#2b5cff;background:#fff;padding:0 18px;border-radius:14px}
+.typing{font-family:JB;font-size:30px;color:#8b90a0;opacity:0}
+</style></head><body>
+<div class="top"><span><span class="dot"></span><b>Claude Code</b></span><span>editor no piloto</span></div>
+<div class="chat">
+  <div class="you" id="you"><span id="txt"></span><span class="cur" id="cur"></span></div>
+  <div class="typing" id="typing">Claude está trabalhando…</div>
+  <div class="ai" id="ai" style="opacity:0">
+    <div class="h">pronto. fiz assim:</div>
+    <div class="it"><i>✓</i><span>Roteiro escrito</span></div>
+    <div class="it"><i>✓</i><span>Voz grave gerada no ElevenLabs</span></div>
+    <div class="it"><i>✓</i><span>Fundo: a Terra vista do espaço (NASA, domínio público)</span></div>
+    <div class="it"><i>✓</i><span>Legenda Sample Yellow com fonte gótica</span></div>
+    <div class="it"><i>✓</i><span>Efeitos Cinema + Sonho juntos</span></div>
+    <div class="it"><i>✓</i><span>Trilha original, sem direitos autorais</span></div>
+  </div>
+</div>
+<div class="big" id="big">Isso <em>voltou</em> ↓</div>
+<script>
+const FRASE='faz um vídeo de motivação sobre recomeçar. voz grave, imagens da Terra vista do espaço, legenda amarela com letra gótica';
+const T_TYPE=[0.4,5.2], T_WORK=[5.6,6.8], T_AI=7.0, STEP=0.55, T_BIG=11.2;
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)), ease=t=>1-Math.pow(1-t,3);
+window.render=t=>{
+  const k=clamp((t-T_TYPE[0])/(T_TYPE[1]-T_TYPE[0]));
+  document.getElementById('txt').textContent=FRASE.slice(0,Math.round(k*FRASE.length));
+  document.getElementById('cur').style.opacity=(t<T_TYPE[1]+0.3&&Math.floor(t*2.2)%2===0)||k<1?1:0;
+  const ty=document.getElementById('typing'); ty.style.opacity=t>T_WORK[0]&&t<T_AI?0.5+0.5*Math.sin(t*9):0;
+  const ai=document.getElementById('ai'); const a=ease(clamp((t-T_AI)/0.35)); ai.style.opacity=a; ai.style.transform=`translateY(${(1-a)*20}px)`;
+  document.querySelectorAll('.it').forEach((el,i)=>{const e=ease(clamp((t-T_AI-0.35-i*STEP)/0.3));el.style.opacity=e;el.style.transform=`translateY(${(1-e)*14}px)`;});
+  const b=document.getElementById('big'); const eb=ease(clamp((t-T_BIG)/0.4)); b.style.opacity=eb; b.style.transform=`scale(${0.9+0.1*eb})`;
+};
+window.render(0);
+</script></body></html>

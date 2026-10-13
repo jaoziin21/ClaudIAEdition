@@ -9,6 +9,7 @@ description: Índice dos pacotes de efeitos instalados: mostra cada um com a ima
 2. Aplique o que ele escolher no `lado.json`: `"pacote": "sonho"` ou vários `"pacote": ["sonho", "vhs"]`;
    efeitos avulsos com força: `"efeitos": [{"nome": "flash"}, {"nome": "particulas", "forca": 0.5}]`
    (lista completa em `motor/efeitos/efeitos.json`; só funcionam os que têm os arquivos instalados).
-3. Duas legendas no mesmo vídeo: a legenda principal em `"estilo"` e, na cena da frase de impacto, `"estilo": "red-sharp"`
+3. Legenda com a fonte de outra: `"trocaFonte": "pirata-one"` (skill /fontes) — ex.: Sample Yellow com a letra gótica da Street.
+4. Duas legendas no mesmo vídeo: a legenda principal em `"estilo"` e, na cena da frase de impacto, `"estilo": "red-sharp"`
    (as duas skills de legenda precisam estar instaladas).
-4. Fundo com `node faixa.mjs`, quadros de teste, render. Detalhes na skill **motor**.
+5. Fundo com `node faixa.mjs`, quadros de teste, render. Detalhes na skill **motor**.

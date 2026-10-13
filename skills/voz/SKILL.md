@@ -8,7 +8,8 @@ description: Gera a narração do roteiro aprovado: pelo ElevenLabs conectado ao
 1. Se as ferramentas do ElevenLabs não estiverem disponíveis nesta conversa, peça ao usuário para conectar:
    claude.ai → Configurações → Conectores → ElevenLabs (entrar com a conta dele), e abrir uma conversa nova depois.
 2. Liste as vozes da conta, escolha a que combina com o `canal.md` (ou a que ele já aprovou em `regras.md`) e diga qual escolheu.
-3. Gere o roteiro aprovado. Texto longo → em 2 partes, cortando em fim de frase. Baixe para `projetos/.../voz_parte1.mp3`, `voz_parte2.mp3`.
+3. Gere o roteiro aprovado com **`generations_count: 1` — SEMPRE UMA voz por pedido, nunca 4** (cada variação gasta crédito do usuário).
+   Se der "Free Tier disabled", pare: monte o flow com a voz e o texto, mande o link, o usuário gera no site e manda o mp3. Texto longo → em 2 partes, cortando em fim de frase. Baixe para `projetos/.../voz_parte1.mp3`, `voz_parte2.mp3`.
 4. Siga o passo 1 do motor (juntar partes e normalizar). Registre a voz aprovada em `regras.md`.
 
 ## Opção 2 — Fish Audio (gratuito, o usuário gera)

@@ -28,6 +28,16 @@ dela para `meu-canal/motor/` (faça o mesmo com a skill `motor`).
 - Node.js 20+, Python 3.10+ e ffmpeg (o `setup.sh` avisa o que falta; na nuvem já vem quase tudo).
 - Para a voz: conta no ElevenLabs ou no Fish Audio (gratuito), ou a sua voz gravada.
 
+## Junte do seu jeito (legenda + fonte + efeitos)
+Tudo se combina. Peça em português, do seu jeito:
+- **Legenda + fonte de outra:** "Faz com a /sample-yellow, só que com a fonte gótica da Street (pirata-one)". A legenda continua
+  baixinha, com a caixinha e a animação da Sample Yellow; só a letra muda. Mostruário das fontes: `fontes/mostruario.jpg`.
+- **Vários efeitos juntos:** "/red-sharp com /efeito-filme-antigo e /efeito-vhs". Os efeitos se somam, na ordem pedida.
+- **Duas legendas no mesmo vídeo:** Sample Yellow no vídeo todo e Red Sharp só na frase de impacto.
+- São mais de 40 mil combinações: 9 legendas × 38 opções de fonte × qualquer mistura dos 7 efeitos.
+
+Por dentro (no `lado.json` do projeto): `"estilo": "sample-yellow", "trocaFonte": "pirata-one", "pacote": ["cinema", "sonho"]`.
+
 ## Como cada skill é organizada
 ```
 nome-da-skill/
