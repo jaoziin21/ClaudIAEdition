@@ -3,12 +3,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;600&family=Playfair+Display:ital,wght@1,500;1,700&display=swap">
 <style>
-/* Layout: página de vendas escura como uma ilha de edição; os ganchos aparecem como legenda Sample Yellow (caixinha preta, letra amarela),
-   a assinatura visual do produto. Um só visual (escuro), cores todas definidas aqui. */
+/* Layout: página de vendas como uma ilha de edição à noite — vídeos rodando o tempo todo, ganchos em legenda amarela (a assinatura
+   do produto), faixa de comandos correndo como um letreiro. Um só visual escuro, cores todas definidas aqui. */
 :root{
   color-scheme:dark;
-  --bg:#0f0f12; --panel:#17171c; --panel-2:#1e1e25; --ink:#f1efe8; --muted:#a6a4ac; --line:#2b2b33;
-  --yellow:#f0cf4a; --yellow-deep:#c9a514; --red:#ec4b50; --green:#5cc98a;
+  --bg:#0c0c0f; --panel:#15151a; --panel-2:#1c1c23; --ink:#f3f1ea; --muted:#a3a1aa; --line:#2a2a32;
+  --yellow:#f0cf4a; --red:#ef4a4f; --green:#5cc98a;
   --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
   --f-body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
@@ -16,122 +16,133 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;margin:0;overflow-x:hidden}
 a{color:inherit}
-h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0}
 p{margin:0}
-.wrap{max-width:1120px;margin:0 auto;padding-inline:20px}
-section{padding-block:72px}
-.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.cap{background:#000;color:var(--yellow);font-style:italic;font-weight:500;padding:.05em .3em;box-decoration-break:clone;-webkit-box-decoration-break:clone;line-height:1.55}
-.h2{font-size:clamp(32px,5.4vw,58px);font-weight:850;font-stretch:74%;line-height:.98;text-transform:uppercase;letter-spacing:-.005em}
+.wrap{max-width:1140px;margin:0 auto;padding-inline:20px}
+section{padding-block:76px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow)}
+.cap{background:#000;color:var(--yellow);font-style:italic;font-weight:500;padding:.05em .3em;box-decoration-break:clone;-webkit-box-decoration-break:clone;line-height:1.6}
+.h2{font-size:clamp(34px,6vw,66px);font-weight:900;font-stretch:68%;line-height:.94;text-transform:uppercase;letter-spacing:-.005em;margin-top:12px}
 .h2 em{font-family:var(--f-serif);font-style:italic;font-weight:500;text-transform:none;font-stretch:normal;color:var(--yellow)}
-.lead{font-size:clamp(18px,2.1vw,21px);color:var(--muted);max-width:60ch;margin-top:18px}
-.lead b{color:var(--ink);font-weight:600}
+.lead{font-size:clamp(18px,2.1vw,21px);color:var(--muted);max-width:58ch;margin-top:18px}
+.lead b{color:var(--ink)}
+.alt{background:var(--panel);border-block:1px solid var(--line)}
 
-/* botões */
-.cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--yellow);color:#111;font-family:var(--f-display);font-weight:850;
-  font-stretch:85%;text-transform:uppercase;letter-spacing:.02em;font-size:19px;text-decoration:none;padding:18px 28px;border-radius:6px;border:0;cursor:pointer;
-  box-shadow:0 0 0 0 rgba(240,207,74,.5)}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--yellow);color:#111;font-family:var(--f-display);font-weight:900;
+  font-stretch:80%;text-transform:uppercase;letter-spacing:.02em;font-size:20px;text-decoration:none;padding:19px 30px;border-radius:6px;border:0;cursor:pointer}
 .cta:hover{background:#ffe066}
-.cta:focus-visible,.ghost:focus-visible{outline:3px solid #fff;outline-offset:3px}
-.ghost{display:inline-flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none;font-weight:600;padding:16px 6px;border-bottom:1px solid var(--line)}
-.micro{font-size:13.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:16px}
+.cta:focus-visible,.ghost:focus-visible,.sound:focus-visible,.opt:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.ghost{display:inline-flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none;font-weight:600;padding:16px 4px;border-bottom:1px solid var(--line)}
+.micro{font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:18px}
 .micro span::before{content:"✓ ";color:var(--green)}
 
 /* topo */
-.bar{display:flex;justify-content:space-between;align-items:center;padding-block:16px;border-bottom:1px solid var(--line);gap:12px;flex-wrap:wrap}
-.brand{font-family:var(--f-display);font-weight:850;font-stretch:72%;text-transform:uppercase;font-size:20px;letter-spacing:.01em}
+.bar{display:flex;justify-content:space-between;align-items:center;padding-block:16px;gap:12px}
+.brand{font-family:var(--f-display);font-weight:900;font-stretch:68%;text-transform:uppercase;font-size:22px}
 .brand em{font-family:var(--f-serif);font-style:italic;font-weight:500;text-transform:none;color:var(--yellow);font-stretch:normal}
-.bar a.small{font-size:14px;font-weight:700;text-decoration:none;color:#111;background:var(--yellow);padding:8px 14px;border-radius:5px}
+.bar a.small{font-size:14px;font-weight:800;text-decoration:none;color:#111;background:var(--yellow);padding:9px 15px;border-radius:5px}
 
 /* hero */
-.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:48px;align-items:center;padding-block:56px 64px}
-.hero h1{font-size:clamp(46px,8.4vw,104px);font-weight:900;font-stretch:66%;line-height:.88;text-transform:uppercase;letter-spacing:-.01em;margin-top:14px}
+.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:44px;align-items:center;padding-block:36px 64px}
+.live{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.live i{width:9px;height:9px;border-radius:50%;background:var(--red);display:inline-block}
+.hero h1{font-size:clamp(50px,9.4vw,118px);font-weight:900;font-stretch:62%;line-height:.86;text-transform:uppercase;letter-spacing:-.012em;margin-top:16px}
+.hero h1 .hl{background:var(--yellow);color:#111;padding:0 .08em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 .hero h1 em{font-family:var(--f-serif);font-style:italic;font-weight:500;text-transform:none;font-stretch:normal;color:var(--yellow);letter-spacing:0}
-.karaoke{margin-top:24px;font-size:clamp(20px,2.6vw,28px);font-style:italic;display:flex;flex-wrap:wrap;gap:.18em .28em}
-.karaoke span{background:#000;color:#8d8a7c;padding:.02em .22em}
-.karaoke span.on{color:var(--yellow)}
-.hero .sub{margin-top:20px;font-size:18px;color:var(--muted);max-width:52ch}
+.hero .sub{margin-top:22px;font-size:19px;color:var(--muted);max-width:50ch}
 .hero .sub b{color:var(--ink)}
 .actions{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;margin-top:28px}
 
-.phone{justify-self:center;position:relative;width:min(300px,100%)}
-.phone .screen{aspect-ratio:9/16;border-radius:30px;overflow:hidden;border:7px solid #000;background:#000;box-shadow:0 30px 80px -20px rgba(0,0,0,.8),0 0 0 1px var(--line)}
-.phone img{width:100%;height:100%;object-fit:cover;display:block}
-.bubble{position:absolute;font-size:13.5px;line-height:1.35;padding:10px 12px;border-radius:12px;max-width:220px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
-.bubble.you{left:-34px;top:18%;background:#2a2a33;border:1px solid #3a3a44}
-.bubble.ai{right:-30px;bottom:14%;background:var(--yellow);color:#111;font-weight:600}
-.bubble small{display:block;font-family:var(--f-mono);font-size:10.5px;opacity:.7;margin-bottom:3px;font-weight:400}
+.phone{justify-self:center;position:relative;width:min(320px,100%)}
+.screen{aspect-ratio:9/16;border-radius:32px;overflow:hidden;border:8px solid #000;background:#000;position:relative;
+  box-shadow:0 40px 90px -25px rgba(240,207,74,.25),0 0 0 1px var(--line)}
+.screen video,.screen img{width:100%;height:100%;object-fit:cover;display:block}
+.sound{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);background:rgba(0,0,0,.75);color:var(--yellow);border:1px solid var(--yellow);
+  font-family:var(--f-mono);font-size:12.5px;padding:8px 14px;border-radius:30px;cursor:pointer;white-space:nowrap}
+.tag-float{position:absolute;font-family:var(--f-mono);font-size:12px;background:var(--yellow);color:#111;padding:6px 10px;border-radius:4px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.tag-float.a{left:-30px;top:16%;transform:rotate(-4deg)} .tag-float.b{right:-26px;top:52%;transform:rotate(3deg);background:#fff}
 
-/* faixa de prova */
-.strip{border-block:1px solid var(--line);background:var(--panel)}
-.strip .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px 28px;padding-block:18px;font-family:var(--f-mono);font-size:13px;color:var(--muted)}
-.strip b{color:var(--ink);font-weight:600}
+/* letreiro */
+.marquee{border-block:1px solid var(--line);background:#000;overflow:hidden;white-space:nowrap}
+.marquee .track{display:inline-flex;gap:44px;padding-block:16px;font-family:var(--f-mono);font-size:15px;color:var(--yellow)}
+.marquee .track span:nth-child(3n){color:var(--ink)}
 
-/* dor */
-.pains{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:40px}
-.pain{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.pain h3{font-size:24px;font-weight:850;font-stretch:80%;text-transform:uppercase;line-height:1.05}
-.pain h3 span{color:var(--red)}
-.pain p{color:var(--muted)}
-.turn{margin-top:44px;font-size:clamp(22px,3vw,32px);line-height:1.35;max-width:34ch}
+/* quiz */
+.quiz{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}
+.opts{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.opt{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);font:inherit;font-weight:700;padding:14px 18px;border-radius:6px;cursor:pointer}
+.opt[aria-pressed="true"]{border-color:var(--yellow);color:var(--yellow)}
+.answer{background:#000;border-left:4px solid var(--yellow);padding:22px;border-radius:4px;font-size:clamp(19px,2.2vw,23px);line-height:1.45}
+.answer b{color:var(--yellow)}
+
+/* dores */
+.pains{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:40px}
+.pain{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.pain .x{font-family:var(--f-display);font-weight:900;font-stretch:66%;font-size:44px;line-height:.9;color:var(--red);text-transform:uppercase}
+.pain h3{font-size:19px;font-weight:800;font-stretch:88%}
+.pain p{color:var(--muted);font-size:15px}
+.turn{margin-top:44px;font-size:clamp(22px,3.2vw,34px);line-height:1.35;max-width:32ch}
+
+/* demos */
+.demos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;margin-top:40px}
+.demo{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:22px;align-items:center;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:18px;min-width:0}
+.demo .screen{border-width:5px;border-radius:20px;box-shadow:none}
+.demo .sound{font-size:11px;padding:6px 10px;bottom:10px}
+.demo h3{font-size:30px;font-weight:900;font-stretch:70%;text-transform:uppercase;line-height:.95}
+.demo p{color:var(--muted);font-size:15px;margin-top:10px}
+.demo code{font-family:var(--f-mono);font-size:12.5px;color:var(--yellow)}
 
 /* passos */
-.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:40px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:40px}
 .step{border-top:3px solid var(--yellow);padding-top:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
 .step .n{font-family:var(--f-mono);font-size:12px;color:var(--yellow)}
 .step h3{font-size:22px;font-weight:800;font-stretch:84%}
 .step p{color:var(--muted);font-size:15.5px}
-.step .say{font-size:14.5px;margin-top:4px}
+
+/* galeria */
+.group-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin:52px 0 16px}
+.group-head h3{font-size:clamp(24px,3.2vw,36px);font-weight:900;font-stretch:72%;text-transform:uppercase}
+.group-head p{color:var(--muted);max-width:50ch;font-size:15.5px}
+.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.tile{position:relative;border-radius:8px;overflow:hidden;background:#000;min-width:0;border:1px solid var(--line)}
+.tile video{width:100%;aspect-ratio:480/418;object-fit:cover;display:block}
+.tile .lab{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;background:linear-gradient(transparent,rgba(0,0,0,.92));display:flex;justify-content:space-between;align-items:end;gap:8px}
+.tile .lab b{font-family:var(--f-display);font-size:18px;font-weight:800;font-stretch:85%}
+.tile .lab code{font-family:var(--f-mono);font-size:11.5px;color:var(--yellow)}
+.team{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.role{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.role .r{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--yellow)}
+.role h4{font-size:18px;font-weight:800;font-stretch:85%}
+.role p{color:var(--muted);font-size:14px}
+.formats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.fmt{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.fmt h4{font-size:19px;font-weight:800;font-stretch:85%}
+.fmt p{color:var(--muted);font-size:14.5px}
+.fmt code{font-family:var(--f-mono);font-size:12px;color:var(--yellow)}
 
 /* prova */
 .proof{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center;margin-top:40px}
-.chat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.chat{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
 .msg{max-width:88%;padding:11px 14px;border-radius:12px;font-size:15px;line-height:1.45}
 .msg small{display:block;font-family:var(--f-mono);font-size:10.5px;color:var(--muted);margin-bottom:4px}
 .msg.you{align-self:flex-end;background:#2a2a33}
-.msg.ai{align-self:flex-start;background:var(--panel-2);border:1px solid var(--line)}
+.msg.ai{align-self:flex-start;background:#111;border:1px solid var(--line)}
 .msg.ai b{color:var(--yellow)}
-.before-after{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.before-after figure{margin:0;display:flex;flex-direction:column;gap:6px}
-.before-after .ref{background:#000;border-radius:6px;height:110px;display:flex;align-items:center;justify-content:center;font-family:var(--f-serif);color:#eee;letter-spacing:.06em;font-size:clamp(18px,2.4vw,24px)}
-.before-after .ref.old{font-variant-numeric:oldstyle-nums}
-.before-after .ref.new{font-variant-numeric:lining-nums}
-.before-after figcaption{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
-.before-after figcaption b{color:var(--red)} .before-after figcaption b.ok{color:var(--green)}
-
-/* o que vem */
-.stack{display:flex;flex-direction:column;gap:56px;margin-top:44px}
-.group-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
-.group-head h3{font-size:clamp(24px,3.2vw,34px);font-weight:850;font-stretch:78%;text-transform:uppercase}
-.group-head p{color:var(--muted);max-width:52ch;font-size:15.5px}
-.count{font-family:var(--f-mono);color:var(--yellow);font-size:13px}
-.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.tile{position:relative;border-radius:8px;overflow:hidden;background:#000;min-width:0}
-.tile img{width:100%;aspect-ratio:420/295;object-fit:cover;display:block}
-.tile .lab{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;background:linear-gradient(transparent,rgba(0,0,0,.9));display:flex;justify-content:space-between;align-items:end;gap:8px}
-.tile .lab b{font-family:var(--f-display);font-size:18px;font-weight:800;font-stretch:85%}
-.tile .lab code{font-family:var(--f-mono);font-size:11.5px;color:var(--yellow)}
-.fx{grid-template-columns:repeat(4,minmax(0,1fr))}
-.fx .tile img{aspect-ratio:520/360}
-.formats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.fmt{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
-.fmt h4{margin:0;font-family:var(--f-display);font-size:19px;font-weight:800;font-stretch:85%}
-.fmt p{color:var(--muted);font-size:14.5px}
-.fmt code{font-family:var(--f-mono);font-size:12px;color:var(--yellow)}
-.team{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-.role{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:6px;min-width:0}
-.role .r{font-family:var(--f-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--yellow)}
-.role h4{margin:0;font-family:var(--f-display);font-size:19px;font-weight:800;font-stretch:85%}
-.role p{color:var(--muted);font-size:14.5px}
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ba figure{margin:0;display:flex;flex-direction:column;gap:6px}
+.ba .ref{background:#000;border-radius:6px;height:110px;display:flex;align-items:center;justify-content:center;font-family:var(--f-serif);color:#eee;letter-spacing:.06em;font-size:clamp(17px,2.3vw,23px);text-align:center;padding:8px}
+.ba .old{font-variant-numeric:oldstyle-nums} .ba .new{font-variant-numeric:lining-nums}
+.ba figcaption{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.ba figcaption b{color:var(--red)} .ba figcaption b.ok{color:var(--green)}
 
 /* nichos */
 .niches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:36px}
-.niche{border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.niche h3{font-size:20px;font-weight:850;font-stretch:80%;text-transform:uppercase}
+.niche{border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0;background:var(--panel)}
+.niche h3{font-size:22px;font-weight:900;font-stretch:72%;text-transform:uppercase}
 .niche .q{font-family:var(--f-serif);font-style:italic;font-size:17px;line-height:1.4}
-.niche .r{font-size:13px;color:var(--muted);font-family:var(--f-mono)}
+.niche .r{font-size:12.5px;color:var(--yellow);font-family:var(--f-mono)}
 
 /* comparação */
 .tbl-wrap{overflow-x:auto;margin-top:36px;border:1px solid var(--line);border-radius:8px}
@@ -139,32 +150,33 @@ table{border-collapse:collapse;width:100%;min-width:640px;font-size:15px}
 th,td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
 td:first-child{color:var(--muted)}
-th.us,td.us{background:rgba(240,207,74,.08)}
-th.us{color:var(--yellow)}
-td.us{color:var(--ink);font-weight:600}
+th.us,td.us{background:rgba(240,207,74,.09)} th.us{color:var(--yellow)} td.us{color:var(--ink);font-weight:700}
 tr:last-child td{border-bottom:0}
 
-/* custo, bônus, garantia */
-.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:36px}
-.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.box .k{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--yellow)}
-.box h3{font-size:24px;font-weight:850;font-stretch:80%;line-height:1.05}
-.box p{color:var(--muted);font-size:15.5px}
-.big{font-family:var(--f-display);font-weight:900;font-stretch:70%;font-size:44px;line-height:1;color:var(--ink)}
+/* só precisa */
+.need{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:28px;margin-top:36px;align-items:stretch}
+.need .main{background:#000;border:1px solid var(--yellow);border-radius:10px;padding:28px;display:flex;flex-direction:column;gap:12px;justify-content:center}
+.need .main .big{font-family:var(--f-display);font-weight:900;font-stretch:64%;font-size:clamp(44px,6vw,72px);line-height:.9;text-transform:uppercase}
+.need .main p{color:var(--muted)}
+.bonus{display:flex;flex-direction:column;gap:12px}
+.bon{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.bon .k{font-family:var(--f-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--yellow)}
+.bon h4{font-size:20px;font-weight:800;font-stretch:84%}
+.bon p{color:var(--muted);font-size:14.5px}
 
 /* oferta */
-.offer{background:var(--yellow);color:#111;border-radius:12px;padding:clamp(24px,5vw,56px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:32px;align-items:center}
-.offer h2{font-size:clamp(34px,5.6vw,64px);font-weight:900;font-stretch:68%;text-transform:uppercase;line-height:.92}
+.offer{background:var(--yellow);color:#111;border-radius:14px;padding:clamp(24px,5vw,56px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:32px;align-items:center}
+.offer h2{font-size:clamp(36px,6vw,70px);font-weight:900;font-stretch:64%;text-transform:uppercase;line-height:.9}
 .offer h2 em{font-family:var(--f-serif);font-style:italic;font-weight:500;text-transform:none;font-stretch:normal}
-.offer ul{list-style:none;padding:0;margin:18px 0 0;display:flex;flex-direction:column;gap:8px;font-size:16px}
-.offer li::before{content:"✓  ";font-weight:800}
-.offer .buy{display:flex;flex-direction:column;gap:12px;align-items:stretch}
-.offer .cta{background:#111;color:var(--yellow);font-size:20px;padding:20px 24px}
+.offer ul{list-style:none;padding:0;margin:18px 0 0;display:flex;flex-direction:column;gap:8px;font-size:16.5px}
+.offer li::before{content:"✓  ";font-weight:900}
+.offer .buy{display:flex;flex-direction:column;gap:12px}
+.offer .cta{background:#111;color:var(--yellow);font-size:21px;padding:21px 24px}
 .offer .cta:hover{background:#000}
-.offer .fine{font-size:13px;opacity:.8;text-align:center}
+.offer .fine{font-size:13.5px;text-align:center;font-weight:600}
 
 /* faq */
-.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 28px;margin-top:36px}
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 28px;margin-top:32px}
 details{border-bottom:1px solid var(--line);padding-block:14px}
 summary{cursor:pointer;font-weight:700;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:12px}
 summary::-webkit-details-marker{display:none}
@@ -173,32 +185,35 @@ details[open] summary::after{content:"–"}
 details p{color:var(--muted);margin-top:10px;font-size:15.5px}
 summary:focus-visible{outline:2px solid var(--yellow);outline-offset:4px}
 
-.final{text-align:center;padding-block:88px}
-.final .h2{max-width:18ch;margin-inline:auto}
+.final{text-align:center;padding-block:96px}
+.final .h2{max-width:16ch;margin-inline:auto}
 .final .cta{margin-top:30px}
-footer{border-top:1px solid var(--line);padding-block:26px 90px;font-size:12.5px;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding-block:26px 96px;font-size:12.5px;color:var(--muted)}
 footer .wrap{display:flex;flex-direction:column;gap:6px}
-
-.sticky{position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(15,15,18,.94);
-  border-top:1px solid var(--line);display:none;justify-content:center;z-index:5;backdrop-filter:blur(6px)}
+.sticky{position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(12,12,15,.94);
+  border-top:1px solid var(--line);display:none;justify-content:center;z-index:5}
 .sticky .cta{width:100%;max-width:480px;font-size:17px;padding:14px}
 
 @media (prefers-reduced-motion:no-preference){
+  .marquee .track{animation:roll 38s linear infinite}
+  @keyframes roll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   .hero .cta{animation:pulse 2.4s ease-out infinite}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(240,207,74,.45)}70%{box-shadow:0 0 0 16px rgba(240,207,74,0)}100%{box-shadow:0 0 0 0 rgba(240,207,74,0)}}
-  .karaoke span{transition:color .12s}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(240,207,74,.5)}70%{box-shadow:0 0 0 18px rgba(240,207,74,0)}100%{box-shadow:0 0 0 0 rgba(240,207,74,0)}}
+  .live i{animation:blink 1.2s steps(2) infinite} @keyframes blink{50%{opacity:.2}}
 }
 @media (max-width:980px){
-  .hero{grid-template-columns:1fr}
-  .steps,.formats,.three{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .team,.niches,.fx{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .gal{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .proof,.offer{grid-template-columns:1fr}
+  .hero,.quiz,.proof,.offer,.need{grid-template-columns:1fr}
+  .pains,.niches{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .team{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .steps,.formats,.gal{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .demos{grid-template-columns:1fr}
 }
 @media (max-width:640px){
-  section{padding-block:54px}
-  .pains,.steps,.formats,.three,.faq,.team,.niches{grid-template-columns:1fr}
-  .bubble.you{left:-6px} .bubble.ai{right:-6px}
+  section{padding-block:56px}
+  .pains,.niches,.steps,.formats,.faq,.team{grid-template-columns:1fr}
+  .demo{grid-template-columns:1fr}
+  .demo .screen{max-width:260px;margin-inline:auto}
+  .tag-float.a{left:-4px} .tag-float.b{right:-4px}
   .sticky{display:flex}
   .bar a.small{display:none}
 }
@@ -211,130 +226,153 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
 
 <div class="wrap hero">
   <div>
-    <span class="eyebrow">Skills para Claude Code · Shorts, Reels e TikTok</span>
-    <h1>Seu canal no ar todo dia. <em>Sem você editar.</em></h1>
-    <p class="karaoke" id="karaoke" aria-label="você conta a ideia e recebe o vídeo pronto com legenda música e post">
-      <span>você</span><span>conta</span><span>a</span><span>ideia</span><span>e</span><span>recebe</span><span>o</span><span>vídeo</span><span>pronto</span>
-    </p>
-    <p class="sub">O Editor no Piloto transforma o Claude Code no <b>roteirista, locutor, editor e social media</b> do seu canal. Você manda uma frase. Ele devolve o vídeo com legenda animada, efeitos, música e o texto do post.</p>
+    <span class="live"><i></i> Skills para Claude Code · Shorts, Reels e TikTok</span>
+    <h1>Você manda a ideia. <span class="hl">O vídeo volta pronto.</span></h1>
+    <p class="sub">Roteiro, voz, <b>legenda animada palavra por palavra</b>, efeitos, música e o texto do post. Tudo numa conversa com o Claude Code. <b>Sem abrir editor nenhum.</b></p>
     <div class="actions">
       <a class="cta" href="#oferta">Quero meu canal no piloto</a>
-      <a class="ghost" href="#pacote">Ver tudo o que vem ↓</a>
+      <a class="ghost" href="#demo">Ver as legendas rodando ↓</a>
     </div>
     <div class="micro"><span>Qualquer nicho</span><span>Pelo computador ou pelo celular</span><span>Sem saber editar</span></div>
   </div>
   <div class="phone">
-    <div class="screen"><img src="img/vid-shorts-gif.jpg" alt="Short vertical feito com o pacote: personagem à direita, legenda amarela ao lado e a referência 1 Samuel 16:1-13 no topo"></div>
-    <div class="bubble you"><small>você</small>faz um vídeo sobre Davi sendo esquecido pelos irmãos</div>
-    <div class="bubble ai"><small>Claude Code</small>Pronto: vídeo de 42 s + título, legenda e tags.</div>
+    <div class="screen">
+      <video id="v-hero" src="vid/legendas.mp4" poster="img/vid-shorts-gif.jpg" autoplay muted loop playsinline preload="metadata"></video>
+      <button class="sound" data-v="v-hero" type="button">🔊 Ativar som</button>
+    </div>
+    <span class="tag-float a">9 legendas</span>
+    <span class="tag-float b">trocando a cada 5 s</span>
   </div>
 </div>
 
-<div class="strip"><div class="wrap">
-  <span><b>9</b> estilos de legenda</span><span><b>7</b> pacotes de efeitos</span><span><b>6</b> formatos de vídeo</span><span><b>roteiro</b> + <b>voz</b> + <b>post</b></span><span>testado num canal que posta <b>todo dia</b></span>
+<div class="marquee" aria-hidden="true"><div class="track">
+  <span>/sample-yellow</span><span>/street</span><span>/rocks</span><span>/mistury</span><span>/red-sharp</span><span>/invisible</span><span>/legenda-3d-invisivel</span><span>/samplerocks</span><span>/legenda-dinamica</span><span>/efeito-vhs</span><span>/efeito-cinema</span><span>/efeito-sombrio</span><span>/roteiro</span><span>/voz</span><span>/post</span><span>/buscar-midia</span>
+  <span>/sample-yellow</span><span>/street</span><span>/rocks</span><span>/mistury</span><span>/red-sharp</span><span>/invisible</span><span>/legenda-3d-invisivel</span><span>/samplerocks</span><span>/legenda-dinamica</span><span>/efeito-vhs</span><span>/efeito-cinema</span><span>/efeito-sombrio</span><span>/roteiro</span><span>/voz</span><span>/post</span><span>/buscar-midia</span>
 </div></div>
 
 <section>
+  <div class="wrap quiz">
+    <div>
+      <span class="eyebrow">Responde rápido</span>
+      <h2 class="h2">Quanto tempo você leva para editar <em>40 segundos?</em></h2>
+      <div class="opts" role="group" aria-label="Tempo para editar um vídeo de 40 segundos">
+        <button class="opt" type="button" data-r="30">Uns 30 minutos</button>
+        <button class="opt" type="button" data-r="60">Mais de 1 hora</button>
+        <button class="opt" type="button" data-r="120">A tarde inteira</button>
+        <button class="opt" type="button" data-r="0">Nem começo</button>
+      </div>
+    </div>
+    <p class="answer" id="answer" aria-live="polite">Seja qual for a sua resposta: <b>com o Editor no Piloto, o seu trabalho é contar a ideia e dizer "aprovado".</b> O resto é com ele.</p>
+  </div>
+</section>
+
+<section class="alt">
   <div class="wrap">
-    <span class="eyebrow">Você já passou por isso?</span>
-    <h2 class="h2" style="margin-top:12px">Ter ideia é fácil. <em>Transformar em vídeo</em> é que mata o canal.</h2>
+    <span class="eyebrow">O que trava o seu canal</span>
+    <h2 class="h2">Ter ideia é fácil. <em>Transformar em vídeo</em> é que mata o canal.</h2>
     <div class="pains">
-      <div class="pain"><h3><span>2 horas</span> para editar 40 segundos</h3><p>Cortar, sincronizar a legenda palavra por palavra, achar a música, exportar, reexportar. E o vídeo ainda não sai do jeito que você imaginou.</p></div>
-      <div class="pain"><h3>A legenda <span>igual à de todo mundo</span></h3><p>O mesmo template que aparece em mil vídeos por dia. Quem rola a tela já viu aquilo e passa direto.</p></div>
-      <div class="pain"><h3>O roteiro <span>não sai</span></h3><p>Você sabe o assunto, mas na hora de escrever a abertura que prende nos 2 primeiros segundos, trava. E texto genérico ninguém assiste até o fim.</p></div>
-      <div class="pain"><h3>Postar todo dia <span>parece impossível</span></h3><p>Quem posta todo dia descobre rápido o que funciona. Quem posta quando sobra tempo, para de postar.</p></div>
+      <div class="pain"><span class="x">2h</span><h3>para editar 40 segundos</h3><p>Cortar, sincronizar legenda palavra por palavra, achar música, exportar de novo.</p></div>
+      <div class="pain"><span class="x">=</span><h3>Legenda igual à de todo mundo</h3><p>O mesmo template que passa mil vezes por dia. Quem rola a tela nem para.</p></div>
+      <div class="pain"><span class="x">…</span><h3>Roteiro que não sai</h3><p>Você sabe o assunto, mas a abertura que prende nos 2 primeiros segundos não vem.</p></div>
+      <div class="pain"><span class="x">0</span><h3>Post hoje? Não deu.</h3><p>Quem posta todo dia aprende rápido o que funciona. Quem posta quando sobra tempo, para.</p></div>
     </div>
     <p class="turn"><span class="cap">O problema nunca foi falta de ideia. É o tempo entre a ideia e o vídeo pronto.</span></p>
   </div>
 </section>
 
-<section style="background:var(--panel);border-block:1px solid var(--line)">
+<section id="demo">
+  <div class="wrap">
+    <span class="eyebrow">Veja rodando</span>
+    <h2 class="h2">A mesma cena. <em>16 visuais diferentes.</em></h2>
+    <p class="lead">Um trecho de anime com a fala original. A cada poucos segundos muda a legenda, ou muda o efeito, sem mexer em nada à mão. É isso que você aplica com um comando.</p>
+    <div class="demos">
+      <div class="demo">
+        <div class="screen"><video id="v-leg" src="vid/legendas.mp4" autoplay muted loop playsinline preload="metadata"></video><button class="sound" data-v="v-leg" type="button">🔊 Som</button></div>
+        <div><h3>9 estilos de legenda</h3><p>Street, Sample Yellow, Rocks, Samplerocks, Mistury, Dinâmica, Invisible, 3D Invisível e Red Sharp. Cada palavra aparece no tempo exato da fala.</p><p><code>/sample-yellow</code> <code>/street</code> <code>/red-sharp</code> …</p></div>
+      </div>
+      <div class="demo">
+        <div class="screen"><video id="v-efe" src="vid/efeitos.mp4" autoplay muted loop playsinline preload="metadata"></video><button class="sound" data-v="v-efe" type="button">🔊 Som</button></div>
+        <div><h3>7 pacotes de efeitos</h3><p>Filme antigo, Mangá, Sonho, VHS, Sombrio, Cinema e Rua. Somam com qualquer legenda e mudam a cara do vídeo inteiro.</p><p><code>/efeito-vhs</code> <code>/efeito-cinema</code> …</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
   <div class="wrap">
     <span class="eyebrow">Como funciona</span>
-    <h2 class="h2" style="margin-top:12px">Você fala. <em>Ele faz.</em> Você aprova.</h2>
-    <p class="lead">Tudo acontece numa conversa com o Claude Code, em português, do seu jeito. Sem programa de edição, sem linha do tempo, sem tutorial.</p>
+    <h2 class="h2">Você fala. <em>Ele faz.</em> Você aprova.</h2>
     <div class="steps">
-      <div class="step"><span class="n">1 · /comecar</span><h3>Conta a ideia do canal</h3><p>Ele faz poucas perguntas e monta o seu padrão: nicho, tom, legenda, efeitos, formato e voz.</p><p class="say"><span class="cap">"canal de motivação com cenas de anime e voz grave"</span></p></div>
-      <div class="step"><span class="n">2 · /roteiro</span><h3>Escolhe o roteiro</h3><p>Você dá o tema. Ele entrega 3 roteiros com 3 ganchos de abertura cada, no tamanho certo para Shorts.</p></div>
-      <div class="step"><span class="n">3 · /voz</span><h3>A voz sai pronta</h3><p>Narração gerada pelo ElevenLabs conectado ao Claude, ou uma voz de personagem pelo Fish Audio, que é gratuito.</p></div>
-      <div class="step"><span class="n">4 · edição</span><h3>O vídeo é montado</h3><p>Legenda sincronizada palavra por palavra, efeitos e música no ponto certo. Você vê os quadros de teste antes do vídeo inteiro.</p></div>
-      <div class="step"><span class="n">5 · ajuste</span><h3>Você pede mudança falando</h3><p>"Coloca a legenda mais à esquerda." "Aumenta a música." Ele refaz e guarda o que você pediu para os próximos vídeos.</p></div>
-      <div class="step"><span class="n">6 · /post</span><h3>Aprovou, está pronto para postar</h3><p>Vídeo final, título, legenda do Instagram e TikTok, descrição e tags do YouTube, e o melhor horário para postar.</p></div>
+      <div class="step"><span class="n">1 · /comecar</span><h3>Conta a ideia do canal</h3><p><span class="cap">"canal de motivação com cenas de anime e voz grave"</span>. Ele monta o seu padrão.</p></div>
+      <div class="step"><span class="n">2 · /roteiro</span><h3>Escolhe o roteiro</h3><p>3 roteiros com 3 ganchos de abertura cada, no tamanho certo para Shorts.</p></div>
+      <div class="step"><span class="n">3 · /voz</span><h3>A voz sai pronta</h3><p>Gerada pelo ElevenLabs conectado ao Claude, ou uma voz de personagem pelo Fish Audio.</p></div>
+      <div class="step"><span class="n">4 · /buscar-midia</span><h3>Ele acha o fundo</h3><p>Procura GIFs, fotos e cenas na internet, mostra as opções e baixa a que você escolher.</p></div>
+      <div class="step"><span class="n">5 · edição</span><h3>O vídeo é montado</h3><p>Legenda, efeitos e música no ponto certo. Ajuste falando: "legenda mais à esquerda".</p></div>
+      <div class="step"><span class="n">6 · /post</span><h3>Aprovou, posta</h3><p>Vídeo final + título, legenda, descrição, tags e o melhor horário.</p></div>
     </div>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <span class="eyebrow">Não é promessa de laboratório</span>
-    <h2 class="h2" style="margin-top:12px">Nasceu num canal <em>de verdade</em>, vídeo por vídeo.</h2>
-    <p class="lead">Cada estilo deste pacote foi criado, testado e aprovado num canal que posta todo dia no YouTube, Instagram, TikTok e Facebook. E ele <b>aprende o seu gosto</b>: o que você corrige uma vez, ele não erra de novo.</p>
-    <div class="proof">
-      <div class="chat" aria-label="Exemplo de ajuste feito numa conversa real">
-        <div class="msg you"><small>dono do canal</small>Dá uma melhorada ali no "1 Samuel 16", coloca como é escrito na Bíblia. Ficou feinho.</div>
-        <div class="msg ai"><small>Claude Code</small>Pronto: agora está <b>1 Samuel 16:1-13</b>, com os números do tamanho das letras. Anotei como regra: as próximas referências já saem assim.</div>
-        <div class="msg you"><small>dono do canal</small>Aprovado, meu bom.</div>
-      </div>
-      <div class="before-after">
-        <figure><div class="ref old">1 Samuel 16</div><figcaption><b>antes</b> · sem versículo, "1" pequeno</figcaption></figure>
-        <figure><div class="ref new">1 Samuel 16:1-13</div><figcaption><b class="ok">depois</b> · como na Bíblia</figcaption></figure>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="pacote" style="background:var(--panel);border-block:1px solid var(--line)">
+<section id="pacote">
   <div class="wrap">
     <span class="eyebrow">O que vem no pacote</span>
-    <h2 class="h2" style="margin-top:12px">Uma equipe inteira <em>dentro do Claude.</em></h2>
-    <p class="lead">27 skills independentes. Instale todas ou só as que combinam com o seu canal. Cada uma vira um comando, como <span class="cap">/sample-yellow</span>.</p>
-    <div class="stack">
-      <div>
-        <div class="group-head"><h3>A equipe</h3><span class="count">4 skills</span></div>
-        <div class="team">
-          <div class="role"><span class="r">Diretor</span><h4>/comecar</h4><p>Monta o padrão do canal a partir da sua ideia.</p></div>
-          <div class="role"><span class="r">Roteirista</span><h4>/roteiro</h4><p>3 roteiros, 3 ganchos cada, sem cara de texto de IA.</p></div>
-          <div class="role"><span class="r">Locutor</span><h4>/voz</h4><p>ElevenLabs conectado, Fish Audio ou a sua voz.</p></div>
-          <div class="role"><span class="r">Social media</span><h4>/post</h4><p>Título, legenda, descrição, tags e horário.</p></div>
-        </div>
+    <h2 class="h2">Uma equipe inteira <em>dentro do Claude.</em></h2>
+    <p class="lead">28 skills independentes. Instale todas ou só as que combinam com você. Cada uma vira um comando.</p>
+    <div class="group-head"><h3>A equipe</h3></div>
+    <div class="team">
+      <div class="role"><span class="r">Diretor</span><h4>/comecar</h4><p>Monta o padrão do canal a partir da sua ideia.</p></div>
+      <div class="role"><span class="r">Roteirista</span><h4>/roteiro</h4><p>3 roteiros, 3 ganchos cada, sem cara de IA.</p></div>
+      <div class="role"><span class="r">Locutor</span><h4>/voz</h4><p>ElevenLabs, Fish Audio ou a sua voz.</p></div>
+      <div class="role"><span class="r">Produtor</span><h4>/buscar-midia</h4><p>Acha GIFs, fotos e cenas para o fundo.</p></div>
+      <div class="role"><span class="r">Social media</span><h4>/post</h4><p>Título, legenda, descrição, tags e horário.</p></div>
+    </div>
+    <div class="group-head"><h3>9 legendas</h3><p>Cada quadro abaixo está rodando: é o vídeo de verdade.</p></div>
+    <div class="gal">
+      <div class="tile"><video src="vid/t-street.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Street</b><code>/street</code></div></div>
+      <div class="tile"><video src="vid/t-sample-yellow.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Sample Yellow</b><code>/sample-yellow</code></div></div>
+      <div class="tile"><video src="vid/t-rocks.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Rocks</b><code>/rocks</code></div></div>
+      <div class="tile"><video src="vid/t-samplerocks.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Samplerocks</b><code>/samplerocks</code></div></div>
+      <div class="tile"><video src="vid/t-mistury.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Mistury</b><code>/mistury</code></div></div>
+      <div class="tile"><video src="vid/t-dinamica.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Dinâmica</b><code>/legenda-dinamica</code></div></div>
+      <div class="tile"><video src="vid/t-invisible.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Invisible</b><code>/invisible</code></div></div>
+      <div class="tile"><video src="vid/t-3d-invisivel.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>3D Invisível</b><code>/legenda-3d-invisivel</code></div></div>
+      <div class="tile"><video src="vid/t-red-sharp.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Red Sharp</b><code>/red-sharp</code></div></div>
+    </div>
+    <div class="group-head"><h3>7 efeitos</h3><p>Somam com qualquer legenda.</p></div>
+    <div class="gal">
+      <div class="tile"><video src="vid/t-filme-antigo.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Filme antigo</b><code>/efeito-filme-antigo</code></div></div>
+      <div class="tile"><video src="vid/t-manga.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Mangá</b><code>/efeito-manga</code></div></div>
+      <div class="tile"><video src="vid/t-sonho.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Sonho</b><code>/efeito-sonho</code></div></div>
+      <div class="tile"><video src="vid/t-vhs.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>VHS</b><code>/efeito-vhs</code></div></div>
+      <div class="tile"><video src="vid/t-sombrio.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Sombrio</b><code>/efeito-sombrio</code></div></div>
+      <div class="tile"><video src="vid/t-cinema.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Cinema</b><code>/efeito-cinema</code></div></div>
+    </div>
+    <div class="group-head"><h3>6 formatos de vídeo</h3></div>
+    <div class="formats">
+      <div class="fmt"><code>/video-gif</code><h4>Shorts de GIF</h4><p>GIF em loop sem emenda, ampliado com IA, legenda ao lado do personagem como se ele falasse.</p></div>
+      <div class="fmt"><code>/video-narracao</code><h4>Narração</h4><p>Roteiro narrado sobre cenas de fundo, com zoom lento e a referência no topo.</p></div>
+      <div class="fmt"><code>/video-fala</code><h4>Personagem falando</h4><p>Cena com o áudio original e a legenda ao lado de quem fala, nunca no rosto.</p></div>
+      <div class="fmt"><code>/edit-musica</code><h4>Edit com música</h4><p>Digite "Goku" ou "Neymar": ele anima artes que já existem na batida da música.</p></div>
+      <div class="fmt"><code>/video-longo</code><h4>Vídeo longo</h4><p>Horizontal para o YouTube, de 10 a 30 minutos, com capítulos na descrição.</p></div>
+      <div class="fmt"><code>/aesthetic</code><h4>Aesthetic</h4><p>Imagens paradas que ganham vida em quadrinhos e cortes na batida.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <span class="eyebrow">Nasceu num canal de verdade</span>
+    <h2 class="h2">Ele aprende <em>o seu gosto.</em></h2>
+    <p class="lead">Cada estilo foi criado e aprovado vídeo a vídeo num canal que posta todo dia no YouTube, Instagram, TikTok e Facebook. O que você corrige uma vez, ele não erra de novo.</p>
+    <div class="proof">
+      <div class="chat" aria-label="Ajuste feito numa conversa real">
+        <div class="msg you"><small>dono do canal</small>Dá uma melhorada ali no "1 Samuel 16", coloca como é escrito na Bíblia. Ficou feinho.</div>
+        <div class="msg ai"><small>Claude Code</small>Pronto: agora está <b>1 Samuel 16:1-13</b>, com os números do tamanho das letras. Anotei como regra para os próximos vídeos.</div>
+        <div class="msg you"><small>dono do canal</small>Aprovado, meu bom.</div>
       </div>
-      <div>
-        <div class="group-head"><h3>9 estilos de legenda</h3><p>Animadas palavra por palavra, no tempo exato da voz, com as palavras-chave em destaque.</p></div>
-        <div class="gal">
-          <div class="tile"><img src="img/leg-sample-yellow-0.jpg" alt="Legenda Sample Yellow"><div class="lab"><b>Sample Yellow</b><code>/sample-yellow</code></div></div>
-          <div class="tile"><img src="img/leg-street-1.jpg" alt="Legenda Street com palavra gigante"><div class="lab"><b>Street</b><code>/street</code></div></div>
-          <div class="tile"><img src="img/leg-legenda-3d-invisivel-0.jpg" alt="Legenda 3D Invisível"><div class="lab"><b>3D Invisível</b><code>/legenda-3d-invisivel</code></div></div>
-          <div class="tile"><img src="img/leg-mistury-0.jpg" alt="Legenda Mistury"><div class="lab"><b>Mistury</b><code>/mistury</code></div></div>
-          <div class="tile"><img src="img/leg-red-sharp-0.jpg" alt="Legenda Red Sharp"><div class="lab"><b>Red Sharp</b><code>/red-sharp</code></div></div>
-          <div class="tile"><img src="img/leg-legenda-dinamica-0.jpg" alt="Legenda Dinâmica"><div class="lab"><b>Dinâmica</b><code>/legenda-dinamica</code></div></div>
-          <div class="tile"><img src="img/leg-rocks-0.jpg" alt="Legenda Rocks"><div class="lab"><b>Rocks</b><code>/rocks</code></div></div>
-          <div class="tile"><img src="img/leg-samplerocks-0.jpg" alt="Legenda Samplerocks"><div class="lab"><b>Samplerocks</b><code>/samplerocks</code></div></div>
-          <div class="tile"><img src="img/leg-invisible-0.jpg" alt="Legenda Invisible"><div class="lab"><b>Invisible</b><code>/invisible</code></div></div>
-        </div>
-      </div>
-      <div>
-        <div class="group-head"><h3>7 pacotes de efeitos</h3><p>Somam com qualquer legenda: cor de cinema, filme antigo, VHS, mangá, chuva, glitch, colagem.</p></div>
-        <div class="gal fx">
-          <div class="tile"><img src="img/efe-filme-antigo.jpg" alt="Efeito filme antigo"><div class="lab"><b>Filme antigo</b></div></div>
-          <div class="tile"><img src="img/efe-manga.jpg" alt="Efeito mangá"><div class="lab"><b>Mangá</b></div></div>
-          <div class="tile"><img src="img/efe-sombrio.jpg" alt="Efeito sombrio"><div class="lab"><b>Sombrio</b></div></div>
-          <div class="tile"><img src="img/efe-vhs.jpg" alt="Efeito VHS"><div class="lab"><b>VHS</b></div></div>
-          <div class="tile"><img src="img/efe-sonho.jpg" alt="Efeito sonho"><div class="lab"><b>Sonho</b></div></div>
-          <div class="tile"><img src="img/efe-cinema.jpg" alt="Efeito cinema"><div class="lab"><b>Cinema</b></div></div>
-          <div class="tile"><img src="img/efe-rua.jpg" alt="Efeito rua"><div class="lab"><b>Rua</b></div></div>
-          <div class="tile"><img src="img/efe-manga-b.jpg" alt="Detalhe da textura de mangá"><div class="lab"><b>+ mistura</b><code>/efeitos</code></div></div>
-        </div>
-      </div>
-      <div>
-        <div class="group-head"><h3>6 formatos de vídeo</h3><p>Cada um sabe o que pedir, como enquadrar e onde a legenda fica sem tapar ninguém.</p></div>
-        <div class="formats">
-          <div class="fmt"><code>/video-gif</code><h4>Shorts de GIF</h4><p>Um GIF em loop sem emenda, ampliado com IA, com a legenda ao lado do personagem como se ele falasse.</p></div>
-          <div class="fmt"><code>/video-narracao</code><h4>Narração</h4><p>Roteiro narrado sobre cenas de fundo, com zoom lento e a referência no topo.</p></div>
-          <div class="fmt"><code>/video-fala</code><h4>Personagem falando</h4><p>Cena com o áudio original e a legenda ao lado de quem fala, nunca no rosto.</p></div>
-          <div class="fmt"><code>/edit-musica</code><h4>Edit com música</h4><p>Você digita um nome, como "Goku" ou "Neymar", e ele anima artes que já existem na batida.</p></div>
-          <div class="fmt"><code>/video-longo</code><h4>Vídeo longo</h4><p>Horizontal para o YouTube, de 10 a 30 minutos, com legenda e capítulos na descrição.</p></div>
-          <div class="fmt"><code>/aesthetic</code><h4>Aesthetic</h4><p>Imagens paradas que ganham vida em quadrinhos, estrelas e cortes na batida.</p></div>
-        </div>
+      <div class="ba">
+        <figure><div class="ref old">1 Samuel 16</div><figcaption><b>antes</b> · sem versículo</figcaption></figure>
+        <figure><div class="ref new">1 Samuel 16:1-13</div><figcaption><b class="ok">depois</b> · como na Bíblia</figcaption></figure>
       </div>
     </div>
   </div>
@@ -343,20 +381,20 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
 <section>
   <div class="wrap">
     <span class="eyebrow">Qualquer nicho</span>
-    <h2 class="h2" style="margin-top:12px">Se dá para contar em voz alta, <em>dá para virar vídeo.</em></h2>
+    <h2 class="h2">Se dá para falar, <em>dá para virar vídeo.</em></h2>
     <div class="niches">
-      <div class="niche"><h3>Cristão</h3><p class="q">"Versículos narrados com cenas de anime e a referência no topo."</p><p class="r">Narração · Sample Yellow</p></div>
-      <div class="niche"><h3>Motivação</h3><p class="q">"Frases fortes, voz grave, clima pesado."</p><p class="r">Red Sharp · sombrio</p></div>
-      <div class="niche"><h3>Anime</h3><p class="q">"Edit do Itachi na batida de um phonk."</p><p class="r">Edit com música · Street</p></div>
-      <div class="niche"><h3>Futebol</h3><p class="q">"Lances do Neymar com narração e legenda grande."</p><p class="r">Edit com música · 3D Invisível</p></div>
+      <div class="niche"><h3>Cristão</h3><p class="q">"Versículos narrados com cenas de anime e a referência no topo."</p><p class="r">/video-narracao + /sample-yellow</p></div>
+      <div class="niche"><h3>Motivação</h3><p class="q">"Frases fortes, voz grave, clima pesado."</p><p class="r">/red-sharp + /efeito-sombrio</p></div>
+      <div class="niche"><h3>Anime</h3><p class="q">"Edit do Itachi na batida de um phonk."</p><p class="r">/edit-musica + /street</p></div>
+      <div class="niche"><h3>Futebol</h3><p class="q">"Lances do Neymar com narração e legenda grande."</p><p class="r">/edit-musica + /legenda-3d-invisivel</p></div>
     </div>
   </div>
 </section>
 
-<section style="background:var(--panel);border-block:1px solid var(--line)">
+<section class="alt">
   <div class="wrap">
     <span class="eyebrow">Compare</span>
-    <h2 class="h2" style="margin-top:12px">Três jeitos de ter <em>vídeo todo dia.</em></h2>
+    <h2 class="h2">Três jeitos de ter <em>vídeo todo dia.</em></h2>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th></th><th>Editar sozinho</th><th>Contratar editor</th><th class="us">Editor no Piloto</th></tr></thead>
@@ -364,9 +402,9 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
           <tr><td>Seu tempo por vídeo</td><td>Horas no editor</td><td>Briefing, espera e revisão</td><td class="us">Contar a ideia e aprovar</td></tr>
           <tr><td>Roteiro</td><td>Você escreve</td><td>Normalmente não inclui</td><td class="us">3 propostas com 3 ganchos</td></tr>
           <tr><td>Voz</td><td>Você grava</td><td>À parte</td><td class="us">Gerada na conversa</td></tr>
+          <tr><td>Fundo (GIFs, cenas)</td><td>Você procura</td><td>Você manda</td><td class="us">Ele busca e mostra opções</td></tr>
           <tr><td>Legenda e efeitos</td><td>Templates de aplicativo</td><td>Depende do editor</td><td class="us">9 legendas + 7 efeitos</td></tr>
-          <tr><td>Às 2 da manhã</td><td>Só se você estiver acordado</td><td>Não</td><td class="us">Sim</td></tr>
-          <tr><td>Aprende o seu gosto</td><td>—</td><td>Com o tempo</td><td class="us">Desde o primeiro ajuste</td></tr>
+          <tr><td>Às 2 da manhã</td><td>Se você estiver acordado</td><td>Não</td><td class="us">Sim</td></tr>
           <tr><td>Título, legenda e tags</td><td>Você escreve</td><td>Raramente</td><td class="us">Prontos a cada vídeo</td></tr>
         </tbody>
       </table>
@@ -376,31 +414,34 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
 
 <section>
   <div class="wrap">
-    <span class="eyebrow">Sem letra miúda</span>
-    <h2 class="h2" style="margin-top:12px">O que mais você <em>precisa ter.</em></h2>
-    <div class="three">
-      <div class="box"><span class="k">Para rodar</span><span class="big">US$ 20<small style="font-size:18px">/mês</small></span><h3>Claude Pro</h3><p>O Claude Code não funciona no plano grátis. O Pro é o mais barato que inclui. É menos de US$ 1 por dia para ter roteirista, locutor e editor.</p></div>
-      <div class="box"><span class="k">Grátis</span><span class="big">R$ 0</span><h3>Render, legenda e música</h3><p>Tudo roda no seu computador ou na versão do Claude Code na nuvem, com programas gratuitos. Sem custo extra por vídeo.</p></div>
-      <div class="box"><span class="k">Bônus</span><span class="big">∞</span><h3>Voz de qualquer personagem</h3><p>Passo a passo do Fish Audio, gratuito, com vozes de personagens de anime e narradores, ou crie a sua com 15 segundos de áudio.</p></div>
+    <span class="eyebrow">Do que você precisa</span>
+    <h2 class="h2">Só de uma coisa: <em>Claude Code.</em></h2>
+    <div class="need">
+      <div class="main"><span class="big">Claude Code</span><p>No computador ou na nuvem, pelo navegador ou pelo celular. Você instala as skills, digita /comecar e conta a sua ideia. O resto o pacote faz.</p></div>
+      <div class="bonus">
+        <div class="bon"><span class="k">Bônus</span><h4>Voz de qualquer personagem</h4><p>Passo a passo do Fish Audio, gratuito, com vozes de personagens de anime e narradores.</p></div>
+        <div class="bon"><span class="k">Bônus</span><h4>Ele acha o fundo para você</h4><p>GIFs, fotos e cenas buscados na internet, com a fonte anotada.</p></div>
+        <div class="bon"><span class="k">Bônus</span><h4>Instale só o que usar</h4><p>Cada skill é independente: um comando instala as que você escolher.</p></div>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="oferta">
+<section id="oferta" style="padding-top:24px">
   <div class="wrap">
     <div class="offer">
       <div>
         <h2>Seu canal no <em>piloto</em> a partir de hoje.</h2>
         <ul>
-          <li>27 skills: legendas, efeitos, formatos, roteiro, voz e post</li>
-          <li>Instale todas ou só as que quiser, com um comando</li>
+          <li>28 skills: legendas, efeitos, formatos, roteiro, voz, busca de mídia e post</li>
+          <li>Instale todas ou só as que quiser</li>
           <li>Guia de voz de personagem com Fish Audio</li>
-          <li>Funciona para qualquer nicho, no computador ou no celular</li>
+          <li>Qualquer nicho, no computador ou no celular</li>
         </ul>
       </div>
       <div class="buy">
         <a class="cta" href="#oferta" id="comprar">Quero o Editor no Piloto</a>
-        <p class="fine">Acesso imediato depois da compra · Garantia de 7 dias</p>
+        <p class="fine">Acesso imediato · Garantia de 7 dias</p>
       </div>
     </div>
   </div>
@@ -409,15 +450,15 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
 <section style="padding-top:24px">
   <div class="wrap">
     <span class="eyebrow">Perguntas</span>
-    <h2 class="h2" style="margin-top:12px">Antes de você <em>perguntar.</em></h2>
+    <h2 class="h2">Antes de você <em>perguntar.</em></h2>
     <div class="faq">
       <details><summary>Preciso saber editar ou programar?</summary><p>Não. Você conversa em português com o Claude Code. As skills já trazem todas as regras de edição.</p></details>
       <details><summary>Dá para usar pelo celular?</summary><p>Dá. Pela versão do Claude Code na nuvem, você manda a ideia pelo app e recebe o vídeo no chat.</p></details>
       <details><summary>Preciso escrever o texto ou gravar a voz?</summary><p>Não. O roteiro sai da sua ideia e a voz é gerada pelo ElevenLabs ou pelo Fish Audio. Se preferir, usa a sua voz.</p></details>
-      <details><summary>Meus vídeos vão ficar iguais aos de outras pessoas?</summary><p>Os estilos são os do pacote, mas o roteiro, a voz, as cenas, a posição da legenda, as palavras em destaque e as misturas de efeitos mudam em cada vídeo, e ele vai aprendendo o que você aprova.</p></details>
-      <details><summary>Funciona no meu nicho?</summary><p>Se o vídeo é narrado ou falado, funciona: fé, motivação, anime, futebol, história, curiosidades. No /comecar ele sugere o melhor estilo para o seu.</p></details>
-      <details><summary>Posso usar cenas de anime e músicas famosas?</summary><p>O pacote edita o material que você escolher. Imagens e músicas de terceiros podem gerar reivindicação de direitos (Content ID) no YouTube; a escolha e a responsabilidade são suas.</p></details>
-      <details><summary>O que é o Claude Code?</summary><p>É o assistente da Anthropic que trabalha com arquivos e programas no computador ou na nuvem. As skills ensinam a ele a editar os seus vídeos.</p></details>
+      <details><summary>E as imagens de fundo?</summary><p>Mande as suas ou deixe com a /buscar-midia: ela procura GIFs, fotos e cenas, mostra as opções e baixa a escolhida.</p></details>
+      <details><summary>Meus vídeos vão ficar iguais aos de outras pessoas?</summary><p>Roteiro, voz, cenas, posição da legenda, palavras em destaque e misturas de efeitos mudam a cada vídeo, e ele vai aprendendo o que você aprova.</p></details>
+      <details><summary>Funciona no meu nicho?</summary><p>Se o vídeo é narrado ou falado, funciona: fé, motivação, anime, futebol, história, curiosidades.</p></details>
+      <details><summary>Posso usar cenas de anime e músicas famosas?</summary><p>O pacote edita o material que você escolher. Material de terceiros pode gerar reivindicação de direitos (Content ID) no YouTube; a escolha é sua.</p></details>
       <details><summary>E se eu não gostar?</summary><p>Você tem 7 dias de garantia: se não for para você, pede o reembolso.</p></details>
     </div>
   </div>
@@ -433,22 +474,39 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
 
 <footer><div class="wrap">
   <span>Editor no Piloto é um pacote independente de skills para o Claude Code. Não é um produto da Anthropic. Claude é marca da Anthropic.</span>
-  <span>Imagens: quadros reais de vídeos editados com o pacote.</span>
+  <span>Vídeos e imagens: feitos com o próprio pacote.</span>
 </div></footer>
-
 <div class="sticky"><a class="cta" href="#oferta">Quero meu canal no piloto</a></div>
 
 <script>
 (function(){
-  var words=document.querySelectorAll('#karaoke span'), i=0;
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function paint(n){for(var k=0;k<words.length;k++){words[k].classList.toggle('on',k<=n);}}
-  if(reduce){paint(words.length-1);return;}
-  paint(words.length-1);
-  setTimeout(function tick(){
-    i=(i+1)%(words.length+3);
-    paint(i<words.length?i:words.length-1);
-    setTimeout(tick,i<words.length?320:900);
-  },1200);
+  // som: só depois de um toque (regra dos navegadores); um vídeo com som por vez
+  document.querySelectorAll('.sound').forEach(function(b){
+    b.addEventListener('click',function(){
+      var v=document.getElementById(b.dataset.v); if(!v) return;
+      var liga=v.muted;
+      document.querySelectorAll('video').forEach(function(o){o.muted=true;});
+      document.querySelectorAll('.sound').forEach(function(o){o.textContent=o.dataset.v==='v-hero'?'🔊 Ativar som':'🔊 Som';});
+      if(liga){v.muted=false;v.currentTime=v.currentTime;var p=v.play();if(p&&p.catch)p.catch(function(){});b.textContent='🔇 Sem som';}
+    });
+  });
+  // quiz
+  var ans=document.getElementById('answer');
+  var txt={'30':'30 minutos por vídeo são <b>3 horas e meia por semana</b> postando todo dia. Com o Editor no Piloto, isso vira contar a ideia e dizer "aprovado".',
+           '60':'Mais de 1 hora por vídeo são <b>7 horas por semana</b> só editando. Com o Editor no Piloto, o seu trabalho é contar a ideia e aprovar.',
+           '120':'A tarde inteira por vídeo não fecha a conta de postar todo dia. <b>Aqui você conta a ideia e recebe o vídeo pronto.</b>',
+           '0':'É o caso mais comum: a ideia fica parada porque editar dá preguiça. <b>Agora a ideia vira vídeo numa conversa.</b>'};
+  document.querySelectorAll('.opt').forEach(function(o){
+    o.setAttribute('aria-pressed','false');
+    o.addEventListener('click',function(){
+      document.querySelectorAll('.opt').forEach(function(x){x.setAttribute('aria-pressed','false');});
+      o.setAttribute('aria-pressed','true'); ans.innerHTML=txt[o.dataset.r];
+    });
+  });
+  // vídeos fora da tela pausam (economiza bateria no celular)
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){var p=v.play();if(p&&p.catch)p.catch(function(){});}else v.pause();});},{threshold:.15});
+    document.querySelectorAll('video').forEach(function(v){io.observe(v);});
+  }
 })();
 </script>
