@@ -96,25 +96,13 @@ section{padding-block:88px}
 .mcard.final b{font-size:30px}
 .mcard.final small{color:#aab0c0}
 
-/* misturador (só texto) */
-.mixer{max-width:880px;margin-top:40px;background:var(--stage-2);border:1px solid var(--stage-line);border-radius:var(--r);padding:28px}
-.step-t{font-family:var(--f-mono);font-size:12px;color:var(--stage-muted);text-transform:uppercase;letter-spacing:.06em;margin:26px 0 10px}
-.step-t:first-child{margin-top:0}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
+/* botões de escolha e frase "você manda" (testador de fontes) */
 .chip{font:inherit;font-size:14.5px;font-weight:500;background:transparent;color:var(--stage-ink);border:1px solid var(--stage-line);border-radius:999px;padding:8px 14px;cursor:pointer}
 .chip:hover{border-color:#4a5163}
 .chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
-#c-fon .chip{font-size:16px}
-.mdesc{font-size:14.5px;color:var(--stage-muted);margin-top:10px;min-height:1.5em}
-.mdesc b{color:var(--stage-ink);font-weight:600}
 .say{background:#000;border:1px solid var(--stage-line);border-radius:18px;padding:18px 20px;font-size:17px;line-height:1.5}
 .say small{display:block;font-family:var(--f-mono);font-size:11.5px;color:var(--stage-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
 .say b{color:#9db5ff;font-weight:600}
-.mixer .say{margin-top:28px;font-size:clamp(17px,2.2vw,20px);display:flex;gap:14px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap}
-.mixer .say>div{flex:1 1 300px;min-width:0}
-.copia{font:inherit;font-size:14px;font-weight:600;background:var(--blue);color:#fff;border:0;border-radius:999px;padding:9px 16px;cursor:pointer;white-space:nowrap}
-.note{font-size:13.5px;color:var(--stage-muted);margin-top:12px}
-@media (max-width:640px){.mixer{padding:20px 16px}}
 
 /* dores que viram */
 .flips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:40px;perspective:1200px}
@@ -351,7 +339,7 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
     <p class="sub">Roteiro, voz, legenda animada, efeitos, música e o texto do post. <b>Tudo numa conversa com o Claude Code</b>, sem abrir editor nenhum.</p>
     <div class="actions">
       <a class="btn" href="#oferta">Quero meu canal no piloto <span class="arr">→</span></a>
-      <a class="link" href="#misturar">Montar uma combinação</a>
+      <a class="link" href="#demo">Ver os estilos rodando</a>
     </div>
     <div class="checks"><span>Qualquer nicho</span><span>Computador ou celular</span><span>Sem saber editar</span></div>
   </div>
@@ -397,53 +385,6 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
       <div class="mcard" data-k="5"><i style="background:#ffe9d6"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0c0e13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></i><div><b>Música</b><small>no ponto certo, baixinha</small></div></div>
       <div class="mcard" data-k="6"><i style="background:#dff3ff"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0c0e13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></i><div><b>Efeitos</b><small>7 pacotes que se somam</small></div></div>
       <div class="mcard final" data-k="7"><b>Editor no Piloto</b><small>uma conversa · um vídeo pronto</small></div>
-    </div>
-  </div>
-</section>
-
-<section class="dark" id="misturar">
-  <div class="wrap">
-    <span class="kicker"><b></b>Misture do seu jeito</span>
-    <h2 class="h2">Legenda + fonte + efeitos. <span class="u">Junte o que quiser.</span></h2>
-    <p class="lead">Quer a legenda baixinha da <b>Sample Yellow</b>, mas com a <b>letra gótica da Street</b>? Pode. Quer dois ou três efeitos ao mesmo tempo? Pode também. Escolha aqui e veja a frase que você manda para o Claude.</p>
-    <div class="mixer">
-        <div class="step-t">1 · Estilo da legenda</div>
-        <div class="chips" id="c-leg">
-          <button class="chip" data-v="sample-yellow" aria-pressed="true" type="button">Sample Yellow</button>
-          <button class="chip" data-v="street" type="button">Street</button>
-          <button class="chip" data-v="red-sharp" type="button">Red Sharp</button>
-          <button class="chip" data-v="mistury" type="button">Mistury</button>
-          <button class="chip" data-v="rocks" type="button">Rocks</button>
-          <button class="chip" data-v="samplerocks" type="button">Samplerocks</button>
-          <button class="chip" data-v="dinamica" type="button">Dinâmica</button>
-          <button class="chip" data-v="invisible" type="button">Invisible</button>
-          <button class="chip" data-v="3d-invisivel" type="button">3D Invisível</button>
-        </div>
-        <p class="mdesc" id="d-leg"></p>
-        <div class="step-t">2 · Fonte</div>
-        <div class="chips" id="c-fon">
-          <button class="chip" data-v="" aria-pressed="true" type="button">Original</button>
-          <button class="chip" data-v="pirata-one" style="font-family:'Pirata One',serif" type="button">Gótica (Street)</button>
-          <button class="chip" data-v="bebas-neue" style="font-family:'Bebas Neue',sans-serif" type="button">Bebas Neue</button>
-          <button class="chip" data-v="playfair-display" style="font-family:'Playfair Display',serif;font-style:italic" type="button">Playfair</button>
-          <button class="chip" data-v="kaushan-script" style="font-family:'Kaushan Script',cursive" type="button">Kaushan Script</button>
-          <button class="chip" data-v="luckiest-guy" style="font-family:'Luckiest Guy',cursive" type="button">Luckiest Guy</button>
-          <button class="chip" data-v="cinzel" style="font-family:'Cinzel',serif" type="button">Cinzel</button>
-          <button class="chip" data-v="dm-sans" style="font-family:'DM Sans',sans-serif" type="button">DM Sans</button>
-        </div>
-        <div class="step-t">3 · Efeitos (um, vários ou nenhum)</div>
-        <div class="chips" id="c-efe">
-          <button class="chip" data-v="cinema" type="button">Cinema</button>
-          <button class="chip" data-v="sonho" type="button">Sonho</button>
-          <button class="chip" data-v="vhs" type="button">VHS</button>
-          <button class="chip" data-v="filme-antigo" type="button">Filme antigo</button>
-          <button class="chip" data-v="sombrio" type="button">Sombrio</button>
-          <button class="chip" data-v="manga" type="button">Mangá</button>
-          <button class="chip" data-v="rua" type="button">Rua</button>
-        </div>
-        <p class="mdesc" id="d-efe"></p>
-        <div class="say" aria-live="polite"><div><small>Você manda para o Claude</small><span id="mix-txt"></span></div><button class="copia" id="mix-copia" type="button">Copiar frase</button></div>
-        <p class="note">Pode escrever do seu jeito: o Claude entende. Dá para trocar legenda, fonte e efeitos a qualquer hora, até no mesmo vídeo.</p>
     </div>
   </div>
 </section>
@@ -711,22 +652,7 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
     if(liga){v.muted=false;toca(v);b.textContent='Tirar som';}
   });});
 
-  // misturador (só texto)
-  var leg='sample-yellow',fon='',efe=[];
-  var cmd={dinamica:'legenda-dinamica','3d-invisivel':'legenda-3d-invisivel'};
-  var nomes={cinema:'cinema',sonho:'sonho',vhs:'VHS','filme-antigo':'filme antigo',sombrio:'sombrio',manga:'mangá',rua:'rua'};
-  var dleg={'sample-yellow':'legenda de TV amarela, embaixo no centro, palavra por palavra.',street:'legenda pequena que se escreve sílaba por sílaba, com os gritos gigantes em letra gótica.','red-sharp':'legenda branca numa tarja preta e frases de impacto em vermelho.',mistury:'cada frase vira um cartaz com fontes misturadas.',rocks:'letras cromadas em escada, com a primeira letra gigante.',samplerocks:'a escada do Rocks com palavras amarelas que entram esticadas.',dinamica:'itálico elegante ao lado de quem fala, com o vídeo escuro.',invisible:'a letra é feita da própria imagem do vídeo.','3d-invisivel':'uma palavra por vez no centro, com relevo 3D.'};
-  var defe={cinema:'cor de filme e feixes de luz',sonho:'brilho suave e poeira de luz',vhs:'fita antiga com clarão nos cortes','filme-antigo':'Super 8 com grão e riscos',sombrio:'escuro, sem cor e com chuva',manga:'traço de tinta e linhas de impacto',rua:'contraste, colagem e glitch'};
-  var nleg=function(){var b=$('#c-leg .chip[aria-pressed="true"]');return b?b.textContent:leg;};
-  var txt=$('#mix-txt');
-  function pinta(){
-    var s='Faz o vídeo com a <b>/'+(cmd[leg]||leg)+'</b>';
-    if(fon) s+=', só que com a fonte <b>'+fon+'</b>';
-    if(efe.length) s+=(fon?',':'')+' e '+(efe.length>1?'os efeitos ':'o efeito ')+efe.map(function(e){return '<b>'+nomes[e]+'</b>';}).join(' + ');
-    txt.innerHTML=s+'.';
-    $('#d-leg').innerHTML='<b>'+nleg()+':</b> '+dleg[leg];
-    $('#d-efe').innerHTML=efe.length?efe.map(function(e){return '<b>'+nomes[e].charAt(0).toUpperCase()+nomes[e].slice(1)+':</b> '+defe[e];}).join(' · ')+'.':'Sem efeito, só a legenda. Toque em um ou mais para somar.';
-  }
+  // grupo de botões (um ou vários marcados)
   function grupo(sel,multi,cb){
     var bs=$$(sel+' .chip');
     bs.forEach(function(b){ if(!b.hasAttribute('aria-pressed')) b.setAttribute('aria-pressed','false');
@@ -736,16 +662,6 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
         cb(b,bs);
       });});
   }
-  grupo('#c-leg',false,function(b){ leg=b.dataset.v; pinta(); });
-  grupo('#c-fon',false,function(b){ fon=b.dataset.v; pinta(); });
-  grupo('#c-efe',true,function(b,bs){ efe=bs.filter(function(x){return x.getAttribute('aria-pressed')==='true';}).map(function(x){return x.dataset.v;}); pinta(); });
-  pinta();
-  var bc=$('#mix-copia');
-  bc.addEventListener('click',function(){
-    var t=txt.textContent, ok=function(){bc.textContent='Copiado';setTimeout(function(){bc.textContent='Copiar frase';},1600);};
-    try{ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,function(){});return;} }catch(e){}
-    try{ var r=document.createRange();r.selectNodeContents(txt);var sl=getSelection();sl.removeAllRanges();sl.addRange(r);document.execCommand('copy');ok(); }catch(e){}
-  });
 
   // cartões que viram
   $$('.flip').forEach(function(f){ f.addEventListener('click',function(){ var on=f.classList.toggle('on'); f.setAttribute('aria-pressed',on?'true':'false'); }); });
@@ -810,7 +726,7 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
     stage.addEventListener('pointermove',function(e){ if(e.pointerType!=='mouse')return; mouse=true; var r=stage.getBoundingClientRect();
       var x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5; rig.style.transform='rotateY('+(x*36-6)+'deg) rotateX('+(-y*22+6)+'deg)'; });
     stage.addEventListener('pointerleave',function(){ mouse=false; });
-    $$('.tilt,.panel,.tester').forEach(function(c){
+    $$('.tilt,.tester').forEach(function(c){
       c.addEventListener('pointermove',function(e){ if(e.pointerType!=='mouse')return; var r=c.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
         var base=c.classList.contains('us')&&window.innerWidth>1000?' translateZ(40px) scale(1.04)':'';
         c.style.transform='perspective(900px) rotateY('+(x*8)+'deg) rotateX('+(-y*8)+'deg) translateZ(6px)'+base; });

@@ -20,7 +20,7 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
 - Fish Audio: ele diz que é gratuito e com vozes de personagens; NÃO colocar no produto a dica de criar outra conta quando os
   créditos acabam (fere os termos; risco de bloqueio dos alunos). Aviso sobre "voz de pessoa real" foi tirado da página a pedido dele.
 - Página: nada com cara de IA. Ele REJEITOU: escuro + vermelho, escuro + amarelo, a seção "Combinações reais", a seção de nichos
-  (Fé/Motivação/Anime/Futebol). Ele APROVOU: claro + azul cobalto, 3D, o misturador "Monte sua combinação" ("ficou monstruosa").
+  (Fé/Motivação/Anime/Futebol). Ele APROVOU: claro + azul cobalto, 3D, (o misturador "Monte sua combinação" foi aprovado em 13/out, mas em 14/out ele pediu para TIRAR: não recolocar).
 - Música de terceiros dentro do produto pago: avisado que é distribuição; decisão pendente (ver PLANO). Trilha original sem direitos:
   `trilha/compor.py` do motor.
 - NÃO escrever que o plano pago do Claude (Pro) é obrigatório (pedido dele, 14/out: testou no chat dele e gerou vídeo, só mais
@@ -50,9 +50,9 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
 - `venda/demo-recomecar/` — vídeo "Mandei uma frase. Isso voltou." (feito de verdade: roteiro, voz ElevenLabs, NASA, Sample Yellow
   + fonte gótica pirata-one + cinema + sonho, trilha original) + `chat.html` (abertura) + NOTAS.md.
 
-## Página de vendas (estado em 13/out)
+## Página de vendas (estado em 14/out)
 Clara, azul cobalto, fontes Bricolage Grotesque + Geist. Seções: topo 3D (celular inclinado com legenda/comandos saindo da tela,
-vídeo "mandei uma frase") → números → "Tudo em uma skill só" (7 cartões que se juntam ao rolar) → misturador legenda+fonte+efeitos (só texto, sem vídeo: pedido dele 14/out)
+vídeo "mandei uma frase") → números → "Tudo em uma skill só" (7 cartões que se juntam ao rolar)
 → dores que viram (flip) + calculadora de horas → compilados (9 legendas, 7 efeitos) → conversa animada (como funciona) →
 equipe (6 skills) → carrossel 3D das 9 legendas → testador de fontes → capa 3D dos 7 efeitos → formatos → antes/depois arrastável
 ("1 Samuel 16") → comparação em 3 colunas → "Só de uma coisa: Claude Code" + bônus → oferta (borda girando) → FAQ → final 3D.
