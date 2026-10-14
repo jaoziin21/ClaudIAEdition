@@ -48,6 +48,7 @@ fs.unlinkSync(grafo);
 for (const n of nomes.filter(n => CAT[n].processo)) {
   const ent = (cfg.efeitos || []).find(e => typeof e === 'object' && e.nome === n) || {};
   const { nome, momentos, ...op } = { ...(CAT[n].padrao || {}), ...ent };
+  if (op.mascara) op.mascara = path.resolve(dir, op.mascara);   // máscara própria do sujeito: caminho relativo à pasta do projeto
   const durEf = +(op.duracao || 3), folga = durEf + 0.8;
   let mom = momentos || [];
   if (!mom.length) for (const c of (cfg.cenas || []).map(c => c.t).filter(t => t > 0.3 && t < dur - 1).sort((a, b) => a - b))

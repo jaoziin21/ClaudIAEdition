@@ -40,6 +40,7 @@ GRUPOS = [
         ('efeito-cinema', '/efeito-cinema', 'Cor de cinema (azul-petróleo e laranja), feixes de luz e poeira de luz.', 'motor + uma legenda'),
         ('efeito-rua', '/efeito-rua', 'Escuro e contrastado, colagem de painéis e glitch nos cortes.', 'motor + uma legenda'),
         ('efeito-xerox', '/efeito-xerox', 'Cópia de xerox que invade a imagem nos cortes: retícula, rastros de pixel sort, glitch e RGB separado, e volta ao normal.', 'motor + uma legenda'),
+        ('efeito-parallax', '/efeito-parallax', 'Recorta a pessoa do vídeo e monta uma colagem em camadas: fundo deslizando, ecos dela em outras cores, placas de papel, e volta ao normal.', 'motor + uma legenda'),
     ]),
     ('5-formatos-de-video', 'formatos-de-video', 'Formatos de vídeo', 'O tipo de vídeo: de onde vem a imagem e como ela se mexe. Junte com qualquer legenda e efeito.', [
         ('video-gif', '/video-gif', 'Um GIF em loop sem emenda, ampliado com IA, no meio da tela vertical, com a legenda ao lado do personagem.', 'motor + uma legenda'),

@@ -2,7 +2,7 @@
 
 # Editor no Piloto · skills
 
-31 skills para o Claude Code que fazem vídeos curtos (Reels, TikTok, Shorts) a partir de uma frase: roteiro, voz, legenda,
+32 skills para o Claude Code que fazem vídeos curtos (Reels, TikTok, Shorts) a partir de uma frase: roteiro, voz, legenda,
 edição, música, efeitos e post. Cada skill é independente: instale todas ou só as que quiser. O **motor** vai junto sempre.
 
 ## As pastas
@@ -14,7 +14,7 @@ edição, música, efeitos e post. Cada skill é independente: instale todas ou 
 </tr>
 <tr>
 <td width="50%" valign="top"><a href="3-legendas/"><img src="3-legendas/capa.png" width="100%"></a><br><b><a href="3-legendas/">3 · Legendas</a></b> <sub>(10)</sub><br><sub>Cada uma é um estilo completo de legenda animada. Dá para trocar a fonte de qualquer uma (`/fontes`) e somar os efeitos que quiser.</sub></td>
-<td width="50%" valign="top"><a href="4-efeitos/"><img src="4-efeitos/capa.png" width="100%"></a><br><b><a href="4-efeitos/">4 · Efeitos</a></b> <sub>(9)</sub><br><sub>Pacotes de efeito que somam com qualquer legenda. Peça um ou vários no mesmo vídeo: eles se juntam na ordem pedida.</sub></td>
+<td width="50%" valign="top"><a href="4-efeitos/"><img src="4-efeitos/capa.png" width="100%"></a><br><b><a href="4-efeitos/">4 · Efeitos</a></b> <sub>(10)</sub><br><sub>Pacotes de efeito que somam com qualquer legenda. Peça um ou vários no mesmo vídeo: eles se juntam na ordem pedida.</sub></td>
 </tr>
 <tr>
 <td width="50%" valign="top"><a href="5-formatos-de-video/"><img src="5-formatos-de-video/capa.png" width="100%"></a><br><b><a href="5-formatos-de-video/">5 · Formatos de vídeo</a></b> <sub>(6)</sub><br><sub>O tipo de vídeo: de onde vem a imagem e como ela se mexe. Junte com qualquer legenda e efeito.</sub></td>
@@ -118,6 +118,7 @@ Por dentro (no `lado.json` do projeto): `"estilo": "sample-yellow", "trocaFonte"
 | `/efeito-cinema` | Cor de cinema (azul-petróleo e laranja), feixes de luz e poeira de luz. | motor + uma legenda |
 | `/efeito-rua` | Escuro e contrastado, colagem de painéis e glitch nos cortes. | motor + uma legenda |
 | `/efeito-xerox` | Cópia de xerox que invade a imagem nos cortes: retícula, rastros de pixel sort, glitch e RGB separado, e volta ao normal. | motor + uma legenda |
+| `/efeito-parallax` | Recorta a pessoa do vídeo e monta uma colagem em camadas: fundo deslizando, ecos dela em outras cores, placas de papel, e volta ao normal. | motor + uma legenda |
 
 **[Formatos de vídeo](5-formatos-de-video/)**
 

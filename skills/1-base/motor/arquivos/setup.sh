@@ -18,4 +18,6 @@ if [ -d /opt/pw-browsers ]; then :; else npx --yes playwright install chromium >
 python3 -c "import numpy" 2>/dev/null || python3 -m pip install -q numpy 2>/dev/null || python3 -m pip install -q --break-system-packages numpy || true
 # OpenCV: efeitos de processo quadro a quadro (ex.: /efeito-xerox)
 python3 -c "import cv2" 2>/dev/null || python3 -m pip install -q opencv-python-headless 2>/dev/null || python3 -m pip install -q --break-system-packages opencv-python-headless || true
+# recorte de pessoa (rembg) só se a skill /efeito-parallax estiver instalada; o modelo (176 MB) baixa no 1º uso
+if [ -f efeitos/processo/parallax.py ]; then python3 -c "import rembg" 2>/dev/null || python3 -m pip install -q "rembg[cpu]" 2>/dev/null || python3 -m pip install -q --break-system-packages "rembg[cpu]" || true; fi
 echo "motor pronto"
