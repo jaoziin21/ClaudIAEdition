@@ -4,6 +4,8 @@
 //     → as partes de IMAGEM dos efeitos são encadeadas na ordem; as de TELA o render_lado.mjs desenha por cima/baixo da legenda.
 //   Sem efeito de imagem na lista → usa o filtro do estilo de legenda (como antes), a não ser que "efeitosDaLegenda": false
 //   (aí sai só a imagem limpa: recorte + nitidez).
+//   Efeitos de PROCESSO (ex.: "xerox"): rodam depois, quadro a quadro, por cima da faixa pronta, só nos momentos do efeito
+//   ({"nome":"xerox","momentos":[2.1,8.4], ...controles}; sem "momentos" = nos cortes das cenas, com folga entre um e outro).
 // Saída padrão: projeto_dir/faixa.mp4
 import fs from 'fs'; import path from 'path'; import { execFileSync } from 'child_process';
 const [,, entrada, dir, saida0, ini0, dur0] = process.argv;
@@ -43,4 +45,17 @@ console.log(`faixa: ${looks.length ? 'efeitos ' + looks.join(' + ') : (cfg.efeit
 execFileSync('ffmpeg', ['-v', 'error', '-y', ...inputs, '-an', '-filter_complex_script', grafo, '-map', '[v]', '-t', String(dur),
   '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '16', '-pix_fmt', 'yuv420p', saida], { stdio: 'inherit' });
 fs.unlinkSync(grafo);
+for (const n of nomes.filter(n => CAT[n].processo)) {
+  const ent = (cfg.efeitos || []).find(e => typeof e === 'object' && e.nome === n) || {};
+  const { nome, momentos, ...op } = { ...(CAT[n].padrao || {}), ...ent };
+  const durEf = +(op.duracao || 3), folga = durEf + 0.8;
+  let mom = momentos || [];
+  if (!mom.length) for (const c of (cfg.cenas || []).map(c => c.t).filter(t => t > 0.3 && t < dur - 1).sort((a, b) => a - b))
+    if (!mom.length || c - mom[mom.length - 1] >= folga) mom.push(c);
+  if (!mom.length) mom = [Math.min(0.6, dur / 3)];
+  const tmp = saida.replace(/\.mp4$/, '') + `.${n}.mp4`;
+  console.log(`processo ${n}: momentos ${mom.join(', ')}`);
+  execFileSync('python3', [path.join('efeitos/processo', CAT[n].processo), saida, tmp, '--momentos', mom.join(','), '--opcoes', JSON.stringify(op)], { stdio: 'inherit' });
+  fs.renameSync(tmp, saida);
+}
 console.log('PRONTO', saida);

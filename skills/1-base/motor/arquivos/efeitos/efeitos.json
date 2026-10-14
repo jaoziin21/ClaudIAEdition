@@ -17,5 +17,6 @@
  "flash":       { "tela": "flash.js", "descricao": "Clarão branco de 3 quadros em cada corte (opção \"chaves\": true = também nas palavras-chave)" },
  "particulas":  { "tela": "particulas.js", "descricao": "NOVO — Poeira de luz / bokeh quente flutuando devagar (opções: forca, cor \"r,g,b\")" },
  "chuva":       { "tela": "chuva.js", "descricao": "NOVO — Chuva fina inclinada caindo, com leve escurecida (opção forca)" },
- "colagem":     { "tela": "colagem.js", "colagem": 28, "descricao": "Painéis com outros momentos do próprio vídeo pipocando nos cortes e nas palavras-chave (do Street)" }
+ "colagem":     { "tela": "colagem.js", "colagem": 28, "descricao": "Painéis com outros momentos do próprio vídeo pipocando nos cortes e nas palavras-chave (do Street)" },
+ "xerox":       { "processo": "xerox.py", "descricao": "Xerox halftone / pixel sort: em momentos escolhidos (padrão: nos cortes), a própria imagem vira cópia xerográfica numa região que se espalha (retícula de pontos, papel, toner, contraste), com rastros de pixel sort, glitch em faixas e separação RGB no pico; depois se desfaz e a filmagem volta. Controles: intensidade, mistura, reticula, densidade, angulo, contraste, grao, sort_dir, sort_comp, sort_limiar, frag, rgb, regiao, raio, duracao, entrada, saida, semente, momentos" }
 }

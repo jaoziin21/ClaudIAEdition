@@ -5,5 +5,6 @@
  "vhs":          { "efeitos": ["vhs", "flash"], "de": "Rocks (aprovado)", "descricao": "Fita VHS: imagem macia, borda colorida, grão, varredura, faixa de tracking + clarão branco nos cortes" },
  "sombrio":      { "efeitos": ["noir", "vinheta-vermelha", "chuva"], "de": "Red Sharp (aprovado) + chuva", "descricao": "Escuro, frio e sem cor, chuva fina caindo e bordas pulsando em vermelho nas palavras-chave — para vídeos pesados/de luta" },
  "cinema":       { "efeitos": ["cinema", "feixes", "particulas"], "de": "luz do 3D invisível + partículas (novo)", "descricao": "Cor de cinema (sombras azul-petróleo, luzes alaranjadas), feixes de luz quentes passando e poeira de luz — épico e limpo" },
- "rua":          { "efeitos": ["contraste", "colagem", "glitch"], "de": "Street (aprovado)", "descricao": "Escuro e contrastado, painéis de colagem com outros momentos do vídeo nos cortes e palavras-chave, glitch nos cortes" }
+ "rua":          { "efeitos": ["contraste", "colagem", "glitch"], "de": "Street (aprovado)", "descricao": "Escuro e contrastado, painéis de colagem com outros momentos do vídeo nos cortes e palavras-chave, glitch nos cortes" },
+ "xerox":        { "efeitos": ["xerox"], "descricao": "Xerox halftone / pixel sort: nos cortes, a imagem vira cópia de xerox com retícula, rastros de pixels, glitch em faixas e RGB separado por ~3 s, e volta ao normal" }
 }

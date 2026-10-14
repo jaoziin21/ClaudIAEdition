@@ -31,7 +31,7 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
   Wikimedia (limite de requisições) e Internet Archive funcionam (NASA "EarthInHd" e "Gulliver's Travels 1939" = domínio público).
 
 ## Onde está cada coisa
-- `skills/` — 29 skills + motor, cada uma independente, DIVIDIDAS EM GRUPOS (pedido dele, 14/out: "não joga tudo numa pasta só"):
+- `skills/` — 30 skills + motor, cada uma independente, DIVIDIDAS EM GRUPOS (pedido dele, 14/out: "não joga tudo numa pasta só"):
   `1-base/` (motor), `2-roteiro-voz-post/`, `3-legendas/`, `4-efeitos/`, `5-formatos-de-video/`. Cada grupo tem README com vitrine
   e `capa.png`. Instalação: `bash skills/instalar.sh <pasta-do-canal> [skills ou grupos]` (ex.: `legendas efeitos`); no canal do
   aluno tudo fica plano em `.claude/skills/<nome>/`. Catálogo: `skills/README.md`. Skill nova: pasta no grupo certo + uma linha em
@@ -76,4 +76,7 @@ Sem preço e sem link de pagamento ainda (botões vão para #oferta). Garantia d
    Antigo: legendas novas criadas do zero (ideias: Cinética 3D, Recorte/colagem, Neon,
    Holograma) e efeitos novos (Brasas, Câmera na mão, Zoom na batida, Prisma, Neve/poeira, Faixas de cinema, Duotone).
    Fazer teste de 5 s de cada para ele aprovar antes de virar comando.
+   FEITO 14/out: `/efeito-xerox` (Xerox Halftone / Pixel Sort, prompt dele) APROVADO e no produto. É o 1º efeito de PROCESSO
+   (`motor/efeitos/processo/xerox.py`, numpy + OpenCV, quadro a quadro, nos cortes ou em `momentos`); o `faixa.mjs` do motor roda
+   esse tipo no fim. A PÁGINA ainda diz "29 skills" e "7 efeitos" (capa 3D dos efeitos sem o xerox): atualizar se ele pedir.
 5. **Pendências dele:** deixar este repositório PRIVADO (está público e as skills estão aqui); mandar as músicas para a `/musica`.
