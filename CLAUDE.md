@@ -52,7 +52,7 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
 
 ## Página de vendas (estado em 13/out)
 Clara, azul cobalto, fontes Bricolage Grotesque + Geist. Seções: topo 3D (celular inclinado com legenda/comandos saindo da tela,
-vídeo "mandei uma frase") → números → "Tudo em uma skill só" (7 cartões que se juntam ao rolar) → misturador legenda+fonte+efeitos
+vídeo "mandei uma frase") → números → "Tudo em uma skill só" (7 cartões que se juntam ao rolar) → misturador legenda+fonte+efeitos (só texto, sem vídeo: pedido dele 14/out)
 → dores que viram (flip) + calculadora de horas → compilados (9 legendas, 7 efeitos) → conversa animada (como funciona) →
 equipe (6 skills) → carrossel 3D das 9 legendas → testador de fontes → capa 3D dos 7 efeitos → formatos → antes/depois arrastável
 ("1 Samuel 16") → comparação em 3 colunas → "Só de uma coisa: Claude Code" + bônus → oferta (borda girando) → FAQ → final 3D.
