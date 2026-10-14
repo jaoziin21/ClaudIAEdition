@@ -34,6 +34,11 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
   aluno tudo fica plano em `.claude/skills/<nome>/`. Catálogo: `skills/README.md`. Skill nova: pasta no grupo certo + uma linha em
   `GRUPOS` no `venda/ferramentas/readmes.py` + rodar readmes.py e capas.cjs.
   Testado instalando só motor + 1 skill numa pasta vazia. FALTA: `/musica` (ele vai mandar as músicas).
+- `venda/entrega/` — o que o COMPRADOR recebe (14/out): `CLAUDE.md` (o Claude dele lê e instala tudo quando ele escreve "instala";
+  a pasta descompactada vira o canal), `guia.html` → `COMECE-AQUI.pdf` (7 páginas: caminhos A app do Claude [recomendado],
+  B terminal, C nuvem/celular via GitHub privado + upload do ZIP; primeiro vídeo; comandos; dicas; problemas), `TERMOS-DE-USO.txt`,
+  `LEIA-ME.txt`, `gitignore`. Gerar: `bash venda/ferramentas/gera_entrega.sh` → `venda/entrega/saida/Editor-no-Piloto.zip`
+  (fora do git: o repositório é público). Rodar de novo sempre que mudar skill. Testado: descompactar + instalar + setup.sh ok.
 - `venda/PLANO.md` — plano do produto e da venda (decisões e etapas).
 - `venda/pagina/editor-no-piloto.html` — página de vendas (fonte, com `vid/` e `img/`). Publicada como artifact privado:
   https://claude.ai/artifact/MpJwaRJrwGDGDabHLxzd4v (atualizar com Artifact publish + `url`, depois de ler).
@@ -57,8 +62,9 @@ Sem preço e sem link de pagamento ainda (botões vão para #oferta). Garantia d
 2. **Vender:** recomendação = **Kirvano** (checkout, Pix, entrega do ZIP, afiliados, sem mensalidade) + página no **Netlify Drop**
    (grátis; domínio .com.br no registro.br opcional). Shopify só se um dia tiver loja com vários produtos.
    Quando ele mandar o link de checkout: colocar em todos os botões (topo, oferta, final, barra do celular) e regerar `venda/site/`.
-3. Ainda a fazer quando ele pedir: ZIP de entrega para o comprador (skills + guia de instalação em PDF); termos de uso, política
-   de privacidade e e-mail de contato no rodapé; pixel do Meta/TikTok; preço.
+3. FEITO 14/out: ZIP de entrega + guia PDF + termos de uso (licença pessoal; permite vídeos para clientes — confirmar com ele).
+   Ainda a fazer quando ele pedir: política de privacidade e e-mail de contato no rodapé da página; pixel do Meta/TikTok; preço;
+   subir o ZIP na Kirvano.
 4. **Depois (ele disse "a gente fala disso depois"):** legendas novas criadas do zero (ideias: Cinética 3D, Recorte/colagem, Neon,
    Holograma) e efeitos novos (Brasas, Câmera na mão, Zoom na batida, Prisma, Neve/poeira, Faixas de cinema, Duotone).
    Fazer teste de 5 s de cada para ele aprovar antes de virar comando.

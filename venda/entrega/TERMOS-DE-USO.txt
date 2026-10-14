@@ -1,0 +1,23 @@
+EDITOR NO PILOTO — TERMOS DE USO (LICENÇA PESSOAL)
+
+1. Ao comprar, você recebe uma licença pessoal e intransferível para usar as skills do Editor no Piloto
+   nos seus próprios canais e nos vídeos que você produz, inclusive vídeos monetizados e vídeos feitos para clientes.
+
+2. Os vídeos que você fizer são seus. Não há royalties nem limite de vídeos.
+
+3. NÃO é permitido: revender, compartilhar, distribuir, publicar (GitHub público, grupos, drives, sites) ou dar
+   o pacote, no todo ou em parte, a outras pessoas, com ou sem cobrança; nem usar o conteúdo para criar e vender
+   um produto concorrente. Se você usa as skills num repositório do GitHub, ele deve ficar PRIVADO.
+
+4. Você é responsável pelo material que coloca nos vídeos (imagens, cenas, músicas, vozes). Use material que você
+   tem direito de usar e respeite as regras de cada plataforma.
+
+5. O Editor no Piloto é um produto independente. Ele roda no Claude Code, que é da Anthropic e é contratado à parte
+   (plano pago). Não temos ligação com a Anthropic, com o ElevenLabs, com o Fish Audio nem com as redes sociais citadas.
+
+6. Garantia: 7 dias a partir da compra, pela plataforma onde você comprou.
+
+7. Componentes de terceiros mantêm as próprias licenças (fontes OFL, Whisper Apache-2.0, Real-ESRGAN BSD-3);
+   veja skills/README.md.
+
+O descumprimento destes termos cancela a licença.

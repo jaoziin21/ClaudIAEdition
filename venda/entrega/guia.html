@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Editor no Piloto · Comece aqui</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@page{size:A4;margin:0}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f3f4f6;--ink:#0c0e13;--muted:#5b6070;--blue:#2b5cff;--blue-d:#1f47d6;--blue-l:#7d9cff;--blue-soft:#e6ecff;--line:#e2e4ea;--card:#fff;--green:#18b26b;--red:#e5484d;--stage:#0c0e13;--stage-2:#161922}
+body{font-family:Geist,sans-serif;color:var(--ink);font-size:10.2pt;line-height:1.47;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pg{width:210mm;height:297mm;padding:18mm 17mm 16mm;position:relative;overflow:hidden;page-break-after:always;background:var(--bg)}
+.pg:last-child{page-break-after:auto}
+.rodape{position:absolute;left:17mm;right:17mm;bottom:9mm;display:flex;justify-content:space-between;font-family:'Geist Mono',monospace;font-size:7.5pt;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.rot{font-family:'Geist Mono',monospace;font-size:8.5pt;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:8px;margin-bottom:4mm}
+.rot b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:7px;background:var(--blue);color:#fff;font-weight:500;letter-spacing:0}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34pt;line-height:.95;letter-spacing:-.03em;margin-bottom:4mm}
+h1 em,h2 em{font-style:normal;color:var(--blue)}
+h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:15pt;letter-spacing:-.02em;margin:4.5mm 0 2.2mm}
+h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:12pt;letter-spacing:-.01em;margin-bottom:1.5mm}
+.lead{font-size:12pt;color:var(--muted);max-width:150mm;margin-bottom:5mm}
+p+p{margin-top:2mm}
+.muted{color:var(--muted)}
+code,.mono{font-family:'Geist Mono',monospace;font-size:.9em;background:var(--blue-soft);color:var(--blue-d);padding:1px 5px;border-radius:5px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:5mm 5.5mm}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3.5mm}
+.passo{display:grid;grid-template-columns:11mm 1fr;gap:3mm;align-items:start;margin-bottom:3.2mm}
+.passo .n{width:11mm;height:11mm;border-radius:10px;background:var(--blue);color:#fff;font-family:'Bricolage Grotesque';font-weight:800;font-size:15pt;display:grid;place-items:center}
+.passo h3{margin-top:.6mm}
+.term{background:var(--stage);color:#eef0f5;border-radius:10px;padding:2.2mm 4mm;font-family:'Geist Mono',monospace;font-size:8.6pt;line-height:1.6;margin-top:2mm;white-space:pre-wrap;word-break:break-all}
+.term .c{color:#9aa0b0}.term .a{color:#7d9cff}.term .ok{color:#18b26b}
+.dica{border-left:3px solid var(--blue);background:var(--blue-soft);border-radius:0 10px 10px 0;padding:3mm 4mm;margin-top:3mm;font-size:9.6pt}
+.alerta{border-left:3px solid var(--red);background:#fdecec;border-radius:0 10px 10px 0;padding:3mm 4mm;margin-top:3mm;font-size:9.6pt}
+.tag{display:inline-block;font-family:'Geist Mono',monospace;font-size:7.5pt;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--blue);color:#fff;vertical-align:middle;margin-left:4px}
+.tag.cinza{background:var(--line);color:var(--muted)}
+ul.check{list-style:none}
+ul.check li{padding-left:7mm;position:relative;margin-bottom:1.6mm}
+ul.check li:before{content:"✓";position:absolute;left:0;top:0;width:4.6mm;height:4.6mm;border-radius:50%;background:var(--green);color:#fff;font-size:7pt;display:grid;place-items:center;font-weight:700}
+/* janelas desenhadas */
+.jan{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 14px 30px -18px rgba(12,14,19,.35)}
+.jan .barra{height:7mm;background:#eceef3;display:flex;align-items:center;gap:5px;padding:0 3mm;font-family:'Geist Mono',monospace;font-size:7pt;color:var(--muted)}
+.jan .barra i{width:8px;height:8px;border-radius:50%;background:#d3d6de}
+.jan .barra span{margin-left:auto}
+.jan .corpo{padding:3.5mm}
+.abas{display:flex;gap:2mm;justify-content:center;margin-bottom:3mm}
+.abas span{font-size:8pt;padding:3px 10px;border-radius:999px;color:var(--muted)}
+.abas span.on{background:var(--ink);color:#fff}
+.bolha{border-radius:12px;padding:2.4mm 3.4mm;font-size:9pt;margin-bottom:2mm;max-width:88%}
+.bolha.eu{background:var(--blue);color:#fff;margin-left:auto;border-bottom-right-radius:3px}
+.bolha.ele{background:#f1f2f6;border-bottom-left-radius:3px}
+.bolha small{display:block;font-family:'Geist Mono',monospace;font-size:7pt;opacity:.7;margin-bottom:.6mm}
+.btn{display:inline-block;font-size:8pt;padding:3px 10px;border-radius:7px;background:var(--blue);color:#fff;margin-right:4px}
+.btn.cinza{background:#eceef3;color:var(--ink)}
+/* capa */
+.capa{background:var(--stage);color:#eef0f5;padding:0}
+.capa .grade{position:absolute;inset:0;background-image:linear-gradient(#1c2030 1px,transparent 1px),linear-gradient(90deg,#1c2030 1px,transparent 1px);background-size:11mm 11mm;-webkit-mask-image:radial-gradient(circle at 70% 30%,#000 0,transparent 75%)}
+.capa .brilho{position:absolute;right:-60mm;top:-50mm;width:190mm;height:190mm;border-radius:50%;background:radial-gradient(circle,rgba(43,92,255,.55),transparent 65%)}
+.capa .dentro{position:absolute;left:18mm;right:18mm;top:24mm;bottom:20mm;display:flex;flex-direction:column}
+.capa .rot{color:var(--blue-l)}
+.capa h1{font-size:62pt;line-height:.88;margin:6mm 0 6mm;color:#fff}
+.capa h1 em{color:var(--blue-l)}
+.capa .lead{color:#b8bdcc;font-size:14pt;max-width:130mm}
+.capa .fotos{display:grid;grid-template-columns:repeat(3,1fr);gap:3mm;margin-top:auto;transform:perspective(900px) rotateX(10deg) rotateY(-8deg);transform-origin:left bottom}
+.capa .fotos img{width:100%;border-radius:9px;display:block;box-shadow:0 18px 30px -12px rgba(0,0,0,.6)}
+.capa .passos4{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;margin-top:9mm}
+.capa .passos4 div{border:1px solid #262a35;border-radius:12px;padding:3.5mm;background:rgba(22,25,34,.8)}
+.capa .passos4 b{display:block;font-family:'Bricolage Grotesque';font-size:18pt;color:var(--blue-l);line-height:1}
+.capa .passos4 span{font-size:9pt;color:#cfd3de}
+/* catálogo */
+.cmd{background:#fff;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.cmd img{width:100%;height:16mm;object-fit:cover;display:block}
+.cmd div{padding:2mm 2.6mm 2.4mm}
+.cmd b{font-family:'Geist Mono',monospace;font-size:8pt;color:var(--blue-d);display:block}
+.cmd span{font-size:7.6pt;color:var(--muted);line-height:1.35;display:block;margin-top:.6mm}
+.lista td{padding:1.1mm 2mm;border-bottom:1px solid var(--line);vertical-align:top;font-size:9pt}
+.lista td:first-child{white-space:nowrap;width:34mm}
+.lista{border-collapse:collapse;width:100%}
+.faq h3{font-size:10.5pt;margin-bottom:.8mm}
+.faq>div{margin-bottom:2.2mm}
+</style></head><body>
+
+<!-- 1. CAPA -->
+<section class="pg capa"><div class="grade"></div><div class="brilho"></div>
+<div class="dentro">
+  <div class="rot">Guia de instalação e primeiro vídeo</div>
+  <h1>Comece<br><em>aqui.</em></h1>
+  <p class="lead">Do zero ao seu primeiro vídeo com o Editor no Piloto, mesmo que você nunca tenha mexido com programação.</p>
+  <div class="passos4">
+    <div><b>1</b><span>Assinar e instalar o Claude</span></div>
+    <div><b>2</b><span>Abrir esta pasta nele</span></div>
+    <div><b>3</b><span>Escrever "instala"</span></div>
+    <div><b>4</b><span>Digitar /comecar e fazer o 1º vídeo</span></div>
+  </div>
+  <div class="fotos">
+    <img src="../../skills/3-legendas/sample-yellow/exemplo.jpg"><img src="../../skills/3-legendas/street/exemplo.jpg"><img src="../../skills/3-legendas/red-sharp/exemplo.jpg">
+    <img src="../../skills/4-efeitos/efeito-cinema/exemplo.jpg"><img src="../../skills/3-legendas/mistury/exemplo.jpg"><img src="../../skills/4-efeitos/efeito-vhs/exemplo.jpg">
+  </div>
+</div>
+<div class="rodape" style="color:#6b7080"><span>Editor no Piloto</span><span>Comece aqui</span></div>
+</section>
+
+<!-- 2. O QUE PRECISA + CAMINHOS -->
+<section class="pg">
+<div class="rot"><b>0</b>Antes de começar</div>
+<h1>O que você <em>precisa</em></h1>
+<p class="lead">Pouca coisa. O resto o próprio Claude instala para você.</p>
+<div class="grid2">
+  <div class="card"><h3>Obrigatório</h3>
+    <ul class="check">
+      <li><b>Plano pago do Claude</b> (Pro ou superior). O plano grátis não inclui o Claude Code. Assine em <span class="mono">claude.ai</span>.</li>
+      <li><b>Um computador</b> Windows 10/11 ou Mac (macOS 13 ou mais novo), com 4 GB de memória ou mais. <i>Ou</i> só o celular/navegador, pelo caminho C.</li>
+      <li><b>Internet</b> e uns 2 GB livres no disco.</li>
+    </ul></div>
+  <div class="card"><h3>Opcional</h3>
+    <ul class="check">
+      <li><b>Voz:</b> conta no ElevenLabs ou no Fish Audio (tem opção gratuita), ou a sua própria voz gravada no celular.</li>
+      <li><b>Material de fundo:</b> GIFs, cenas e fotos. Se você não tiver, o comando <code>/buscar-midia</code> procura para você.</li>
+    </ul></div>
+</div>
+<div class="dica"><b>Quanto custa por vídeo?</b> Nada além do plano do Claude. A edição, a legenda e a mistura do som rodam no seu computador com programas gratuitos.</div>
+
+<h2>Escolha o seu <em>caminho</em></h2>
+<div class="grid3">
+  <div class="card" style="border:2px solid var(--blue)"><div class="rot" style="margin-bottom:2mm"><b>A</b>Recomendado</div><h3>App do Claude no computador</h3><p class="muted" style="font-size:9.2pt">Sem terminal, tudo com cliques. Para Windows e Mac. <b>Se está em dúvida, vá por aqui.</b></p><p style="font-size:9pt;margin-top:2mm">→ página 3</p></div>
+  <div class="card"><div class="rot" style="margin-bottom:2mm"><b>B</b>Para quem já usa</div><h3>Terminal</h3><p class="muted" style="font-size:9.2pt">O mesmo Claude Code, numa janela de comandos. Bom se você já se vira com terminal.</p><p style="font-size:9pt;margin-top:2mm">→ página 4</p></div>
+  <div class="card"><div class="rot" style="margin-bottom:2mm"><b>C</b>Sem computador</div><h3>Nuvem: celular ou navegador</h3><p class="muted" style="font-size:9.2pt">Roda nos computadores da Anthropic. Precisa de uma conta grátis no GitHub.</p><p style="font-size:9pt;margin-top:2mm">→ página 4</p></div>
+</div>
+<div class="dica" style="margin-top:5mm">Primeiro <b>descompacte o ZIP</b> que você baixou. No Windows: clique com o botão direito no arquivo → <b>Extrair tudo</b>. No Mac: clique duas vezes. Vai aparecer a pasta <b>Editor-no-Piloto</b>. Guarde ela num lugar fácil, como <b>Documentos</b>, porque <b>essa pasta vai virar o seu canal</b>: tudo o que você editar fica lá dentro.</div>
+<div class="rodape"><span>Editor no Piloto</span><span>2</span></div>
+</section>
+
+<!-- 3. CAMINHO A -->
+<section class="pg">
+<div class="rot"><b>A</b>App do Claude no computador</div>
+<h1>Instalando com <em>cliques</em></h1>
+<div class="grid2" style="grid-template-columns:1.15fr .85fr;gap:6mm">
+<div>
+  <div class="passo"><div class="n">1</div><div><h3>Baixe o app do Claude</h3>Entre em <span class="mono">claude.com/download</span>, baixe a versão do seu sistema (Windows ou Mac), instale e entre com a sua conta (a do plano pago).</div></div>
+  <div class="passo"><div class="n">2</div><div><h3>Abra a aba Code</h3>No topo do app há três abas: Chat, Cowork e <b>Code</b>. Clique em <b>Code</b>. Se pedir para assinar um plano, é porque a conta ainda está no grátis.</div></div>
+  <div class="passo"><div class="n">3</div><div><h3>Escolha a pasta</h3>Deixe marcado <b>Local</b> e clique em <b>Select folder</b> (Selecionar pasta). Escolha a pasta <b>Editor-no-Piloto</b> que você descompactou.</div></div>
+  <div class="passo"><div class="n">4</div><div><h3>Escreva: <span class="mono">instala</span></h3>Só isso. O Claude lê as instruções que vêm na pasta e faz a instalação sozinho: copia os comandos, prepara o editor e instala o que faltar no computador (Git, Node.js, Python e ffmpeg, todos gratuitos).</div></div>
+  <div class="passo"><div class="n">5</div><div><h3>Feche e abra de novo</h3>Quando ele disser "Pronto", feche o app, abra de novo, entre na mesma pasta e digite <code>/comecar</code>. Continue na página 5.</div></div>
+</div>
+<div>
+  <div class="jan"><div class="barra"><i></i><i></i><i></i><span>Claude</span></div><div class="corpo">
+    <div class="abas"><span>Chat</span><span>Cowork</span><span class="on">Code</span></div>
+    <div style="display:flex;gap:2mm;margin-bottom:3mm"><span class="btn">Local</span><span class="btn cinza">Cloud</span></div>
+    <div style="border:1px dashed var(--blue);border-radius:9px;padding:3mm;font-size:8.6pt;margin-bottom:3mm">📁 Documentos / <b>Editor-no-Piloto</b></div>
+    <div class="bolha eu">instala</div>
+    <div class="bolha ele"><small>Claude</small>Bem-vindo! Esta pasta vai virar o seu canal. Vou instalar tudo agora, leva alguns minutos…</div>
+    <div class="bolha ele"><small>Claude</small>Posso rodar este comando?<br><span class="btn" style="margin-top:1.5mm">Permitir</span><span class="btn cinza">Negar</span></div>
+  </div></div>
+  <p class="muted" style="font-size:8pt;margin-top:2mm;text-align:center">Ilustração. Os nomes dos botões podem aparecer em inglês ou português.</p>
+</div>
+</div>
+<div class="dica"><b>Ele vai pedir permissão várias vezes.</b> É normal: o Claude pergunta antes de rodar cada comando ou instalar um programa. Clique em <b>Permitir</b> (Allow / Yes). No Windows ou no Mac pode aparecer também uma janela do próprio sistema pedindo a sua senha ou um "Sim": pode confirmar.</div>
+<div class="dica"><b>A primeira instalação demora</b> uns 5 a 15 minutos (baixa umas 300 MB de fontes, transcrição e o programa que desenha a legenda). Das próximas vezes, não precisa instalar de novo.</div>
+<div class="rodape"><span>Editor no Piloto</span><span>3</span></div>
+</section>
+
+<!-- 4. CAMINHOS B e C -->
+<section class="pg">
+<div class="rot"><b>B</b>Terminal</div>
+<h1 style="font-size:22pt;margin-bottom:3mm">Pelo <em>terminal</em></h1>
+<div class="passo"><div class="n">1</div><div><h3>Instale o Claude Code</h3>
+  <b>Windows:</b> abra o <b>PowerShell</b> (menu Iniciar → digite "PowerShell") e cole:
+  <div class="term">irm https://claude.ai/install.ps1 | iex</div>
+  <div style="margin-top:2mm"><b>Mac:</b> abra o <b>Terminal</b> (Cmd + Espaço → "Terminal") e cole:</div>
+  <div class="term">curl -fsSL https://claude.ai/install.sh | bash</div>
+  <div class="muted" style="font-size:9pt;margin-top:1.5mm">No Windows, instale também o Git para Windows (<span class="mono">git-scm.com</span>): o editor usa o Git Bash que vem com ele. Se esquecer, o Claude instala na hora.</div></div></div>
+<div class="passo"><div class="n">2</div><div><h3>Entre na pasta e abra o Claude</h3>Feche e abra o terminal de novo. Digite <code>cd </code> (com espaço), <b>arraste a pasta Editor-no-Piloto</b> para dentro da janela, aperte Enter e depois:
+  <div class="term">claude</div>
+  <div class="muted" style="font-size:9pt;margin-top:1.5mm">Na primeira vez, ele abre o navegador para você entrar na sua conta.</div></div></div>
+<div class="passo"><div class="n">3</div><div><h3>Escreva <span class="mono">instala</span></h3>Depois, saia com <code>/exit</code>, rode <code>claude</code> de novo e digite <code>/comecar</code>.</div></div>
+
+<div class="rot" style="margin-top:3mm"><b>C</b>Nuvem: celular ou navegador</div>
+<h1 style="font-size:22pt;margin-bottom:2mm">Sem <em>computador</em></h1>
+<p class="muted" style="margin-bottom:2mm;font-size:9.6pt">Na nuvem, a pasta do canal fica guardada no <b>GitHub</b>, um site grátis de guardar projetos. É lá que o Claude lê e salva os seus vídeos.</p>
+<div class="grid2">
+<div>
+  <div class="passo"><div class="n">1</div><div><h3>Crie a conta e o repositório</h3>Em <span class="mono">github.com</span>, crie a conta. Depois clique em <b>New repository</b>, dê um nome (ex.: <i>meu-canal</i>), marque <b>Private</b> e clique em <b>Create</b>.</div></div>
+  <div class="passo"><div class="n">2</div><div><h3>Suba o ZIP</h3>Na página do repositório: <b>Add file → Upload files</b>. Arraste o arquivo <b>Editor-no-Piloto.zip</b> (o ZIP inteiro, sem descompactar) e clique em <b>Commit changes</b>.</div></div>
+</div><div>
+  <div class="passo"><div class="n">3</div><div><h3>Abra no Claude</h3>Em <span class="mono">claude.ai/code</span> (ou na aba <b>Code</b> do app do Claude no celular), conecte o GitHub quando ele pedir e escolha o repositório <i>meu-canal</i>.</div></div>
+  <div class="passo"><div class="n">4</div><div><h3>Escreva:</h3><span class="mono">descompacta o Editor-no-Piloto.zip, lê o CLAUDE.md que vem dentro e instala</span><br>Ele instala e salva no seu GitHub. Depois, abra uma conversa nova e digite <code>/comecar</code>.</div></div>
+</div></div>
+<div class="alerta"><b>Deixe o repositório como Private (privado).</b> Ele é só seu: colocar o pacote em repositório público é contra os termos de uso.</div>
+<div class="rodape"><span>Editor no Piloto</span><span>4</span></div>
+</section>
+
+<!-- 5. PRIMEIRO VÍDEO -->
+<section class="pg">
+<div class="rot"><b>✓</b>Instalado</div>
+<h1>Seu primeiro <em>vídeo</em></h1>
+<p class="lead">Daqui pra frente é conversa. Você fala do seu jeito, ele faz e te mostra, e você pede ajuste.</p>
+<div class="grid2" style="grid-template-columns:.95fr 1.05fr;gap:6mm">
+<div>
+  <div class="passo"><div class="n">1</div><div><h3><span class="mono">/comecar</span></h3>Conte a ideia do canal: "quero um canal de motivação com cenas de anime". Ele faz poucas perguntas e monta o seu padrão (legenda, efeito, formato e voz).</div></div>
+  <div class="passo"><div class="n">2</div><div><h3><span class="mono">/roteiro</span></h3>Ele te dá 3 roteiros com 3 ganchos cada. Escolha um ou peça ajuste.</div></div>
+  <div class="passo"><div class="n">3</div><div><h3><span class="mono">/voz</span></h3>Gera a narração (ElevenLabs), ou te passa o passo a passo do Fish Audio, ou usa um áudio seu.</div></div>
+  <div class="passo"><div class="n">4</div><div><h3>Fundo</h3>Mande o GIF ou a cena (arraste para a conversa ou coloque na pasta <b>entrada</b>). Sem material? <code>/buscar-midia</code> procura.</div></div>
+  <div class="passo"><div class="n">5</div><div><h3>Edição</h3>Ele monta com a legenda e o efeito do seu padrão e te mostra. Peça o que quiser mudar.</div></div>
+  <div class="passo"><div class="n">6</div><div><h3><span class="mono">/post</span></h3>Título, legenda, descrição, tags e horário para postar.</div></div>
+</div>
+<div class="jan" style="align-self:start"><div class="barra"><i></i><i></i><i></i><span>meu canal</span></div><div class="corpo">
+  <div class="bolha eu">/comecar quero um canal de motivação com cena de anime, voz grave</div>
+  <div class="bolha ele"><small>/comecar</small>Fechado! Sugestão: legenda <b>Red Sharp</b> + efeito <b>sombrio</b>, vídeo de 50 s. Bora pro roteiro?</div>
+  <div class="bolha eu">bora</div>
+  <div class="bolha ele"><small>/roteiro</small>3 roteiros, 3 ganchos cada:<br>1. "Ninguém viu as noites que você…"</div>
+  <div class="bolha eu">o 1 com o gancho B. faz a voz</div>
+  <div class="bolha ele"><small>/voz</small>Narração pronta ▶ 0:48. Manda o GIF ou quer que eu procure?</div>
+  <div class="bolha eu">procura uma cena do Vinland Saga</div>
+  <div class="bolha ele"><small>pronto</small>🎬 video_final.mp4 · 0:48 · 1080×1920</div>
+  <div class="bolha eu">deixa a legenda maior e põe /efeito-vhs também</div>
+</div></div>
+</div>
+<div class="dica"><b>Onde fica o vídeo?</b> Na pasta <b>projetos</b>, dentro da pasta do canal: uma pasta por vídeo, com o <b>video_final.mp4</b>. Na nuvem, peça "me manda o vídeo" e ele te entrega o arquivo.</div>
+<div class="dica"><b>Ele aprende com você.</b> O que você aprova e rejeita fica anotado no seu canal, e os próximos vídeos já saem mais do seu jeito.</div>
+<div class="rodape"><span>Editor no Piloto</span><span>5</span></div>
+</section>
+
+<!-- 6. COMANDOS -->
+<section class="pg">
+<div class="rot"><b>/</b>Os comandos</div>
+<h1>Tudo o que <em>vem</em></h1>
+<p class="muted" style="margin-bottom:3mm">Digite <code>/</code> na conversa para ver a lista. Ou só peça com as suas palavras: "faz com a legenda amarela".</p>
+<h2 style="margin-top:2mm">Legendas</h2>
+<div class="grid3" style="grid-template-columns:repeat(5,1fr);gap:2.6mm">
+  <div class="cmd"><img src="../../skills/3-legendas/sample-yellow/exemplo.jpg"><div><b>/sample-yellow</b><span>Amarela de TV, palavra por palavra</span></div></div>
+  <div class="cmd"><img src="../../skills/3-legendas/legenda-dinamica/exemplo.jpg"><div><b>/legenda-dinamica</b><span>Serifa itálica ao lado de quem fala</span></div></div>
+  <div class="cmd"><img src="../../skills/3-legendas/legenda-3d-invisivel/exemplo.jpg"><div><b>/legenda-3d-invisivel</b><span>Uma palavra por vez, relevo 3D</span></div></div>
+  <div class="cmd"><img src="../../skills/3-legendas/mistury/exemplo.jpg"><div><b>/mistury</b><span>Cartaz com fontes misturadas</span></div></div>
+  <div class="cmd"><img src="../../skills/3-legendas/street/exemplo.jpg"><div><b>/street</b><span>Gritos gigantes em gótica</span></div></div>
+  <div class="cmd"><img src="../../skills/3-legendas/rocks/exemplo.jpg"><div><b>/rocks</b><span>Cromada, inclinada, em escada</span></div></div>
+  <div class="cmd"><img src="../../skills/3-legendas/samplerocks/exemplo.jpg"><div><b>/samplerocks</b><span>Inclinada, palavras amarelas</span></div></div>
+  <div class="cmd"><img src="../../skills/3-legendas/invisible/exemplo.jpg"><div><b>/invisible</b><span>Letra feita da própria imagem</span></div></div>
+  <div class="cmd"><img src="../../skills/3-legendas/red-sharp/exemplo.jpg"><div><b>/red-sharp</b><span>Impacto vermelho empilhado</span></div></div>
+  <div class="cmd"><img src="../../skills/3-legendas/fontes/mostruario.jpg"><div><b>/fontes</b><span>Troca a fonte de qualquer uma</span></div></div>
+</div>
+<h2>Efeitos <span class="muted" style="font-family:Geist;font-size:9pt;font-weight:500;letter-spacing:0">somam com qualquer legenda · <code>/efeitos</code> mostra todos</span></h2>
+<div class="grid3" style="grid-template-columns:repeat(7,1fr);gap:2.2mm">
+  <div class="cmd"><img src="../../skills/4-efeitos/efeito-cinema/exemplo.jpg" style="height:14mm"><div><b>cinema</b></div></div>
+  <div class="cmd"><img src="../../skills/4-efeitos/efeito-filme-antigo/exemplo.jpg" style="height:14mm"><div><b>filme-antigo</b></div></div>
+  <div class="cmd"><img src="../../skills/4-efeitos/efeito-manga/exemplo.jpg" style="height:14mm"><div><b>manga</b></div></div>
+  <div class="cmd"><img src="../../skills/4-efeitos/efeito-rua/exemplo.jpg" style="height:14mm"><div><b>rua</b></div></div>
+  <div class="cmd"><img src="../../skills/4-efeitos/efeito-sombrio/exemplo.jpg" style="height:14mm"><div><b>sombrio</b></div></div>
+  <div class="cmd"><img src="../../skills/4-efeitos/efeito-sonho/exemplo.jpg" style="height:14mm"><div><b>sonho</b></div></div>
+  <div class="cmd"><img src="../../skills/4-efeitos/efeito-vhs/exemplo.jpg" style="height:14mm"><div><b>vhs</b></div></div>
+</div>
+<p class="muted" style="font-size:8.5pt;margin-top:1.5mm">O comando de cada um é <code>/efeito-</code> + o nome. Ex.: <code>/efeito-vhs</code>.</p>
+<h2>Formatos de vídeo</h2>
+<div class="grid3" style="grid-template-columns:repeat(6,1fr);gap:2.4mm">
+  <div class="cmd"><img src="../../skills/5-formatos-de-video/video-gif/exemplo.jpg" style="height:13mm"><div><b>/video-gif</b><span>GIF em loop + legenda</span></div></div>
+  <div class="cmd"><img src="../../skills/5-formatos-de-video/video-narracao/exemplo.jpg" style="height:13mm"><div><b>/video-narracao</b><span>Voz sobre cenas</span></div></div>
+  <div class="cmd"><img src="../../skills/5-formatos-de-video/video-fala/exemplo.jpg" style="height:13mm"><div><b>/video-fala</b><span>Legenda em quem fala</span></div></div>
+  <div class="cmd"><img src="../../skills/5-formatos-de-video/edit-musica/exemplo.jpg" style="height:13mm"><div><b>/edit-musica</b><span>Edit na batida por nome</span></div></div>
+  <div class="cmd"><img src="../../skills/5-formatos-de-video/video-longo/exemplo.jpg" style="height:13mm"><div><b>/video-longo</b><span>YouTube horizontal</span></div></div>
+  <div class="cmd"><div style="height:13mm;background:var(--stage);display:grid;place-items:center;color:#7d9cff;font-family:'Bricolage Grotesque';font-weight:800;font-size:11pt">aesthetic</div><div><b>/aesthetic</b><span>Imagens que ganham vida</span></div></div>
+</div>
+<h2>Começo, roteiro, voz e post</h2>
+<table class="lista">
+<tr><td><code>/comecar</code></td><td>Configura o seu canal a partir da sua ideia.</td></tr>
+<tr><td><code>/roteiro</code></td><td>3 roteiros com 3 ganchos cada, sem cara de texto de IA.</td></tr>
+<tr><td><code>/voz</code></td><td>Narração pelo ElevenLabs, Fish Audio ou a sua voz.</td></tr>
+<tr><td><code>/buscar-midia</code></td><td>Procura GIFs, fotos e cenas na internet e anota a fonte.</td></tr>
+<tr><td><code>/post</code></td><td>Título, legenda, descrição, tags e horário.</td></tr>
+</table>
+<div class="rodape"><span>Editor no Piloto</span><span>6</span></div>
+</section>
+
+<!-- 7. COMBINAR + VOZ + PROBLEMAS -->
+<section class="pg">
+<div class="rot"><b>+</b>Dicas</div>
+<h1>Junte do <em>seu jeito</em></h1>
+<div class="grid3">
+  <div class="card"><h3>Legenda + fonte de outra</h3><p class="muted" style="font-size:9.2pt">"Faz com a /sample-yellow, mas com a fonte gótica da Street." A legenda continua igual, só a letra muda.</p></div>
+  <div class="card"><h3>Vários efeitos juntos</h3><p class="muted" style="font-size:9.2pt">"/red-sharp com /efeito-filme-antigo e /efeito-vhs." Eles se somam, na ordem pedida.</p></div>
+  <div class="card"><h3>Duas legendas</h3><p class="muted" style="font-size:9.2pt">Sample Yellow no vídeo todo e Red Sharp só na frase de impacto.</p></div>
+</div>
+<p class="muted" style="margin-top:2.5mm;font-size:9.4pt">São mais de 40 mil combinações: 9 legendas × 38 fontes × qualquer mistura dos 7 efeitos.</p>
+
+<h2>A <em>voz</em></h2>
+<div class="grid3">
+  <div class="card"><h3>ElevenLabs</h3><p class="muted" style="font-size:9.2pt">Vozes muito naturais. Na primeira vez, o <code>/voz</code> te mostra como conectar a sua conta ao Claude. Cada geração gasta créditos da sua conta, então ele gera uma de cada vez.</p></div>
+  <div class="card"><h3>Fish Audio</h3><p class="muted" style="font-size:9.2pt">Tem opção gratuita e vozes de personagens. O <code>/voz</code> te passa o passo a passo; você baixa o áudio e manda na conversa.</p></div>
+  <div class="card"><h3>A sua voz</h3><p class="muted" style="font-size:9.2pt">Grave no celular, num lugar silencioso, e mande o áudio. O editor limpa e ajusta o volume.</p></div>
+</div>
+
+<h2>Deu <em>problema?</em></h2>
+<div class="faq grid2" style="gap:1mm 6mm">
+  <div><h3>O comando /comecar não aparece</h3><p class="muted">Feche e abra o Claude de novo na pasta do canal. Os comandos carregam quando ele abre.</p></div>
+  <div><h3>Apareceu "FALTA instalar…"</h3><p class="muted">Escreva "resolve isso". Ele instala o que falta (no Windows pode pedir para fechar e abrir de novo).</p></div>
+  <div><h3>"Atingiu o limite de uso"</h3><p class="muted">É o limite do seu plano do Claude. Espere o horário que ele mostrar e continue de onde parou.</p></div>
+  <div><h3>A rede bloqueou um site (nuvem)</h3><p class="muted">O Claude diz qual endereço liberar nas configurações do ambiente. Ou baixe o arquivo e mande na conversa.</p></div>
+  <div><h3>Não gostei do resultado</h3><p class="muted">Fale o que mudar, do seu jeito: "legenda maior", "mais escuro", "corta o começo". Ele refaz.</p></div>
+  <div><h3>Mudei de computador</h3><p class="muted">Leve a pasta do canal inteira e, no novo, escreva "instala de novo o motor".</p></div>
+</div>
+
+<div class="card" style="margin-top:3mm;padding:4mm 5mm;background:var(--stage);color:#eef0f5;border:0">
+  <h3 style="color:#fff">Termos de uso, em uma frase</h3>
+  <p style="color:#b8bdcc;font-size:9.4pt">A licença é sua: use em quantos canais e vídeos quiser, inclusive monetizados. Só não pode revender, compartilhar ou publicar o pacote. O texto completo está em <b style="color:#fff">TERMOS-DE-USO.txt</b>. Garantia de 7 dias pela plataforma onde você comprou.</p>
+</div>
+<div class="rodape"><span>Editor no Piloto · produto independente, não oficial da Anthropic</span><span>7</span></div>
+</section>
+
+</body></html>
