@@ -12,8 +12,8 @@ EDITOR NO PILOTO — TERMOS DE USO (LICENÇA PESSOAL)
 4. Você é responsável pelo material que coloca nos vídeos (imagens, cenas, músicas, vozes). Use material que você
    tem direito de usar e respeite as regras de cada plataforma.
 
-5. O Editor no Piloto é um produto independente. Ele roda no Claude Code, que é da Anthropic e é contratado à parte
-   (plano pago). Não temos ligação com a Anthropic, com o ElevenLabs, com o Fish Audio nem com as redes sociais citadas.
+5. O Editor no Piloto é um produto independente. Ele roda no Claude Code, que é da Anthropic e é contratado
+   à parte. Não temos ligação com a Anthropic, com o ElevenLabs, com o Fish Audio nem com as redes sociais citadas.
 
 6. Garantia: 7 dias a partir da compra, pela plataforma onde você comprou.
 

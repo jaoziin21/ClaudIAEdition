@@ -3,9 +3,9 @@ EDITOR NO PILOTO
 Comece pelo arquivo COMECE-AQUI.pdf: ele mostra, passo a passo, como instalar e fazer o primeiro vídeo.
 
 Resumo:
-1. Tenha um plano pago do Claude (Pro ou superior).
+1. Tenha uma conta no Claude (com o plano Pro os vídeos saem mais rápido).
 2. Abra esta pasta no Claude Code (app do Claude no computador -> aba Code -> Local -> selecionar esta pasta).
-3. Escreva: instala
+3. Escreva: instalar
 4. Feche, abra de novo nesta pasta e digite: /comecar
 
 Esta pasta vai virar o seu canal: tudo o que você editar fica aqui dentro.

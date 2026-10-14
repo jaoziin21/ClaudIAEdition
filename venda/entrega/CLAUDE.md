@@ -6,7 +6,7 @@ um passo de cada vez. Faça você mesmo tudo o que der (rodar comandos, instalar
 fazer (clicar em "permitir", digitar a senha do computador, escolher um nome).
 
 ## Se ainda NÃO estiver instalado (não existe `.claude/skills/motor/` nesta pasta)
-Na primeira mensagem da pessoa, seja ela qual for ("oi", "instala", "como usa?"), conduza a instalação:
+Na primeira mensagem da pessoa, seja ela qual for ("oi", "instalar", "como usa?"), conduza a instalação:
 
 1. Dê as boas-vindas em 1 linha e explique: "esta pasta vai virar o seu canal: tudo o que eu editar fica aqui dentro".
    Se ela preferir outra pasta, use a que ela disser (no lugar de `.` abaixo).

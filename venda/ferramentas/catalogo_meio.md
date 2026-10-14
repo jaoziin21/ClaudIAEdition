@@ -30,7 +30,7 @@ dela para `meu-canal/motor/` (faça o mesmo com a skill `motor`, em `1-base/`).
 
 ## Junte do seu jeito (legenda + fonte + efeitos)
 Tudo se combina. Peça em português, do seu jeito:
-- **Legenda + fonte de outra:** "Faz com a /sample-yellow, só que com a fonte gótica da Street (pirata-one)". A legenda continua
+- **Legenda + fonte de outra:** "Faça com a /sample-yellow, só que com a fonte gótica da Street (pirata-one)". A legenda continua
   baixinha, com a caixinha e a animação da Sample Yellow; só a letra muda. Mostruário: `3-legendas/fontes/mostruario.jpg`.
 - **Vários efeitos juntos:** "/red-sharp com /efeito-filme-antigo e /efeito-vhs". Os efeitos se somam, na ordem pedida.
 - **Duas legendas no mesmo vídeo:** Sample Yellow no vídeo todo e Red Sharp só na frase de impacto.

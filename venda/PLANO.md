@@ -33,7 +33,8 @@ O aluno NÃO manda texto nem música; manda só a ideia e, se quiser, o GIF/víd
 - Skills de terceiros (Higgsfield, `watch`) são MIT: podem ir com o arquivo LICENSE, ou ficar como "instalar à parte".
 
 ## Custo para o aluno (confirmado na doc oficial, 13/out)
-Claude Code NÃO funciona no plano grátis. Mínimo: Claude Pro, US$ 20/mês (ou API por uso, sem a versão na nuvem).
+A doc oficial diz que o Claude Code é dos planos pagos (Pro, US$ 20/mês, ou superior). Em 14/out ele disse que testou no chat
+dele e gerou vídeo, só mais devagar, e pediu para NÃO escrever que o Pro é obrigatório: "conta no Claude; com o Pro sai mais rápido".
 Render, transcrição e mixagem rodam no computador dele com programas grátis → sem custo extra por vídeo. Dizer isso na página.
 Não usar a marca Claude/Anthropic como se fosse produto oficial.
 

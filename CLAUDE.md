@@ -23,6 +23,9 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
   (Fé/Motivação/Anime/Futebol). Ele APROVOU: claro + azul cobalto, 3D, o misturador "Monte sua combinação" ("ficou monstruosa").
 - Música de terceiros dentro do produto pago: avisado que é distribuição; decisão pendente (ver PLANO). Trilha original sem direitos:
   `trilha/compor.py` do motor.
+- NÃO escrever que o plano pago do Claude (Pro) é obrigatório (pedido dele, 14/out: testou no chat dele e gerou vídeo, só mais
+  devagar). Escrever "conta no Claude; com o Pro sai mais rápido e com mais limite". Comando que o comprador digita: "instalar".
+  Textos para o comprador em português correto (ele cobrou "instala" sem o R).
 - Sempre deixar claro que dá para juntar legenda + fonte de outra + vários efeitos (ex.: Sample Yellow com a letra gótica da Street).
 - Fundo dos vídeos: procurar você mesmo (skill `buscar-midia`) antes de pedir. Pixabay/Pexels bloqueados na rede da nuvem;
   Wikimedia (limite de requisições) e Internet Archive funcionam (NASA "EarthInHd" e "Gulliver's Travels 1939" = domínio público).
