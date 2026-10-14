@@ -11,9 +11,11 @@ modo = sys.argv[1]
 words = json.load(open(f'{PROJ}/words.json'))
 cortes = sorted({c['t'] for c in json.load(open(f'{PROJ}/lado.json'))['cenas']})
 
-JAN = [(5.2, 10.4), (10.4, 14.6), (14.6, 21.8), (23.0, 26.4), (26.4, 31.4), (31.4, 35.6), (35.6, 39.5), (39.5, 45.4), (45.4, 51.0)]
+JAN = [(5.2, 10.4), (10.4, 14.6), (14.6, 21.8), (23.0, 26.4), (26.4, 31.4), (31.4, 35.6), (35.6, 39.5), (39.5, 45.4), (45.4, 51.0),
+       (51.6, 56.4), (57.0, 62.5), (67.0, 71.0), (72.3, 75.6)]
 POS = {'street': (0.5, 0.5), 'sample-yellow': (0.5, 0.86), 'rocks': (0.32, 0.76), 'samplerocks': (0.33, 0.76), 'mistury': (0.36, 0.42),
-       'dinamica': (0.3, 0.3), 'invisible': (0.5, 0.5), '3d-invisivel': (0.5, 0.5), 'red-sharp': (0.5, 0.55)}
+       'dinamica': (0.3, 0.3), 'invisible': (0.5, 0.5), '3d-invisivel': (0.5, 0.5), 'red-sharp': (0.5, 0.55),
+       'black-sample': (0.5, 0.88), 'black-point': (0.5, 0.9), 'bruce': (0.87, 0.3), 'basic-on': (0.5, 0.72)}
 if modo == 'legendas':
     SEG = [('street', 'Street', '/street', None, {'gritos': ['pequeno', 'Thors'], 'keywords': ['Thorfinn', 'treinado']}),
            ('sample-yellow', 'Sample Yellow', '/sample-yellow', None, {'keywords': ['volta?']}),
@@ -23,10 +25,16 @@ if modo == 'legendas':
            ('dinamica', 'Legenda Dinâmica', '/legenda-dinamica', None, {'keywords': ['conhecer']}),
            ('invisible', 'Invisible', '/invisible', None, {'keywords': ['outro.']}),
            ('3d-invisivel', '3D Invisível', '/legenda-3d-invisivel', None, {'keywords': ['ódio.', 'bater']}),
-           ('red-sharp', 'Red Sharp', '/red-sharp', None, {'keywords': ['idiotice.']})]
+           ('red-sharp', 'Red Sharp', '/red-sharp', None, {'keywords': ['idiotice.']}),
+           ('black-sample', 'Black Sample', '/black-sample', None, {'keywords': []}),
+           ('black-point', 'Black Point', '/black-point', None, {'keywords': ['sangue.']}),
+           ('bruce', 'Bruce', '/bruce', None, {'keywords': []}),
+           ('basic-on', 'Basic On', '/basic-on', None, {'keywords': [], 'credito': {'titulo': 'Nome do Filme (2019)', 'sub': '@seucanal'}})]
 else:
-    PAC = [('filme-antigo', 'Filme antigo'), ('manga', 'Mangá'), ('sonho', 'Sonho'), ('vhs', 'VHS'), ('sombrio', 'Sombrio'), ('cinema', 'Cinema'), ('rua', 'Rua')]
-    SEG = [('sample-yellow', f'Efeito {n}', f'/efeito-{p}', p, {'keywords': []}) for p, n in PAC]
+    PAC = [('filme-antigo', 'Filme antigo'), ('manga', 'Mangá'), ('sonho', 'Sonho'), ('vhs', 'VHS'), ('sombrio', 'Sombrio'), ('cinema', 'Cinema'), ('rua', 'Rua'),
+           ('xerox', 'Xerox'), ('parallax', 'Parallax'), ('black-and-white', 'Black and White')]
+    MOM = {'xerox': [{'nome': 'xerox', 'momentos': [0.6]}], 'parallax': [{'nome': 'parallax', 'momentos': [0.5]}]}   # efeitos de processo: quando entram
+    SEG = [('sample-yellow', f'Efeito {n}', f'/efeito-{p}', p, {'keywords': [], **({'efeitos': MOM[p]} if p in MOM else {})}) for p, n in PAC]
 
 def seg(i):
     est, titulo, cmd, pac, extra = SEG[i]

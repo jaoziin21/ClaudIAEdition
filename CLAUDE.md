@@ -15,6 +15,10 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
   `python3 venda/ferramentas/readmes.py && node venda/ferramentas/capas.cjs` (READMEs e capas das pastas).
 
 ## Regras fixas que ele já cobrou
+- **SEMPRE ATUALIZAR A PÁGINA (pedido dele, 14/out):** toda legenda, efeito, formato ou skill nova que entrar no produto entra
+  TAMBÉM na página de vendas na mesma etapa: números (skills, legendas, efeitos, combinações), listas/tags, vitrines (compilados
+  `legendas.mp4`/`efeitos.mp4` e quadradinhos `t-<nome>.mp4` via `venda/vitrine/monta.py` + `junta.sh`), carrossel das legendas,
+  testador de fontes, capa dos efeitos, FAQ e oferta. Depois: copiar para `venda/site/`, publicar o artifact e mandar o link.
 - **ElevenLabs: SEMPRE `generations_count: 1`. NUNCA 4.** (cada geração gasta crédito dele/do aluno). Em 13/out a conta grátis dele
   deu "Free Tier disabled (contas múltiplas)": voz agora = gravada por ele, Fish Audio, ou ElevenLabs pago.
 - Fish Audio: ele diz que é gratuito e com vozes de personagens; NÃO colocar no produto a dica de criar outra conta quando os
