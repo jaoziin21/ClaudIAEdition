@@ -1,0 +1,8 @@
+{
+ "nome": "Black Point",
+ "cena": "scene_blackpoint.html",
+ "tamanho": 40,
+ "maxch": 30,
+ "maxw": 0.9,
+ "filtro": "estilos/filtro_blackpoint.txt"
+}

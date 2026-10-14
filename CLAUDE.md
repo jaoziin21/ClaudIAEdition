@@ -31,7 +31,7 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
   Wikimedia (limite de requisições) e Internet Archive funcionam (NASA "EarthInHd" e "Gulliver's Travels 1939" = domínio público).
 
 ## Onde está cada coisa
-- `skills/` — 31 skills + motor, cada uma independente, DIVIDIDAS EM GRUPOS (pedido dele, 14/out: "não joga tudo numa pasta só"):
+- `skills/` — 36 skills + motor, cada uma independente, DIVIDIDAS EM GRUPOS (pedido dele, 14/out: "não joga tudo numa pasta só"):
   `1-base/` (motor), `2-roteiro-voz-post/`, `3-legendas/`, `4-efeitos/`, `5-formatos-de-video/`. Cada grupo tem README com vitrine
   e `capa.png`. Instalação: `bash skills/instalar.sh <pasta-do-canal> [skills ou grupos]` (ex.: `legendas efeitos`); no canal do
   aluno tudo fica plano em `.claude/skills/<nome>/`. Catálogo: `skills/README.md`. Skill nova: pasta no grupo certo + uma linha em
@@ -82,5 +82,10 @@ Sem preço e sem link de pagamento ainda (botões vão para #oferta). Garantia d
    FEITO 14/out: `/efeito-parallax` (Parallax Cutout / Temporal Collage, prompt dele) APROVADO ("ok") e no produto.
    Processo com recorte rembg `u2net_human_seg` (setup.sh instala rembg só se a skill estiver; modelo 176 MB baixa no 1º uso)
    ou máscara própria. Exemplo-detalhe = dançarino de Kimberly Keyes, CC BY 4.0 (crédito no SKILL.md).
-   A PÁGINA ainda diz "29 skills" e "7 efeitos" (capa 3D dos efeitos sem xerox/parallax): atualizar se ele pedir.
+   FEITO 14/out (noite), tudo aprovado por ele ("pode aprovar todos"): legendas NOVAS a partir de vídeos de referência dele
+   (`/black-sample`, `/black-point`, `/bruce`, `/basic-on`) em `skills/3-legendas/`, e efeito `/efeito-black-and-white`
+   (P&B duro granulado + variação `black-white-claro` p/ contraluz) em `skills/4-efeitos/`. Basic On leva a fonte Nimbus Sans Bold
+   (= Helvetica Bold, URW, AGPL c/ exceção de fonte; arquivos de licença juntos em `arquivos/fontes/nimbus-sans/`).
+   render_lado.mjs do motor passa: glitch, piscar, reticencias, coresChave, credito, cor2, falante/falantes.
+   A PÁGINA ainda diz "29 skills", "9 legendas" e "7 efeitos": atualizar números/vitrines se ele pedir.
 5. **Pendências dele:** deixar este repositório PRIVADO (está público e as skills estão aqui); mandar as músicas para a `/musica`.

@@ -28,6 +28,10 @@ GRUPOS = [
         ('samplerocks', '/samplerocks', 'O layout inclinado do Rocks com letra sem serifa branca e palavras amarelas que entram esticadas.', 'motor'),
         ('invisible', '/invisible', 'A letra é feita da própria imagem do vídeo, como vidro, e pega as cores de cada cena.', 'motor'),
         ('red-sharp', '/red-sharp', 'Legenda pequena numa tarja preta e frases de impacto vermelhas empilhadas, com soco e tremida.', 'motor'),
+        ('black-sample', '/black-sample', 'Legenda de TV branca numa caixa preta que se escreve em sílabas, com falha de 1 quadro e piscada no fim.', 'motor'),
+        ('black-point', '/black-point', 'Itálico branco numa caixa escura, reticências que entram ponto a ponto e palavra-chave em 3 cores.', 'motor'),
+        ('bruce', '/bruce', 'Uma ou duas palavras em maiúsculas serifadas ao lado de quem fala, surgindo do desfoque; imagem escura de filme.', 'motor'),
+        ('basic-on', '/basic-on', 'Frase inteira em Helvetica Bold sem caixa, corte seco; a 2ª pessoa do diálogo em amarelo e crédito do filme.', 'motor'),
         ('fontes', '/fontes', 'Troca a fonte de qualquer legenda: 37 fontes prontas (mostruário) ou qualquer uma do Google Fonts.', 'motor + uma legenda'),
     ]),
     ('4-efeitos', 'efeitos', 'Efeitos', 'Pacotes de efeito que somam com qualquer legenda. Peça um ou vários no mesmo vídeo: eles se juntam na ordem pedida.', [
@@ -41,6 +45,7 @@ GRUPOS = [
         ('efeito-rua', '/efeito-rua', 'Escuro e contrastado, colagem de painéis e glitch nos cortes.', 'motor + uma legenda'),
         ('efeito-xerox', '/efeito-xerox', 'Cópia de xerox que invade a imagem nos cortes: retícula, rastros de pixel sort, glitch e RGB separado, e volta ao normal.', 'motor + uma legenda'),
         ('efeito-parallax', '/efeito-parallax', 'Recorta a pessoa do vídeo e monta uma colagem em camadas: fundo deslizando, ecos dela em outras cores, placas de papel, e volta ao normal.', 'motor + uma legenda'),
+        ('efeito-black-and-white', '/efeito-black-and-white', 'Preto e branco duro de filme puxado: contraste extremo, pretos chapados, brancos estourados e grão grosso.', 'motor + uma legenda'),
     ]),
     ('5-formatos-de-video', 'formatos-de-video', 'Formatos de vídeo', 'O tipo de vídeo: de onde vem a imagem e como ela se mexe. Junte com qualquer legenda e efeito.', [
         ('video-gif', '/video-gif', 'Um GIF em loop sem emenda, ampliado com IA, no meio da tela vertical, com a legenda ao lado do personagem.', 'motor + uma legenda'),

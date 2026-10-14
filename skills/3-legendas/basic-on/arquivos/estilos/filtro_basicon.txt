@@ -1,0 +1,4 @@
+fps=30,crop=1534:1080:193:0,hqdn3d=1.2:1.2:3:3,scale=1080:760:flags=lanczos,cas=0.3,
+eq=contrast=1.05:saturation=1.04:gamma=0.98,
+colorbalance=rm=0.02:bm=-0.02,
+vignette=PI/6

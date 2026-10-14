@@ -1,0 +1,82 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:BP;src:url("node_modules/@fontsource/arimo/files/arimo-latin-400-italic.woff2");font-weight:400;font-style:italic}
+html,body{margin:0;background:transparent;overflow:hidden;width:100vw;height:100vh}
+/* "Black Point": legenda de TV — Arimo itálico (= Arial itálico) branco com brilho leve, numa caixa escura translúcida folgada */
+#ln{position:absolute;left:0;top:0;white-space:pre;font-family:BP;font-style:italic;font-weight:400;line-height:1.2;color:#f4f2ee;
+  text-shadow:0 0 .14em rgba(255,250,240,.38),0 .04em .08em rgba(0,0,0,.5)}
+#box{position:absolute;left:0;top:0;background:rgba(22,16,13,.66)}
+#ln span{display:inline}
+</style></head><body><div id="box"></div><div id="ln"></div>
+<script src="lado_data.js"></script>
+<script>
+// Palavra por palavra (entra seca, sem animação); a frase fica centralizada e a caixa escura cresce junto.
+// Frase que termina "no ar" (pausa depois e sem ? ou !) ganha RETICÊNCIAS que entram um ponto por vez ("era" → "era." → "era..").
+// Palavra-chave = dividida em TRÊS CORES (padrão azul / branco / vermelho, como na referência "França"; "coresChave" no lado.json).
+// Saída: a frase se DESFAZ letra por letra (cada letra some num quadro diferente, acinzentando antes) nos últimos ~0,25 s.
+const D = LADO, W = innerWidth, H = innerHeight, FPS = 30;
+const BAND = (H >= 1900 && D.band) ? D.band : { y: 0, h: H };
+const ln = document.getElementById('ln'), box = document.getElementById('box');
+const S = D.size || 40;
+ln.style.fontSize = S + 'px';
+const CORES = D.coresChave || ['#2f55e0', '#f4f2ee', '#e0262f'];
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const rnd = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let x = Math.imul(seed ^ seed >>> 15, 1 | seed); x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x; return ((x ^ x >>> 14) >>> 0) / 4294967296; };
+const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+// reticências: frase sem ? ou ! com pausa de 0,6 s+ depois (ou última) — "reticencias": false desliga
+const BL = D.blocks.slice().sort((a, b) => a.start - b.start);
+BL.forEach((B, i) => { const ws = B.lines.flat(), ult = ws.at(-1), nx = BL[i + 1];
+  B.pts = D.reticencias !== false && ult && !/[?!]$/.test(ult.w) && (!nx || nx.start - ult.e > 0.6) ? 3 : 0; });
+
+let cur = null, chars = [];
+function monta(B) {
+  const ws = B.lines.flat(); let html = '', n = 0; chars = [];
+  ws.forEach((w, i) => {
+    const txt = (i ? ' ' : '') + w.w, ini = i ? 1 : 0, corpo = w.w.length, a = Math.floor(corpo / 3), b = Math.floor(corpo / 3);
+    for (let j = 0; j < txt.length; j++) {
+      const p = j - ini; let cor = '';
+      if (w.k && p >= 0) cor = p < a ? CORES[0] : p < a + b ? CORES[1] : CORES[2];
+      html += `<span data-i="${n}"${cor ? ` style="color:${cor}"` : ''}>${esc(txt[j])}</span>`; chars.push({ t: w.s, ch: txt[j] }); n++;
+    }
+  });
+  for (let k = 0; k < B.pts; k++) { html += `<span data-i="${n}">.</span>`; chars.push({ t: null, pt: k }); n++; }
+  ln.innerHTML = html;
+  const sp = [...ln.children]; chars.forEach((c, i) => c.el = sp[i]);
+  // pontinhos: depois da última palavra, cabendo antes da saída (se a frase acaba logo, entram mais rápido)
+  const ult = ws.at(-1), fim = B.end - 0.28, de = ult ? Math.min(ult.e, fim - 0.3) : fim - 0.3, ate = Math.min(fim, de + 0.5);
+  chars.forEach(c => { if (c.pt !== undefined) c.t = Math.max(ult ? ult.s + 2 / FPS : 0, de + (ate - de) * (c.pt + 1) / 3); });
+  const r = rnd(Math.floor(B.start * 1000));
+  chars.forEach(c => c.sai = r());   // ordem em que cada letra se desfaz
+}
+
+window.render = t => {
+  const B = D.blocks.find(b => t >= b.start && t < b.end) || null;
+  if (B !== cur) { cur = B; if (B) monta(B); }
+  if (!B) { box.style.opacity = 0; ln.style.opacity = 0; return; }
+  const f = Math.round(t * FPS);
+  // quais letras já entraram (a palavra entra inteira no começo da fala dela)
+  let ate = -1; chars.forEach((c, i) => { if (Math.round(c.t * FPS) <= f) ate = i; });
+  if (ate < 0) { box.style.opacity = 0; ln.style.opacity = 0; return; }
+  const dura = 0.26, q = clamp((t - (B.end - dura)) / dura);   // saída: desfaz letra por letra
+  chars.forEach((c, i) => {
+    const vis = i <= ate; let op = vis ? 1 : 0, cinza = 0;
+    if (vis && q > 0) { const k = clamp((q - c.sai * 0.65) / 0.35); op = k >= 1 ? 0 : 1 - k * 0.5; cinza = k; if (k > 0 && rnd(f * 131 + i)() < 0.25) op = 0; }
+    c.el.style.visibility = op > 0 ? 'visible' : 'hidden'; c.el.style.opacity = op.toFixed(2);
+    c.el.style.filter = cinza > 0 ? `grayscale(${cinza.toFixed(2)}) brightness(${(1 - 0.35 * cinza).toFixed(2)})` : '';
+  });
+  // mede só o que já entrou (as letras escondidas ficam fora da conta) e centraliza
+  const vis = chars.slice(0, ate + 1), ultEl = vis.at(-1).el;
+  const largura = ultEl.offsetLeft + ultEl.offsetWidth;
+  const lh = ln.offsetHeight, k = Math.min(1, (W * 0.9) / (largura + S));
+  const cx = clamp(B.x * W, 30 + largura * k / 2, W - 30 - largura * k / 2), cy = BAND.y + clamp(B.y * BAND.h, S, BAND.h - S);
+  ln.style.transformOrigin = '0 50%'; ln.style.transform = `scale(${k})`;
+  ln.style.left = (cx - largura * k / 2) + 'px'; ln.style.top = (cy - lh / 2) + 'px'; ln.style.opacity = 1;
+  const px = S * 0.42, py = S * 0.2;
+  Object.assign(box.style, { left: (cx - (largura / 2 + px) * k) + 'px', top: (cy - (lh / 2 + py) * k) + 'px',
+    width: ((largura + px * 2) * k) + 'px', height: ((lh + py * 2) * k) + 'px', opacity: (1 - q * 0.85).toFixed(2) });
+};
+window.fontsOK = async () => { await document.fonts.load(`italic 400 ${S}px BP`); await document.fonts.ready;
+  return document.fonts.check(`italic 400 ${S}px BP`) ? 'ok' : 'font missing'; };
+</script></body></html>

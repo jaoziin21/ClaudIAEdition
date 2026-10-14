@@ -23,6 +23,12 @@ Cada uma é um estilo completo de legenda animada. Dá para trocar a fonte de qu
 <td width="33%" valign="top"><a href="red-sharp/"><img src="red-sharp/exemplo.jpg" width="100%"></a><br><b><code>/red-sharp</code></b><br><sub>Legenda pequena numa tarja preta e frases de impacto vermelhas empilhadas, com soco e tremida.</sub></td>
 </tr>
 <tr>
+<td width="33%" valign="top"><a href="black-sample/"><img src="black-sample/exemplo.jpg" width="100%"></a><br><b><code>/black-sample</code></b><br><sub>Legenda de TV branca numa caixa preta que se escreve em sílabas, com falha de 1 quadro e piscada no fim.</sub></td>
+<td width="33%" valign="top"><a href="black-point/"><img src="black-point/exemplo.jpg" width="100%"></a><br><b><code>/black-point</code></b><br><sub>Itálico branco numa caixa escura, reticências que entram ponto a ponto e palavra-chave em 3 cores.</sub></td>
+<td width="33%" valign="top"><a href="bruce/"><img src="bruce/exemplo.jpg" width="100%"></a><br><b><code>/bruce</code></b><br><sub>Uma ou duas palavras em maiúsculas serifadas ao lado de quem fala, surgindo do desfoque; imagem escura de filme.</sub></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="basic-on/"><img src="basic-on/exemplo.jpg" width="100%"></a><br><b><code>/basic-on</code></b><br><sub>Frase inteira em Helvetica Bold sem caixa, corte seco; a 2ª pessoa do diálogo em amarelo e crédito do filme.</sub></td>
 <td width="33%" valign="top"><a href="fontes/"><img src="fontes/mostruario.jpg" width="100%"></a><br><b><code>/fontes</code></b><br><sub>Troca a fonte de qualquer legenda: 37 fontes prontas (mostruário) ou qualquer uma do Google Fonts.</sub></td>
 </tr>
 </table>

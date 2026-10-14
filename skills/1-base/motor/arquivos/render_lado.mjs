@@ -77,6 +77,8 @@ groups = groups.reduce((acc, g) => { const l = acc.at(-1);
 const PROPER = new Map(['deus', 'jesus', 'senhor', 'pai', 'cristo', 'espírito', 'salmos', 'bíblia', ...(cfg.nomes || []).map(x => x.toLowerCase())].map(x => [x, x[0].toUpperCase() + x.slice(1)]));
 const KW = (cfg.keywords || []).map(k => clean(k).toLowerCase());
 const CORES = { vermelho: ['#FF4A4A', '#D11A1A'], amarelo: ['#FFE07A', '#E0A21B'], brasa: ['#FF5A1F', '#E0400A'], ciano: ['#3CF0FF', '#12B8D0'], ouro: ['#FFD27A', '#F2A33A'] };
+// "falantes": [[t0, t1], ...] = trechos da 2ª pessoa (estilo basic-on: fala dela em amarelo); ou "falante": 2 na cena
+const falanteDe = t => (cfg.falantes || []).some(([a, b]) => t >= a - 0.05 && t < b) ? 2 : 0;
 const blocks = groups.map((ws, i) => {
   const c = (m => cenaDe(m))(ws[Math.floor((ws.length - 1) / 2)].s), nx = groups[i + 1];
   // fim da última palavra às vezes vem esticado do alinhamento: o corte manda (a legenda não invade a cena seguinte)
@@ -95,7 +97,7 @@ const blocks = groups.map((ws, i) => {
   for (let k = lines.length - 2; k >= 0; k--) if (lines[k].length === 1 && DANGLE.has(base(lines[k][0].w))) { lines[k + 1].unshift(lines[k][0]); lines.splice(k, 1); }
   // última linha com 1 palavra curta sobe para a anterior
   if (lines.length > 1 && lines.at(-1).length === 1 && lines.at(-1)[0].w.length <= 4) lines.at(-2).push(...lines.pop());
-  return { start: ws[0].s - 0.05, end, x: c.x, y: c.y, esc: c.escala || 1, align: c.align || 'center', maxw: c.maxw, look: c.look, lines, nada: !!c.nada };
+  return { start: ws[0].s - 0.05, end, x: c.x, y: c.y, esc: c.escala || 1, align: c.align || 'center', maxw: c.maxw, look: c.look, lines, nada: !!c.nada, falante: falanteDe(ws[0].s + 0.05) || c.falante || 1 };
 }).filter(b => !b.nada && (estiloCena(cenaDe(b.start + 0.05)) || null) === (cfg.estilo || null));
 // "medeFundo": true (estilo mistury) → mede a cor média da imagem atrás de cada frase (0..1) para escolher cores que contrastem
 if (cfg.medeFundo) for (const b of blocks) {
@@ -124,7 +126,7 @@ if (cfg.quadros) {
   quadros = { n: fs.readdirSync('quadros').filter(f => f.endsWith('.jpg')).length, fps: FPS };
 }
 const FULL = !!cfg.telaCheia;   // overlay do quadro inteiro (legenda fora da imagem, no preto)
-const LADO = ({ size: SIZE, kc: CORES[cfg.cor || 'vermelho'], cuts: cortes, burns: cfg.burns || [], blocks, band: { y: BY, h: BH }, fonte: cfg.fonte || null, brilho: !!cfg.brilho, looks: cfg.looks || null, gritos: (cfg.gritos || []).map(k => clean(k).toLowerCase()), stills, quadros, efeitos: TELA, semEfeitos: cfg0.efeitosDaLegenda === false, multilinha: !!cfg.multilinha });
+const LADO = ({ size: SIZE, kc: CORES[cfg.cor || 'vermelho'], cuts: cortes, burns: cfg.burns || [], blocks, band: { y: BY, h: BH }, fonte: cfg.fonte || null, brilho: !!cfg.brilho, looks: cfg.looks || null, gritos: (cfg.gritos || []).map(k => clean(k).toLowerCase()), stills, quadros, efeitos: TELA, semEfeitos: cfg0.efeitosDaLegenda === false, multilinha: !!cfg.multilinha, glitch: cfg.glitch !== false, piscar: cfg.piscar !== false, reticencias: cfg.reticencias !== false, coresChave: cfg.coresChave || null, credito: cfg.credito || null, cor2: cfg.cor2 || null });
 blocks.forEach(b => console.log(`${cfg.estilo || ''} ${b.start.toFixed(2)}-${b.end.toFixed(2)} [${b.x},${b.y}]${b.fundo ? ' fundo ' + b.fundo : ''} ${b.lines.map(l => l.map(w => w.k ? '*' + w.w + '*' : w.w).join(' ')).join(' / ')}`));
 return { cfg, LADO };
 }
@@ -172,7 +174,7 @@ if (REF) {
     ? `font:600 34px RF;letter-spacing:.32em;text-transform:uppercase;color:#E9EEF2;filter:drop-shadow(0 2px 6px rgba(0,0,0,.8))`
     : `font:500 50px RF;letter-spacing:.06em;color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(180deg,#fff,#d9d4cc);filter:drop-shadow(0 2px 6px rgba(0,0,0,.8))`;
   const deco = fut ? `<b style="display:inline-block;width:46px;height:3px;background:${(CORES[cfg.cor] || CORES.vermelho)[0]};margin:0 26px;vertical-align:middle"></b>` : '';
-  // "refNumeros": "cheios" → números na altura das maiúsculas (o Playfair usa números "antigos": o 1 fica pequeno). 
+  // "refNumeros": "cheios" → números na altura das maiúsculas (o Playfair usa números "antigos": o 1 fica pequeno).
   const nums = cfg.refNumeros === 'cheios' ? ';font-variant-numeric:lining-nums' : '';
   fs.writeFileSync('ref_label.html', `<html><head><style>@font-face{font-family:RF;src:url("${fontUrl}")}
     html,body{margin:0;background:transparent}div{height:${REFH}px;display:flex;align-items:center;justify-content:center;${css}${nums}}</style></head><body><div>${deco}${REF}${deco}</div></body></html>`);

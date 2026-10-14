@@ -1,0 +1,8 @@
+{
+ "nome": "Black Sample",
+ "cena": "scene_blacksample.html",
+ "tamanho": 38,
+ "maxch": 34,
+ "maxw": 0.9,
+ "filtro": "estilos/filtro_blacksample.txt"
+}

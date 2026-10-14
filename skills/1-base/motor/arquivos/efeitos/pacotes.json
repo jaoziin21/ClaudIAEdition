@@ -7,5 +7,6 @@
  "cinema":       { "efeitos": ["cinema", "feixes", "particulas"], "de": "luz do 3D invisível + partículas (novo)", "descricao": "Cor de cinema (sombras azul-petróleo, luzes alaranjadas), feixes de luz quentes passando e poeira de luz — épico e limpo" },
  "rua":          { "efeitos": ["contraste", "colagem", "glitch"], "de": "Street (aprovado)", "descricao": "Escuro e contrastado, painéis de colagem com outros momentos do vídeo nos cortes e palavras-chave, glitch nos cortes" },
  "xerox":        { "efeitos": ["xerox"], "descricao": "Xerox halftone / pixel sort: nos cortes, a imagem vira cópia de xerox com retícula, rastros de pixels, glitch em faixas e RGB separado por ~3 s, e volta ao normal" },
- "parallax":     { "efeitos": ["parallax"], "descricao": "Parallax cutout / colagem temporal: nos cortes, o sujeito se solta do fundo, ganha ecos de outros quadros, placas de papel e de cor, e tudo volta ao original em ~4 s" }
+ "parallax":     { "efeitos": ["parallax"], "descricao": "Parallax cutout / colagem temporal: nos cortes, o sujeito se solta do fundo, ganha ecos de outros quadros, placas de papel e de cor, e tudo volta ao original em ~4 s" },
+ "black-and-white": { "efeitos": ["black-white"], "descricao": "Preto e branco duro: sem cor, contraste extremo, pretos chapados, brancos estourados, grão grosso nos meios-tons e brilho suave nas luzes" }
 }

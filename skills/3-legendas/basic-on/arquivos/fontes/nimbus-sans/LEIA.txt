@@ -1,0 +1,1 @@
+Nimbus Sans Bold (URW++, cópia livre da Helvetica Bold) — do pacote npm urw-core35-fonts 1.1.0. Licença: AGPL-3.0 com exceção para fontes (ver LICENSE e COPYING). Usada na legenda Basic On.

@@ -1,0 +1,8 @@
+{
+ "nome": "Bruce",
+ "cena": "scene_bruce.html",
+ "tamanho": 28,
+ "maxch": 11,
+ "maxw": 0.8,
+ "filtro": "estilos/filtro_bruce.txt"
+}

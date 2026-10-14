@@ -1,0 +1,8 @@
+{
+ "nome": "Basic On",
+ "cena": "scene_basicon.html",
+ "tamanho": 42,
+ "maxch": 26,
+ "maxw": 0.88,
+ "filtro": "estilos/filtro_basicon.txt"
+}

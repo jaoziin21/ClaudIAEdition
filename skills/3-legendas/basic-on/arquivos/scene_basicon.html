@@ -1,0 +1,54 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:BO;src:url("fontes/nimbus-sans/NimbusSans-Bold.woff2");font-weight:600}
+@font-face{font-family:BO;src:url("fontes/nimbus-sans/NimbusSans-Bold.woff2");font-weight:700}
+@font-face{font-family:BO;src:url("node_modules/@fontsource/arimo/files/arimo-latin-400-normal.woff2");font-weight:400}
+html,body{margin:0;background:transparent;overflow:hidden;width:100vw;height:100vh}
+/* "Basic On": a frase inteira de uma vez, sem caixa — Nimbus Sans Bold (= Helvetica Bold) um pouco alargada e justa, creme com sombra suave,
+   centralizada um pouco abaixo do meio; a fala da 2ª pessoa sai em AMARELO; crédito do filme embaixo à esquerda */
+#ln{position:absolute;left:0;top:0;white-space:pre;font-family:BO;font-weight:600;line-height:1.12;letter-spacing:-.03em;word-spacing:-.04em;text-align:center;
+  color:#f3ece0;text-shadow:0 .03em .12em rgba(0,0,0,.55),0 0 .5em rgba(0,0,0,.22)}
+#cr{position:absolute;left:0;top:0;font-family:BO;line-height:1.15;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+#cr b{display:block;font-weight:700;color:#fff}
+#cr span{display:block;font-weight:400;color:rgba(255,255,255,.72)}
+</style></head><body><div id="ln"></div><div id="cr"></div>
+<script src="lado_data.js"></script>
+<script>
+// Corte seco: a frase entra inteira no começo da fala e sai seca no fim. Bloco = pedaço de frase (maxch ~24, até 2 linhas).
+// Cor: falante 1 = creme; falante 2 ("falantes": [[t0,t1],...] no lado.json ou "falante": 2 na cena) = amarelo ("cor2" troca).
+// Crédito opcional: "credito": {"titulo": "Quebrando Regras (2008)", "sub": "@seucanal"} → embaixo à esquerda da imagem.
+const D = LADO, W = innerWidth, H = innerHeight;
+const BAND = (H >= 1900 && D.band) ? D.band : { y: 0, h: H };
+const ln = document.getElementById('ln'), cr = document.getElementById('cr');
+const S = D.size || 42;
+ln.style.fontSize = S + 'px';
+const AMARELO = D.cor2 || '#f2c230';
+const SX = 1.16;   // letra alargada como na referência (Helvetica Bold esticada na horizontal)
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+if (D.credito && (D.credito.titulo || D.credito.sub)) {
+  const cs = Math.round(S * 0.52);
+  cr.innerHTML = (D.credito.titulo ? `<b style="font-size:${cs}px">${esc(D.credito.titulo)}</b>` : '') + (D.credito.sub ? `<span style="font-size:${Math.round(cs * 0.78)}px">${esc(D.credito.sub)}</span>` : '');
+  cr.style.left = Math.round(W * 0.02) + 'px'; cr.style.top = (BAND.y + BAND.h - cr.offsetHeight - Math.round(BAND.h * 0.03)) + 'px';
+}
+let cur = null;
+window.render = t => {
+  const B = D.blocks.find(b => t >= b.start && t < b.end) || null;
+  if (B !== cur) {
+    cur = B;
+    if (B) {
+      ln.innerHTML = B.lines.flat().map(w => esc(w.w)).join(' ');            // uma linha só, como na referência
+      if (ln.offsetWidth * SX > W * 0.88) ln.innerHTML = B.lines.map(l => l.map(w => esc(w.w)).join(' ')).join('\n');   // não coube: quebra
+      ln.style.color = B.falante === 2 ? AMARELO : '#f3ece0';
+      const lw = ln.offsetWidth, lh = ln.offsetHeight, k = Math.min(1, (W * 0.88) / (lw * SX));
+      const cx = clamp(B.x * W, 20 + lw * SX * k / 2, W - 20 - lw * SX * k / 2), cy = BAND.y + clamp(B.y * BAND.h, lh * k / 2 + 10, BAND.h - lh * k / 2 - 10);
+      ln.style.transformOrigin = '50% 50%'; ln.style.transform = `scale(${(k * SX).toFixed(4)}, ${k})`;
+      ln.style.left = (cx - lw / 2) + 'px'; ln.style.top = (cy - lh / 2) + 'px';
+    }
+  }
+  ln.style.opacity = B ? 1 : 0;
+};
+window.fontsOK = async () => { for (const w of [400, 600, 700]) await document.fonts.load(`${w} ${S}px BO`); await document.fonts.ready;
+  return document.fonts.check(`600 ${S}px BO`) ? 'ok' : 'font missing'; };
+</script></body></html>

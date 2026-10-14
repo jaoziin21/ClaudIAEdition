@@ -27,6 +27,9 @@ Pacotes de efeito que somam com qualquer legenda. Peça um ou vários no mesmo v
 <td width="33%" valign="top"><a href="efeito-xerox/"><img src="efeito-xerox/exemplo.jpg" width="100%"></a><br><b><code>/efeito-xerox</code></b><br><sub>Cópia de xerox que invade a imagem nos cortes: retícula, rastros de pixel sort, glitch e RGB separado, e volta ao normal.</sub></td>
 <td width="33%" valign="top"><a href="efeito-parallax/"><img src="efeito-parallax/exemplo.jpg" width="100%"></a><br><b><code>/efeito-parallax</code></b><br><sub>Recorta a pessoa do vídeo e monta uma colagem em camadas: fundo deslizando, ecos dela em outras cores, placas de papel, e volta ao normal.</sub></td>
 </tr>
+<tr>
+<td width="33%" valign="top"><a href="efeito-black-and-white/"><img src="efeito-black-and-white/exemplo.jpg" width="100%"></a><br><b><code>/efeito-black-and-white</code></b><br><sub>Preto e branco duro de filme puxado: contraste extremo, pretos chapados, brancos estourados e grão grosso.</sub></td>
+</tr>
 </table>
 
 ---
