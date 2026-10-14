@@ -50,15 +50,16 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
 - `venda/pagina/editor-no-piloto.html` — página de vendas (fonte, com `vid/` e `img/`). Publicada como artifact privado:
   https://claude.ai/artifact/MpJwaRJrwGDGDabHLxzd4v (atualizar com Artifact publish + `url`, depois de ler).
 - `venda/site/` — a mesma página pronta para hospedar (`index.html` + vídeos, 28 MB). Ele recebeu `editor-no-piloto-site.zip`.
-- `venda/vitrine/` e `venda/ferramentas/monta.py`, `junta.sh` — geram os compilados (9 legendas / 7 efeitos na mesma cena de anime).
+- `venda/vitrine/` e `venda/ferramentas/monta.py`, `junta.sh` — geram os compilados (13 legendas / 10 efeitos na mesma cena de anime). Rodar UM monta.py por vez
+  (legendas e efeitos ao mesmo tempo misturam os arquivos do motor); depois `bash venda/vitrine/junta.sh` (copia para pagina/ e site/).
 - `venda/demo-recomecar/` — vídeo "Mandei uma frase. Isso voltou." (feito de verdade: roteiro, voz ElevenLabs, NASA, Sample Yellow
   + fonte gótica pirata-one + cinema + sonho, trilha original) + `chat.html` (abertura) + NOTAS.md.
 
-## Página de vendas (estado em 14/out)
+## Página de vendas (estado em 14/out, noite: 36 skills, 13 legendas, 10 efeitos, +490 mil combinações)
 Clara, azul cobalto, fontes Bricolage Grotesque + Geist. Seções: topo 3D (celular inclinado com legenda/comandos saindo da tela,
 vídeo "mandei uma frase") + BOTÃO 3D grande centralizado embaixo (pedido 14/out; no celular vem antes do celular 3D) → números → "Tudo em uma skill só" (7 cartões que se juntam ao rolar e terminam encaixados num bloco; o cartão preto "Editor no Piloto" do fim foi TIRADO a pedido dele 14/out)
-→ dores que viram (flip) + calculadora de horas → compilados (9 legendas, 7 efeitos) → conversa animada (como funciona) →
-equipe (6 skills) → carrossel 3D das 9 legendas → testador de fontes (as 9 legendas, cada uma com a fonte original ou a escolhida) → capa 3D dos 7 efeitos → formatos → antes/depois arrastável
+→ dores que viram (flip) + calculadora de horas → compilados (13 legendas, 10 efeitos) → conversa animada (como funciona) →
+equipe (6 skills) → carrossel 3D das 13 legendas → testador de fontes (as 13 legendas, cada uma com a fonte original ou a escolhida) → capa 3D dos 10 efeitos → formatos → antes/depois arrastável
 ("1 Samuel 16") → comparação em 3 colunas → "Só de uma coisa: Claude Code" + bônus → oferta (borda girando) → FAQ → final 3D.
 Sem preço e sem link de pagamento ainda (botões vão para #oferta). Garantia de 7 dias escrita na página.
 
@@ -91,5 +92,5 @@ Sem preço e sem link de pagamento ainda (botões vão para #oferta). Garantia d
    (P&B duro granulado + variação `black-white-claro` p/ contraluz) em `skills/4-efeitos/`. Basic On leva a fonte Nimbus Sans Bold
    (= Helvetica Bold, URW, AGPL c/ exceção de fonte; arquivos de licença juntos em `arquivos/fontes/nimbus-sans/`).
    render_lado.mjs do motor passa: glitch, piscar, reticencias, coresChave, credito, cor2, falante/falantes.
-   A PÁGINA ainda diz "29 skills", "9 legendas" e "7 efeitos": atualizar números/vitrines se ele pedir.
+   Página atualizada com tudo isso (14/out, noite).
 5. **Pendências dele:** deixar este repositório PRIVADO (está público e as skills estão aqui); mandar as músicas para a `/musica`.
