@@ -113,16 +113,13 @@ section{padding-block:88px}
 .stat span{color:var(--muted);font-size:14.5px}
 
 /* tudo em uma skill só */
-.merge{position:relative;height:clamp(440px,52vw,580px);perspective:1200px;margin-top:30px}
+.merge{position:relative;height:clamp(420px,40vw,460px);perspective:1200px;margin-top:30px}
 #tudo{overflow:hidden}
 .mcard{position:absolute;left:50%;top:50%;width:min(300px,62vw);height:120px;margin:-60px 0 0 calc(min(300px,62vw) / -2);border-radius:22px;background:var(--card);
   border:1px solid var(--line);display:flex;align-items:center;gap:16px;padding:0 22px;box-shadow:0 24px 50px -24px rgba(12,14,19,.35);will-change:transform}
 .mcard i{width:52px;height:52px;border-radius:15px;flex:none;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:24px}
 .mcard b{font-family:var(--f-display);font-size:24px;font-weight:800;letter-spacing:-.02em}
 .mcard small{display:block;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
-.mcard.final{background:var(--ink);color:#fff;border-color:var(--ink);justify-content:center;flex-direction:column;gap:2px;height:150px;margin-top:-75px}
-.mcard.final b{font-size:30px}
-.mcard.final small{color:#aab0c0}
 
 /* botões de escolha e frase "você manda" (testador de fontes) */
 .chip{font:inherit;font-size:14.5px;font-weight:500;background:transparent;color:var(--stage-ink);border:1px solid var(--stage-line);border-radius:999px;padding:8px 14px;cursor:pointer}
@@ -436,7 +433,7 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
   <div class="wrap center">
     <span class="kicker"><b></b>Já pensou?</span>
     <h2 class="h2">Roteiro, texto, áudio, legenda, edição, música e efeitos. <span class="u">Tudo em uma skill só.</span></h2>
-    <p class="lead">É isso que o Editor no Piloto faz. Role a tela e veja as sete partes virarem uma.</p>
+    <p class="lead">É isso que o Editor no Piloto faz. Role a tela e veja as sete partes se juntarem.</p>
   </div>
   <div class="wrap">
     <div class="merge" id="merge">
@@ -447,7 +444,6 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
       <div class="mcard" data-k="4"><i style="background:#ece6ff"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0c0e13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 7.5L20 18M8.5 16.5L20 6"/></svg></i><div><b>Edição</b><small>cortes, fundo, enquadramento</small></div></div>
       <div class="mcard" data-k="5"><i style="background:#ffe9d6"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0c0e13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></i><div><b>Música</b><small>no ponto certo, baixinha</small></div></div>
       <div class="mcard" data-k="6"><i style="background:#dff3ff"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0c0e13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></i><div><b>Efeitos</b><small>7 pacotes que se somam</small></div></div>
-      <div class="mcard final" data-k="7"><b>Editor no Piloto</b><small>uma conversa · um vídeo pronto</small></div>
     </div>
   </div>
 </section>
@@ -831,19 +827,25 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
 
   var merge=$('#merge'), mcards=$$('.mcard'), offer=$('#offerwrap');
   var ESP=[[-330,-150,-120,-14],[300,-170,-60,12],[-380,40,-40,8],[360,30,-140,-10],[-200,170,-90,-6],[220,180,-30,9],[0,-210,-200,4]];
+  // fim: os 7 cartões encaixados num bloco (4 + 3 no computador, 2 por linha no celular)
+  function bloco(i){
+    var W=mcards[0].offsetWidth, H=mcards[0].offsetHeight, g=12, cw=merge.clientWidth, s, col, row, n;
+    if(window.innerWidth<640){ s=Math.min(1,(cw-g)/2/W); col=i%2; row=Math.floor(i/2); n=(row===3)?1:2;
+      return [(col-(n-1)/2)*(W*s+g),(row-1.5)*(H*s+g),s]; }
+    s=Math.min(0.82,(cw-3*g)/4/W); row=i<4?0:1; col=i<4?i:i-4; n=i<4?4:3;
+    return [(col-(n-1)/2)*(W*s+g),(row-0.5)*(H*s+g),s];
+  }
   function juntar(){
     var r=merge.getBoundingClientRect(), vh=window.innerHeight;
     var p=Math.max(0,Math.min(1,(vh-r.top)/(vh*0.55+r.height*0.5)));
     var e2=function(a,b,x){var t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t);};
     var sc=window.innerWidth<640?0.42:window.innerWidth<1000?0.7:1;
     mcards.forEach(function(c,i){
-      if(i===7){ var q=e2(0.82,1,p); c.style.transform='translateZ('+(q*60)+'px) scale('+(0.7+0.3*q)+')'; c.style.opacity=q; c.style.visibility=q>0.01?'visible':'hidden'; return; }
-      var e=ESP[i], k=1-e2(0.25,0.85,p);
-      c.style.transform='translate3d('+(e[0]*sc*k)+'px,'+(e[1]*sc*k+(i-3)*6*p)+'px,'+(e[2]*k-(7-i)*4*p)+'px) rotate('+(e[3]*k)+'deg) scale('+(1-0.06*p)+')';
-      c.style.opacity=1-e2(0.8,0.95,p);
+      var e=ESP[i], f=bloco(i), k=1-e2(0.25,0.85,p);
+      c.style.transform='translate3d('+(f[0]+(e[0]*sc-f[0])*k)+'px,'+(f[1]+(e[1]*sc*0.75-f[1])*k)+'px,'+(e[2]*k)+'px) rotate('+(e[3]*k)+'deg) scale('+(f[2]+(1-f[2])*k)+')';
     });
   }
-  if(calmo){ mcards.forEach(function(c,i){ if(i<7){ c.style.display='none'; } else { c.style.transform='none'; c.style.opacity=1; } }); }
+  if(calmo){ var fixo=function(){ mcards.forEach(function(c,i){ var f=bloco(i); c.style.transform='translate('+f[0]+'px,'+f[1]+'px) scale('+f[2]+')'; }); }; fixo(); window.addEventListener('resize',fixo); }
   else { window.addEventListener('scroll',juntar,{passive:true}); window.addEventListener('resize',juntar); juntar(); }
 
   var t0=performance.now(), ult=t0, giro=0;
