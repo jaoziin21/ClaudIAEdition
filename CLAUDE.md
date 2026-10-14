@@ -68,7 +68,12 @@ Sem preço e sem link de pagamento ainda (botões vão para #oferta). Garantia d
 3. FEITO 14/out: ZIP de entrega + guia PDF + termos de uso (licença pessoal; permite vídeos para clientes — confirmar com ele).
    Ainda a fazer quando ele pedir: política de privacidade e e-mail de contato no rodapé da página; pixel do Meta/TikTok; preço;
    subir o ZIP na Kirvano.
-4. **Depois (ele disse "a gente fala disso depois"):** legendas novas criadas do zero (ideias: Cinética 3D, Recorte/colagem, Neon,
+4. **EFEITOS NOVOS (14/out): ele vai MANDAR PROMPTS de cada efeito que quer.** NÃO inventar a lista (ele recusou Brasas/Câmera
+   na mão/Zoom/Prisma/Neve/Faixas/Duotone com "naooo"). Para cada prompt: criar no motor do Getsêmani (`engine/efeitos/`:
+   `video/*.txt` fragmento ffmpeg e/ou `tela/*.js` EFX.add, entrada em `efeitos.json` + `pacotes.json`), teste de 5 s na cena da
+   vitrine (`venda/ferramentas/monta.py`), mandar para aprovar; aprovado → pasta `skills/4-efeitos/efeito-<nome>/` (SKILL.md,
+   arquivos/, exemplo.jpg), linha em `GRUPOS` do readmes.py, rodar readmes.py + capas.cjs + gera_entrega.sh.
+   Antigo: legendas novas criadas do zero (ideias: Cinética 3D, Recorte/colagem, Neon,
    Holograma) e efeitos novos (Brasas, Câmera na mão, Zoom na batida, Prisma, Neve/poeira, Faixas de cinema, Duotone).
    Fazer teste de 5 s de cada para ele aprovar antes de virar comando.
 5. **Pendências dele:** deixar este repositório PRIVADO (está público e as skills estão aqui); mandar as músicas para a `/musica`.
