@@ -9,9 +9,10 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
 - Este repositório = SÓ o produto e a venda.
 - `jaoziin21/getsemani---canal-` = SÓ o canal cristão dele (motor original, vídeos, notas). Nada de venda entra lá.
 - O produto copia do Getsêmani só a versão LIMPA (sem vozes, vídeos, músicas de terceiros, notas pessoais).
-  Gerador: `venda/ferramentas/build_skills.py` (lê o motor do Getsêmani, escreve `skills/`; caminhos absolutos da sessão antiga,
-  ajustar antes de rodar; ele apaga `skills/` e recria — depois copiar de volta `skills/README.md` (fonte em
-  `venda/ferramentas/skills_README_fonte.md`), `skills/instalar.sh` e `skills/video-gif/LICENCA-REAL-ESRGAN.txt`).
+  Gerador: `venda/ferramentas/build_skills.py` (lê o motor do Getsêmani, escreve `skills/` PLANO; caminhos absolutos da sessão
+  antiga, ajustar antes de rodar; ele apaga `skills/` e recria — depois mover cada skill para a pasta do grupo (ver abaixo), copiar
+  de volta `skills/instalar.sh` (cópia em `venda/ferramentas/instalar.sh`) e `video-gif/LICENCA-REAL-ESRGAN.txt`, e rodar
+  `python3 venda/ferramentas/readmes.py && node venda/ferramentas/capas.cjs` (READMEs e capas das pastas).
 
 ## Regras fixas que ele já cobrou
 - **ElevenLabs: SEMPRE `generations_count: 1`. NUNCA 4.** (cada geração gasta crédito dele/do aluno). Em 13/out a conta grátis dele
@@ -27,7 +28,11 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
   Wikimedia (limite de requisições) e Internet Archive funcionam (NASA "EarthInHd" e "Gulliver's Travels 1939" = domínio público).
 
 ## Onde está cada coisa
-- `skills/` — 29 skills + motor, cada uma independente (`bash skills/instalar.sh <pasta-do-canal> [skills]`). Catálogo: `skills/README.md`.
+- `skills/` — 29 skills + motor, cada uma independente, DIVIDIDAS EM GRUPOS (pedido dele, 14/out: "não joga tudo numa pasta só"):
+  `1-base/` (motor), `2-roteiro-voz-post/`, `3-legendas/`, `4-efeitos/`, `5-formatos-de-video/`. Cada grupo tem README com vitrine
+  e `capa.png`. Instalação: `bash skills/instalar.sh <pasta-do-canal> [skills ou grupos]` (ex.: `legendas efeitos`); no canal do
+  aluno tudo fica plano em `.claude/skills/<nome>/`. Catálogo: `skills/README.md`. Skill nova: pasta no grupo certo + uma linha em
+  `GRUPOS` no `venda/ferramentas/readmes.py` + rodar readmes.py e capas.cjs.
   Testado instalando só motor + 1 skill numa pasta vazia. FALTA: `/musica` (ele vai mandar as músicas).
 - `venda/PLANO.md` — plano do produto e da venda (decisões e etapas).
 - `venda/pagina/editor-no-piloto.html` — página de vendas (fonte, com `vid/` e `img/`). Publicada como artifact privado:

@@ -1,11 +1,13 @@
-# ClaudIA Edition
+<img src="skills/capa.png" alt="Editor no Piloto" width="100%">
 
-Pacote de skills para Claude Code que edita vídeos curtos (Shorts, Reels, TikTok): roteiro, voz, legenda animada,
-efeitos, trilha e post. Nome comercial ainda provisório ("Editor no Piloto").
+# Editor no Piloto
 
-- `skills/` — **as skills do produto**, cada uma independente (catálogo e instalação em `skills/README.md`).
-- `venda/PLANO.md` — plano do produto e da venda (decisões, módulos, etapas).
-- `venda/pagina/` — página que explica o produto e cada comando (publicada em https://claude.ai/artifact/MpJwaRJrwGDGDabHLxzd4v).
+Pacote de skills para Claude Code que faz vídeos curtos (Reels, TikTok, Shorts) a partir de uma frase: roteiro, voz,
+legenda animada, edição, música, efeitos e post. **Tudo em uma skill só.**
 
-O motor e os comandos vêm do repositório do canal Getsêmani (`jaoziin21/getsemani---canal-`), em versão limpa: sem vídeos,
-vozes, músicas ou notas pessoais. A pasta `skills/` é gerada a partir de lá; melhorias no canal são trazidas para cá.
+| Pasta | O que tem |
+|---|---|
+| [`skills/`](skills/) | **O produto.** 30 skills divididas em grupos: [1 · Base](skills/1-base/), [2 · Começo, roteiro, voz e post](skills/2-roteiro-voz-post/), [3 · Legendas](skills/3-legendas/), [4 · Efeitos](skills/4-efeitos/), [5 · Formatos de vídeo](skills/5-formatos-de-video/). Catálogo e instalação em [`skills/README.md`](skills/README.md). |
+| [`venda/`](venda/) | Plano, página de vendas, site pronto para hospedar, vitrines e ferramentas que geram tudo. |
+
+O motor e os comandos vêm do motor de edição original do autor, em versão limpa: sem vídeos, vozes, músicas ou notas pessoais.
