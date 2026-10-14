@@ -65,15 +65,34 @@ section{padding-block:88px}
 .nav .btn{padding:11px 18px;font-size:15px}
 
 /* hero 3D */
-.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:48px;align-items:center;padding-block:40px 64px}
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);grid-template-areas:"txt stage" "buy buy";gap:8px 48px;align-items:center;padding-block:16px 56px}
+.htxt{grid-area:txt}.stage{grid-area:stage}.hbuy{grid-area:buy}
+/* botão 3D grande e centralizado */
+.hbuy{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;perspective:900px}
+.b3d{position:relative;display:inline-block;text-decoration:none;color:#fff;border-radius:999px;background:#1636a8;padding-bottom:10px;
+  transform:rotateX(14deg);transform-origin:50% 100%;transition:transform .2s ease-out;will-change:transform;
+  box-shadow:0 34px 50px -18px rgba(43,92,255,.65),0 14px 24px -12px rgba(12,14,19,.5)}
+.b3d-f{position:relative;display:flex;align-items:center;gap:14px;overflow:hidden;border-radius:999px;padding:clamp(20px,2.4vw,28px) clamp(34px,5vw,64px);
+  font-family:var(--f-display);font-weight:800;font-size:clamp(22px,2.8vw,34px);letter-spacing:-.02em;white-space:nowrap;
+  background:linear-gradient(180deg,#5b84ff 0%,#2b5cff 55%,#2350f0 100%);box-shadow:inset 0 2px 0 rgba(255,255,255,.45),inset 0 -3px 0 rgba(0,0,0,.18);
+  transform:translateY(-10px);transition:transform .15s ease-out}
+.b3d-f::after{content:"";position:absolute;top:0;bottom:0;left:-40%;width:30%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);animation:brilho 3.2s ease-in-out infinite}
+@keyframes brilho{0%,55%{left:-40%}100%{left:130%}}
+.b3d .arr{transition:transform .15s}
+.b3d:hover .b3d-f{transform:translateY(-13px)}
+.b3d:hover .arr{transform:translateX(4px)}
+.b3d:active .b3d-f{transform:translateY(-2px)}
+.b3d:focus-visible{outline:3px solid var(--blue);outline-offset:6px}
+.hfine{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;font-size:14.5px;color:var(--muted)}
+.hfine span::before{content:"✓";color:var(--green);font-weight:700;margin-right:6px}
 .hero h1{font-size:clamp(46px,7.4vw,92px);font-weight:800;line-height:1;letter-spacing:-.022em;margin-top:18px}
 .hero h1 .u{color:var(--blue)}
 .hero .sub{margin-top:22px;font-size:19.5px;color:var(--muted);max-width:48ch}
 .hero .sub b{color:var(--ink);font-weight:600}
 .actions{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;margin-top:30px}
-.stage{justify-self:center;width:min(420px,100%);perspective:1100px;position:relative;padding:30px 0}
+.stage{justify-self:center;width:min(400px,100%);perspective:1100px;position:relative;padding:8px 0}
 .rig{position:relative;transform-style:preserve-3d;transform:rotateY(-18deg) rotateX(8deg);will-change:transform}
-.phone3d{width:min(320px,80vw);margin-inline:auto}
+.phone3d{width:min(280px,72vw);margin-inline:auto}
 .screen{aspect-ratio:9/16;border-radius:38px;overflow:hidden;background:#000;position:relative;border:10px solid #0c0e13;box-shadow:0 50px 80px -30px rgba(12,14,19,.55)}
 .screen video{width:100%;height:100%;object-fit:cover;display:block}
 .sound{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);background:rgba(255,255,255,.94);color:var(--ink);border:0;
@@ -203,13 +222,44 @@ section{padding-block:88px}
 
 /* testador de fontes */
 .tester{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:20px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
-.tframe{position:relative;border-radius:20px;overflow:hidden;background:#0d1016 url("img/tester-bg.jpg") center/cover;aspect-ratio:480/418;display:flex;align-items:flex-end;justify-content:center;padding:0 16px 13%}
+.tframe{position:relative;border-radius:20px;overflow:hidden;background:#0d1016 url("img/tester-bg.jpg") center/cover;aspect-ratio:480/418;display:flex;align-items:flex-end;justify-content:center;padding:0 5cqw 13%;container-type:inline-size}
 .tframe::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,14,19,.15),rgba(12,14,19,.55))}
-.tout{position:relative;text-align:center;line-height:1.25;max-width:92%}
-.tout.sy span{background:rgba(0,0,0,.72);color:var(--yellow);padding:.04em .28em;font-size:clamp(20px,3vw,32px);box-decoration-break:clone;-webkit-box-decoration-break:clone}
-.tout.st{font-size:clamp(46px,8vw,92px);color:#fff;-webkit-text-stroke:2px #000;text-shadow:0 6px 0 #000;transform:scaleY(1.25);text-transform:uppercase;margin-bottom:8%}
-.tout.st span{color:#fff}
-.tout.rs span{display:inline-block;color:var(--red);font-size:clamp(34px,6vw,64px);line-height:.95;text-shadow:0 4px 14px rgba(0,0,0,.5)}
+.tframe.c{align-items:center;padding-bottom:0}
+.tframe.bl{justify-content:flex-start;padding:0 7cqw 11%}
+.tframe.tl{align-items:flex-start;justify-content:flex-start;padding:9% 7cqw 0}
+.tout{position:relative;text-align:center;line-height:1.25;max-width:92%;font-style:var(--ti,normal)}
+.tout .k{color:var(--kc)}
+/* Sample Yellow */
+.tout.sy span{font-family:var(--tf,'Roboto',sans-serif);font-style:var(--ti,italic);font-weight:300;background:rgba(0,0,0,.72);color:var(--yellow);padding:.04em .28em;font-size:6cqw;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+/* Street: legenda pequena + grito gigante */
+.tout.st small{display:block;font-family:'Geist',sans-serif;font-size:3.6cqw;color:#fff;text-shadow:0 2px 6px #000;margin-bottom:2cqw}
+.tout.st small .k{color:var(--red)}
+.tout.st b{display:block;font-family:var(--tf,'UnifrakturMaguntia',serif);font-weight:400;font-size:17cqw;line-height:1;color:#fff;-webkit-text-stroke:.35cqw #000;text-shadow:0 1.2cqw 0 #000;transform:scaleY(1.2);text-transform:uppercase;margin-bottom:4%}
+/* Red Sharp: tarja + impacto vermelho empilhado */
+.tout.rs i{display:inline-block;font-style:normal;font-family:Georgia,serif;font-size:3.4cqw;background:#000;color:#fff;padding:.2em .6em;margin-bottom:2.5cqw}
+.tout.rs span{display:block;font-family:var(--tf,'Montserrat',sans-serif);font-weight:900;color:var(--red);font-size:11cqw;line-height:.95;text-transform:uppercase;text-shadow:0 4px 14px rgba(0,0,0,.5)}
+.tout.rs span.u{font-family:var(--tf,'Playfair Display',serif);font-style:var(--ti,italic);font-weight:600;text-transform:none}
+/* Mistury: cartaz com fontes misturadas */
+.tout.mi .s{font-family:'Cinzel',serif;font-weight:700;font-size:4.2cqw;letter-spacing:.18em;text-transform:uppercase;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+.tout.mi .c{font-family:'Great Vibes',cursive;font-size:8cqw;color:#fff;margin-left:.15em;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+.tout.mi .g{display:block;font-family:var(--tf,'Abril Fatface',serif);font-size:16cqw;line-height:1;color:var(--red);text-shadow:0 3px 0 #2a0000,0 10px 24px rgba(0,0,0,.5)}
+/* Rocks e Samplerocks: plano inclinado, escada */
+.tout.ro,.tout.sr{text-align:left;transform:rotate(-8deg) skewX(-4deg);transform-origin:0 100%;line-height:1}
+.tout.ro span,.tout.sr span{display:block;text-transform:uppercase;white-space:nowrap}
+.tout.ro span+span,.tout.sr span+span{margin-left:12cqw}
+.tout.ro span{font-family:var(--tf,'Cinzel',serif);font-weight:700;font-size:8.5cqw;background:linear-gradient(180deg,#fff 0%,#e8ecf3 45%,#8d96a8 52%,#f4f6fa 75%,#c9cfdb 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 0 rgba(0,0,0,.7)) drop-shadow(0 0 10px rgba(255,255,255,.35))}
+.tout.ro span em{font-style:normal;font-size:1.9em;line-height:.8}
+.tout.sr span{font-family:var(--tf,'Montserrat',sans-serif);font-weight:900;font-size:7.5cqw;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.55),0 8px 18px rgba(0,0,0,.45)}
+.tout.sr .k{color:var(--yellow)}
+/* Dinâmica: itálico ao lado de quem fala */
+.tout.di{text-align:left;max-width:60%;font-family:var(--tf,'Playfair Display',serif);font-style:var(--ti,italic);font-weight:600;font-size:6cqw;line-height:1.15;color:#fff;text-shadow:0 0 14px rgba(255,255,255,.45),0 2px 6px rgba(0,0,0,.7)}
+.tout.di .k{color:#ff5a5f}
+/* Invisible: a letra é feita da imagem */
+.tout.iv{font-family:var(--tf,'Montserrat',sans-serif);font-weight:900;font-size:11cqw;line-height:1;text-transform:uppercase;background:url("img/tester-bg.jpg") center/cover;-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:brightness(1.6) saturate(1.3) drop-shadow(0 .5cqw 0 rgba(0,0,0,.75)) drop-shadow(0 1.5cqw 2cqw rgba(0,0,0,.5))}
+/* 3D Invisível: uma palavra por vez, relevo 3D */
+.tout.d3{font-family:var(--tf,'Montserrat',sans-serif);font-weight:900;font-size:15cqw;line-height:1;text-transform:uppercase;color:#bfe3ff;
+  text-shadow:0 1px 0 #8fb4d6,0 2px 0 #7fa3c4,0 3px 0 #6f92b2,0 4px 0 #5f81a0,0 5px 0 #4f708e,0 6px 0 #40607c,0 14px 22px rgba(0,0,0,.6)}
 .tctl{display:flex;flex-direction:column;gap:14px;min-width:0}
 .tctl input[type=text]{font:inherit;font-size:17px;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:var(--soft);color:var(--ink);width:100%}
 .tchips{display:flex;flex-wrap:wrap;gap:8px}
@@ -311,10 +361,12 @@ footer{border-top:1px solid var(--line);padding-block:26px 100px;font-size:13px;
 footer .wrap{display:flex;flex-direction:column;gap:6px}
 .sticky{position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(243,244,246,.94);
   border-top:1px solid var(--line);display:none;justify-content:center;z-index:5;backdrop-filter:blur(8px)}
+.sticky.off{display:none!important}
 .sticky .btn{width:100%;max-width:480px;padding:14px;font-size:16.5px}
 
 @media (max-width:1000px){
   .hero,.proof,.offer,.calc,.tester{grid-template-columns:1fr}
+  .hero{grid-template-areas:"txt" "buy" "stage";gap:30px}
   .stats,.flips,.niches,.need{grid-template-columns:repeat(2,minmax(0,1fr))}
   .team{grid-template-columns:repeat(3,minmax(0,1fr))}
   .formats{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -333,7 +385,7 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
   .p1{left:-2%}.p2{right:0}.p3{left:-4%}.p4{left:0}.p5{right:-2%}.p6{right:0}
   .flip{height:240px}
 }
-@media (prefers-reduced-motion:reduce){.btn,.btn .arr,.tilt,.flip,.cv{transition:none}.row{opacity:1;transform:none;transition:none}}
+@media (prefers-reduced-motion:reduce){.b3d-f::after{animation:none;display:none}.b3d,.b3d-f,.btn,.btn .arr,.tilt,.flip,.cv{transition:none}.row{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body>
@@ -344,14 +396,10 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
 </header>
 
 <div class="wrap hero">
-  <div>
+  <div class="htxt">
     <span class="kicker"><b></b>Skills para Claude Code · Reels, TikTok e Shorts</span>
     <h1>Mande uma frase. <span class="u">Receba o vídeo pronto.</span></h1>
     <p class="sub">Roteiro, voz, legenda animada, efeitos, música e o texto do post. <b>Tudo numa conversa com o Claude Code</b>, sem abrir editor nenhum.</p>
-    <div class="actions">
-      <a class="btn" href="#oferta">Quero meu canal no piloto <span class="arr">→</span></a>
-      <a class="link" href="#demo">Ver os estilos rodando</a>
-    </div>
     <div class="checks"><span>Qualquer nicho</span><span>Computador ou celular</span><span>Sem saber editar</span></div>
   </div>
   <div class="stage" id="stage">
@@ -368,6 +416,10 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
       <span class="pop p6" aria-hidden="true"><b>✓</b> roteiro · voz · trilha</span>
       <i class="glow" aria-hidden="true"></i>
     </div>
+  </div>
+  <div class="hbuy">
+    <a class="b3d" href="#oferta"><span class="b3d-f">Quero o Editor no Piloto <span class="arr">→</span></span></a>
+    <p class="hfine"><span>Acesso imediato</span><span>Garantia de 7 dias</span><a class="link" href="#demo">ver os estilos rodando</a></p>
   </div>
 </div>
 
@@ -494,17 +546,23 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
       <div class="face"><video src="vid/t-invisible.mp4" autoplay muted loop playsinline preload="metadata"></video><div class="lab"><b>Invisible</b><code>/invisible</code></div></div>
     </div></div>
 
-    <div class="ghead"><h3>Teste as fontes</h3><p>Escreva uma frase, escolha a letra e o estilo. Com <b>/fontes</b> qualquer legenda usa qualquer uma das 37 fontes.</p></div>
+    <div class="ghead"><h3>Teste as fontes</h3><p>Escreva uma frase e escolha uma das 9 legendas e a letra. Com <b>/fontes</b> qualquer legenda usa qualquer uma das 37 fontes.</p></div>
     <div class="tester">
-      <div class="tframe"><div class="tout sy" id="t-out"><span id="t-txt">recomeçar não tem cara de filme</span></div></div>
+      <div class="tframe" id="t-frame"><div class="tout sy" id="t-out"></div></div>
       <div class="tctl">
         <label for="t-in" class="kicker" style="color:var(--muted)">Sua frase</label>
         <input id="t-in" type="text" maxlength="60" value="recomeçar não tem cara de filme" autocomplete="off">
         <span class="kicker" style="color:var(--muted)">Estilo</span>
         <div class="tchips" id="t-est">
           <button class="chip" data-v="sy" aria-pressed="true" type="button">Sample Yellow</button>
-          <button class="chip" data-v="st" type="button">Grito da Street</button>
-          <button class="chip" data-v="rs" type="button">Impacto Red Sharp</button>
+          <button class="chip" data-v="st" type="button">Street</button>
+          <button class="chip" data-v="rs" type="button">Red Sharp</button>
+          <button class="chip" data-v="mi" type="button">Mistury</button>
+          <button class="chip" data-v="ro" type="button">Rocks</button>
+          <button class="chip" data-v="sr" type="button">Samplerocks</button>
+          <button class="chip" data-v="di" type="button">Dinâmica</button>
+          <button class="chip" data-v="iv" type="button">Invisible</button>
+          <button class="chip" data-v="d3" type="button">3D Invisível</button>
         </div>
         <span class="kicker" style="color:var(--muted)">Fonte</span>
         <div class="tchips" id="t-fon">
@@ -691,17 +749,34 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
   else { var io2=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io2.unobserve(e.target);} });},{threshold:.4,rootMargin:'0px 0px -8% 0px'});
     rows.forEach(function(r){io2.observe(r);}); }
 
-  // testador de fontes
-  var tin=$('#t-in'), tout=$('#t-out'), ttx=$('#t-txt'), tsay=$('#t-say'), est='sy', fnt=$('#t-fon .chip[aria-pressed="true"]');
+  // testador de fontes: as 9 legendas, cada uma com a fonte original ou a escolhida
+  var tin=$('#t-in'), tout=$('#t-out'), tfr=$('#t-frame'), tsay=$('#t-say'), est='sy', fnt=$('#t-fon .chip[aria-pressed="true"]');
+  var esc=function(x){return x.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
+  var TNOME={sy:'/sample-yellow',st:'/street',rs:'/red-sharp',mi:'/mistury',ro:'/rocks',sr:'/samplerocks',di:'/legenda-dinamica',iv:'/invisible',d3:'/legenda-3d-invisivel'};
+  var TONDE={st:' (nos gritos)',rs:' (no impacto)',mi:' (na palavra forte)'};
+  var TPOS={sy:'',st:'',rs:'c',mi:'c',ro:'bl',sr:'bl',di:'tl',iv:'c',d3:'c'};
   function tpinta(){
-    var t=(tin.value||'escreva sua frase').trim();
-    tout.className='tout '+est;
-    if(est==='rs'){ var w=t.split(/\s+/).slice(-4); ttx.innerHTML=w.map(function(x){return '<span>'+x.replace(/[<>&]/g,'')+'</span>';}).join('<br>'); }
-    else if(est==='st'){ ttx.textContent=t.split(/\s+/).sort(function(a,b){return b.length-a.length;})[0]||t; }
-    else ttx.textContent=t;
-    tout.style.fontFamily=fnt.dataset.f; tout.style.fontStyle=fnt.dataset.i?'italic':'normal';
-    var nome={sy:'/sample-yellow',st:'/street (nos gritos)',rs:'/red-sharp (no impacto)'}[est];
-    tsay.innerHTML=fnt.dataset.n==='original'?'Faz com a <b>'+nome+'</b>.':'Faz com a <b>'+nome+'</b>, só que com a fonte <b>'+fnt.dataset.n+'</b>.';
+    var t=(tin.value||'escreva sua frase').trim(), w=t.split(/\s+/).map(esc), n=w.length, k=0;
+    w.forEach(function(x,i){ if(x.length>w[k].length) k=i; });
+    var kw='<span class="k">'+w[k]+'</span>', comK=w.map(function(x,i){return i===k?kw:x;}).join(' '), h='';
+    if(est==='sy') h='<span>'+w.join(' ')+'</span>';
+    else if(est==='st') h='<small>'+comK+'</small><b style="font-size:'+Math.min(17,100/Math.max(w[k].length,1)).toFixed(1)+'cqw">'+w[k]+'</b>';
+    else if(est==='rs'){ var u=w.slice(-4); h='<i>'+(n>4?w.slice(0,-4).join(' '):'legenda pequena')+'</i>'+u.map(function(x,i){return '<span'+(i===u.length-1?' class="u"':'')+'>'+x+'</span>';}).join(''); }
+    else if(est==='mi'){ var an=w.slice(0,k), dp=w.slice(k+1);
+      h=(an.length>1?'<span class="s">'+an.slice(0,-1).join(' ')+'</span>':'')+(an.length?'<span class="c">'+an[an.length-1]+'</span>':'')+'<span class="g">'+w[k]+'</span>'+(dp.length?'<span class="s">'+dp.join(' ')+'</span>':''); }
+    else if(est==='ro'||est==='sr'){ var m=Math.ceil(n/2), l1=w.slice(0,m), l2=w.slice(m);
+      var lin=function(a,o){return a.map(function(x,i){return o+i===k&&est==='sr'?'<span class="k" style="display:inline">'+x+'</span>':x;}).join(' ');};
+      var p1=lin(l1,0); if(est==='ro') p1='<em>'+w[0].charAt(0)+'</em>'+(l1.join(' ').slice(1));
+      var mx=Math.max(l1.join(' ').length+(est==='ro'?1:0),l2.join(' ').length+(est==='sr'?0:2),1), fs=Math.min(est==='ro'?8.5:7.5,(est==='ro'?118:112)/mx).toFixed(1);
+      h='<span style="font-size:'+fs+'cqw">'+p1+'</span>'+(l2.length?'<span style="font-size:'+fs+'cqw">'+lin(l2,m)+'</span>':''); }
+    else if(est==='di') h=comK;
+    else if(est==='iv') h=w.join(' ');
+    else h=w[k];
+    tout.className='tout '+est; tout.innerHTML=h; tfr.className='tframe '+TPOS[est];
+    if(fnt.dataset.n==='original'){ tout.style.removeProperty('--tf'); tout.style.removeProperty('--ti'); }
+    else { tout.style.setProperty('--tf',fnt.dataset.f); tout.style.setProperty('--ti',fnt.dataset.i?'italic':'normal'); }
+    var nome=TNOME[est]+(TONDE[est]||'');
+    tsay.innerHTML=fnt.dataset.n==='original'?'Faz com a <b>'+TNOME[est]+'</b>.':'Faz com a <b>'+TNOME[est]+'</b>, só que com a fonte <b>'+fnt.dataset.n+'</b>'+(TONDE[est]||'')+'.';
   }
   grupo('#t-est',false,function(b){ est=b.dataset.v; tpinta(); });
   grupo('#t-fon',false,function(b){ fnt=b; tpinta(); });
@@ -737,6 +812,10 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
     stage.addEventListener('pointermove',function(e){ if(e.pointerType!=='mouse')return; mouse=true; var r=stage.getBoundingClientRect();
       var x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5; rig.style.transform='rotateY('+(x*36-6)+'deg) rotateX('+(-y*22+6)+'deg)'; });
     stage.addEventListener('pointerleave',function(){ mouse=false; });
+    var b3=$('.b3d');
+    b3.addEventListener('pointermove',function(e){ if(e.pointerType!=='mouse')return; var r=b3.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+      b3.style.transform='rotateX('+(14-y*16)+'deg) rotateY('+(x*14)+'deg)'; });
+    b3.addEventListener('pointerleave',function(){ b3.style.transform=''; });
     $$('.tilt,.tester').forEach(function(c){
       c.addEventListener('pointermove',function(e){ if(e.pointerType!=='mouse')return; var r=c.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
         var base=c.classList.contains('us')&&window.innerWidth>1000?' translateZ(40px) scale(1.04)':'';
@@ -776,6 +855,10 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
     if(!calmo){ giro=(giro+dt*0.04)%360; offer.style.setProperty('--a',giro+'deg'); }
     requestAnimationFrame(quadro);
   })(t0);
+
+  // barra de compra do celular só aparece depois do botão grande do topo
+  if('IntersectionObserver' in window){ var stk=$('.sticky'); stk.classList.add('off');
+    new IntersectionObserver(function(es){ stk.classList.toggle('off', es[0].isIntersecting || es[0].boundingClientRect.top>0); }).observe($('.b3d')); }
 
   // vídeos fora da tela pausam
   if('IntersectionObserver' in window){
