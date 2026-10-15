@@ -54,6 +54,10 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
 - `venda/PLANO.md` — plano do produto e da venda (decisões e etapas).
 - `venda/pagina/editor-no-piloto.html` — página de vendas (fonte, com `vid/` e `img/`). Publicada como artifact privado:
   https://claude.ai/artifact/MpJwaRJrwGDGDabHLxzd4v (atualizar com Artifact publish + `url`, depois de ler).
+- `venda/pagina/editor-no-piloto-v2.html` — VERSÃO NOVA (15/out) no estilo do modelo que ele desenhou (creme + preto + bronze,
+  monitor no topo, faixas de legendas/efeitos, oferta escura, FAQ + selo de garantia). Artifact: https://claude.ai/artifact/UteKgi6mFeciysfYycxupk
+  Preço provisório R$ 27,99 (ele ainda não fechou; quer preço baixo). SEM WhatsApp/grupo/suporte (ainda não existe), SEM
+  depoimentos, "+1.000 criadores" ou visualizações inventadas, SEM preço "de/por" falso. Ele vai comparar com a atual e escolher.
 - `venda/site/` — a mesma página pronta para hospedar (`index.html` + vídeos, 28 MB). Ele recebeu `editor-no-piloto-site.zip`.
 - `venda/vitrine/` e `venda/ferramentas/monta.py`, `junta.sh` — geram os compilados (13 legendas / 10 efeitos na mesma cena de anime). Rodar UM monta.py por vez
   (legendas e efeitos ao mesmo tempo misturam os arquivos do motor); depois `bash venda/vitrine/junta.sh` (copia para pagina/ e site/).

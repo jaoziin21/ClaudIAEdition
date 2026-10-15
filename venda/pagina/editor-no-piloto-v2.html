@@ -1,0 +1,710 @@
+<title>Editor no Piloto</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=UnifrakturMaguntia&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Arimo:ital,wght@0,400;0,700;1,400&family=Tinos&family=Bebas+Neue&family=Playfair+Display:ital,wght@1,600&family=Kaushan+Script&family=Luckiest+Guy&family=Cinzel:wght@700&family=DM+Sans:wght@700&family=Bangers&family=Great+Vibes&family=Metal+Mania&family=Abril+Fatface&family=Montserrat:wght@900&family=Roboto:ital,wght@1,300&display=swap">
+<style>
+/* Layout: o modelo dele (creme quente, tinta quase preta, bronze nos destaques), com "telas" escuras onde os vídeos reais rodam.
+   Página de um visual só (clara), cores todas explícitas. */
+:root{
+  color-scheme:light;
+  --bg:#f5f0e7; --paper:#fffcf6; --ink:#16130f; --muted:#6c6357; --line:#e4dccd; --soft:#ece5d8;
+  --bronze:#9c6a35; --bronze-l:#d6a466; --bronze-soft:#f1e3cf;
+  --night:#15120e; --night-2:#201b15; --night-ink:#f4ede1; --night-muted:#a4998a; --night-line:#342c23;
+  --ok:#3f8f5a; --red:#e5484d; --yellow:#f2e24a;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  --r:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.55;margin:0;overflow-x:hidden}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.025em}
+p{margin:0}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+section{padding-block:72px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--bronze)}
+.eyebrow::before{content:"";width:2px;height:14px;background:var(--bronze)}
+.h2{font-size:clamp(30px,4.2vw,46px);font-weight:800;line-height:1.05;margin-top:10px}
+.lead{color:var(--muted);font-size:17px;max-width:60ch;margin-top:10px}
+.shead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.shead > div{min-width:0}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--ink);color:var(--paper);font-family:var(--f-body);font-weight:600;font-size:17px;
+  text-decoration:none;padding:16px 26px;border-radius:999px;border:0;cursor:pointer;transition:transform .15s,background .15s;box-shadow:0 14px 30px -14px rgba(22,19,15,.6)}
+.btn:hover{background:#2b241c}
+.btn:active{transform:scale(.98)}
+.btn .arr{transition:transform .15s}
+.btn:hover .arr{transform:translateX(3px)}
+.btn.light{background:var(--paper);color:var(--ink);box-shadow:0 14px 30px -14px rgba(0,0,0,.6)}
+.btn.light:hover{background:#fff}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible,.cmp:focus-visible{outline:3px solid var(--bronze);outline-offset:3px}
+.fine{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:14px;color:var(--muted)}
+.fine span{display:inline-flex;align-items:center;gap:7px}
+.fine svg{width:16px;height:16px;flex:none}
+
+/* topo */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:18px}
+.logo{display:flex;align-items:center;gap:9px;font-family:var(--f-display);font-weight:800;font-size:19px;letter-spacing:-.02em;text-decoration:none}
+.logo svg{width:24px;height:24px}
+.links{display:flex;gap:26px;font-size:14.5px;color:var(--muted)}
+.links a{text-decoration:none}
+.links a:hover{color:var(--ink)}
+.nav .btn{padding:11px 18px;font-size:14.5px}
+
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:48px;align-items:center;padding-block:28px 56px}
+.hero .tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 12px;color:var(--muted)}
+.hero .tag i{width:7px;height:7px;border-radius:50%;background:var(--bronze)}
+.hero h1{font-size:clamp(42px,6.2vw,76px);font-weight:800;line-height:.98;letter-spacing:-.035em;margin-top:20px}
+.hero h1 em{font-style:normal;color:var(--bronze)}
+.hero .sub{margin-top:20px;font-size:18px;color:var(--muted);max-width:44ch}
+.hero .sub b{color:var(--ink);font-weight:600}
+.hero .cta{display:flex;flex-direction:column;align-items:flex-start;gap:16px;margin-top:28px}
+
+/* monitor do topo */
+.desk{position:relative}
+.desk::before{content:"";position:absolute;inset:8% -6% -4% 6%;background:radial-gradient(closest-side,rgba(214,164,102,.45),transparent 75%);filter:blur(20px);z-index:0}
+.monitor{position:relative;z-index:1;background:var(--night);border-radius:20px;padding:10px;box-shadow:0 40px 70px -30px rgba(22,19,15,.65),0 0 0 1px #000}
+.mbar{display:flex;align-items:center;gap:6px;padding:4px 8px 10px;font-family:var(--f-mono);font-size:11px;color:var(--night-muted)}
+.mbar i{width:9px;height:9px;border-radius:50%;background:var(--night-line)}
+.mbar span{margin-left:auto}
+.mscreen{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;background:#0c0a08;border-radius:12px;padding:16px;min-height:0}
+.steps{display:flex;flex-direction:column;gap:9px;min-width:0;color:var(--night-ink)}
+.ask{background:#2a231b;border-radius:14px 14px 4px 14px;padding:10px 12px;font-size:14px;align-self:flex-end;max-width:100%}
+.ask small{display:block;font-family:var(--f-mono);font-size:10.5px;color:var(--night-muted);margin-bottom:2px}
+.step{display:flex;align-items:center;gap:10px;font-size:14px;padding:7px 10px;border-radius:10px;background:var(--night-2)}
+.step b{font-weight:600}
+.step code{font-family:var(--f-mono);font-size:11.5px;color:var(--bronze-l);margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.step .ck{width:18px;height:18px;border-radius:50%;flex:none;border:1.5px solid var(--night-line);display:flex;align-items:center;justify-content:center}
+.step .ck svg{width:11px;height:11px;opacity:0}
+.step.on .ck{background:var(--ok);border-color:var(--ok)}
+.step.on .ck svg{opacity:1}
+.step.done{background:var(--bronze);color:var(--night)}
+.step.done code{color:var(--night)}
+.step.done .ck{border-color:var(--night)}
+.phone{width:clamp(150px,15vw,200px);aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#000;position:relative;border:1px solid var(--night-line)}
+.phone video{width:100%;height:100%;object-fit:cover;display:block}
+.sound{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);background:rgba(0,0,0,.6);color:#fff;border:1px solid rgba(255,255,255,.25);font:600 12px var(--f-body);padding:7px 12px;border-radius:999px;cursor:pointer;white-space:nowrap;backdrop-filter:blur(6px)}
+.stand{width:22%;height:26px;margin:0 auto;background:linear-gradient(#2a241d,#15120e);clip-path:polygon(18% 0,82% 0,100% 100%,0 100%);position:relative;z-index:1}
+.base{width:40%;height:8px;margin:0 auto;border-radius:6px;background:#15120e;position:relative;z-index:1}
+
+/* números */
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding-top:28px;border-top:1px solid var(--line)}
+.stat{display:flex;gap:12px;align-items:center;min-width:0}
+.stat svg{width:30px;height:30px;flex:none;color:var(--bronze)}
+.stat b{display:block;font-family:var(--f-display);font-size:28px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.stat span{display:block;font-size:13.5px;color:var(--muted);line-height:1.25}
+.proofrow{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-top:28px}
+.real{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--muted);max-width:52ch}
+.real .dot{width:40px;height:40px;border-radius:12px;flex:none;background:var(--night);display:flex;align-items:center;justify-content:center}
+.real .dot i{width:10px;height:10px;border-radius:50%;background:var(--red);box-shadow:0 0 0 4px rgba(229,72,77,.25)}
+.real b{color:var(--ink);font-weight:600}
+.niches{display:flex;flex-direction:column;gap:8px;min-width:0}
+.niches small{font-size:12.5px;color:var(--muted)}
+.niches div{display:flex;flex-wrap:wrap;gap:6px}
+.niches span{font-size:12.5px;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:4px 11px}
+
+/* faixas que rolam */
+.arrows{display:flex;gap:8px}
+.arrows button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.arrows button:hover{background:var(--soft)}
+.arrows svg{width:18px;height:18px}
+.strip{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:2px;padding:4px 2px 14px;margin-top:26px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.strip > *{scroll-snap-align:start;flex:none}
+
+.ex{width:clamp(180px,20vw,218px);display:flex;flex-direction:column;gap:10px}
+.ex .pic{aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:var(--night);position:relative;box-shadow:0 20px 34px -22px rgba(22,19,15,.7)}
+.ex .pic img,.ex .pic video{width:100%;height:100%;object-fit:cover;display:block}
+.ex .pic .live{position:absolute;left:10px;top:10px;font-family:var(--f-mono);font-size:10.5px;background:rgba(0,0,0,.6);color:#fff;padding:3px 8px;border-radius:999px}
+.ex h3{font-size:16px;font-weight:700;letter-spacing:-.01em}
+.ex p{font-size:13px;color:var(--muted);line-height:1.35}
+.ex code{font-family:var(--f-mono);font-size:12px;color:var(--bronze)}
+
+.tile{width:clamp(200px,22vw,248px);display:flex;flex-direction:column;gap:8px}
+.tile .pic{aspect-ratio:480/348;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 18px 30px -22px rgba(22,19,15,.7)}
+.tile video{width:100%;display:block;margin-top:-14.6%}
+.tile b{font-size:14.5px;font-weight:600}
+.tile code{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+.tile .nm{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+
+/* o que é */
+.what{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px;align-items:center}
+.win{background:var(--night);border-radius:20px;overflow:hidden;box-shadow:0 40px 60px -34px rgba(22,19,15,.7);color:var(--night-ink)}
+.win .mbar{padding:12px 14px;border-bottom:1px solid var(--night-line)}
+.thread{display:flex;flex-direction:column;gap:10px;padding:18px}
+.b{max-width:86%;padding:10px 13px;border-radius:16px;font-size:14.5px;line-height:1.45}
+.b small{display:block;font-family:var(--f-mono);font-size:10.5px;color:var(--night-muted);margin-bottom:3px}
+.b.you{align-self:flex-end;background:#2a231b;border-bottom-right-radius:4px}
+.b.ai{align-self:flex-start;background:var(--night-2);border:1px solid var(--night-line);border-bottom-left-radius:4px}
+.b.ai small{color:var(--bronze-l)}
+.b .vm{display:flex;gap:10px;align-items:center;margin-top:8px}
+.b .vm video{width:56px;height:98px;object-fit:cover;border-radius:8px;background:#000}
+.b .vm span{font-family:var(--f-mono);font-size:11px;color:var(--night-muted)}
+.feat{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+.feat li{display:flex;gap:14px;align-items:flex-start}
+.feat ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.feat .ic{width:36px;height:36px;border-radius:10px;flex:none;background:var(--bronze-soft);color:var(--bronze);display:flex;align-items:center;justify-content:center}
+.feat .ic svg{width:18px;height:18px}
+.feat b{display:block;font-weight:600;font-size:15.5px}
+.feat span{font-size:14px;color:var(--muted)}
+
+/* testador */
+.tester{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:20px;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-top:28px}
+.tframe{position:relative;border-radius:16px;overflow:hidden;background:#0d1016 url("img/tester-bg.jpg") center/cover;aspect-ratio:480/418;display:flex;align-items:flex-end;justify-content:center;padding:0 5cqw 13%;container-type:inline-size}
+.tframe::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,14,19,.15),rgba(12,14,19,.55))}
+.tframe.c{align-items:center;padding-bottom:0}
+.tframe.bl{justify-content:flex-start;padding:0 7cqw 11%}
+.tframe.tl{align-items:flex-start;justify-content:flex-start;padding:9% 7cqw 0}
+.tframe.tr{align-items:flex-start;justify-content:flex-end;padding:14% 8cqw 0}
+.tframe.m{padding-bottom:24%}
+.tout{position:relative;text-align:center;line-height:1.25;max-width:92%;font-style:var(--ti,normal)}
+.tout .k{color:var(--kc)}
+.tout.bs span{font-family:var(--tf,'Arimo',sans-serif);font-style:var(--ti,normal);background:#000;color:#fff;padding:.04em .26em;font-size:5.2cqw;text-transform:lowercase;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.tout.bp span.cx{font-family:var(--tf,'Arimo',sans-serif);font-style:var(--ti,italic);background:rgba(22,16,13,.7);color:#f4f2ee;padding:.2em .45em;font-size:5.2cqw;text-shadow:0 0 .14em rgba(255,250,240,.4)}
+.tout.bu{font-family:var(--tf,'Tinos',serif);font-style:var(--ti,normal);text-transform:uppercase;letter-spacing:.14em;font-size:3.8cqw;color:#f1f1ee;text-shadow:0 .05em .1em rgba(0,0,0,.85)}
+.tout.bo{font-family:var(--tf,'Arimo',sans-serif);font-style:var(--ti,normal);font-weight:700;font-size:6.2cqw;letter-spacing:-.03em;word-spacing:-.05em;color:#f3ece0;text-shadow:0 .03em .12em rgba(0,0,0,.55);transform:scaleX(1.14)}
+.tout.sy span{font-family:var(--tf,'Roboto',sans-serif);font-style:var(--ti,italic);font-weight:300;background:rgba(0,0,0,.72);color:var(--yellow);padding:.04em .28em;font-size:6cqw;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.tout.st small{display:block;font-family:'Geist',sans-serif;font-size:3.6cqw;color:#fff;text-shadow:0 2px 6px #000;margin-bottom:2cqw}
+.tout.st small .k{color:var(--red)}
+.tout.st b{display:block;font-family:var(--tf,'UnifrakturMaguntia',serif);font-weight:400;font-size:17cqw;line-height:1;color:#fff;-webkit-text-stroke:.35cqw #000;text-shadow:0 1.2cqw 0 #000;transform:scaleY(1.2);text-transform:uppercase;margin-bottom:4%}
+.tout.rs i{display:inline-block;font-style:normal;font-family:Georgia,serif;font-size:3.4cqw;background:#000;color:#fff;padding:.2em .6em;margin-bottom:2.5cqw}
+.tout.rs span{display:block;font-family:var(--tf,'Montserrat',sans-serif);font-weight:900;color:var(--red);font-size:11cqw;line-height:.95;text-transform:uppercase;text-shadow:0 4px 14px rgba(0,0,0,.5)}
+.tout.rs span.u{font-family:var(--tf,'Playfair Display',serif);font-style:var(--ti,italic);font-weight:600;text-transform:none}
+.tout.mi .s{font-family:'Cinzel',serif;font-weight:700;font-size:4.2cqw;letter-spacing:.18em;text-transform:uppercase;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+.tout.mi .c{font-family:'Great Vibes',cursive;font-size:8cqw;color:#fff;margin-left:.15em;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+.tout.mi .g{display:block;font-family:var(--tf,'Abril Fatface',serif);font-size:16cqw;line-height:1;color:var(--red);text-shadow:0 3px 0 #2a0000,0 10px 24px rgba(0,0,0,.5)}
+.tout.ro,.tout.sr{text-align:left;transform:rotate(-8deg) skewX(-4deg);transform-origin:0 100%;line-height:1}
+.tout.ro span,.tout.sr span{display:block;text-transform:uppercase;white-space:nowrap}
+.tout.ro span+span,.tout.sr span+span{margin-left:12cqw}
+.tout.ro span{font-family:var(--tf,'Cinzel',serif);font-weight:700;font-size:8.5cqw;background:linear-gradient(180deg,#fff 0%,#e8ecf3 45%,#8d96a8 52%,#f4f6fa 75%,#c9cfdb 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 0 rgba(0,0,0,.7)) drop-shadow(0 0 10px rgba(255,255,255,.35))}
+.tout.ro span em{font-style:normal;font-size:1.9em;line-height:.8}
+.tout.sr span{font-family:var(--tf,'Montserrat',sans-serif);font-weight:900;font-size:7.5cqw;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.55),0 8px 18px rgba(0,0,0,.45)}
+.tout.sr .k{color:var(--yellow)}
+.tout.di{text-align:left;max-width:60%;font-family:var(--tf,'Playfair Display',serif);font-style:var(--ti,italic);font-weight:600;font-size:6cqw;line-height:1.15;color:#fff;text-shadow:0 0 14px rgba(255,255,255,.45),0 2px 6px rgba(0,0,0,.7)}
+.tout.di .k{color:#ff5a5f}
+.tout.iv{font-family:var(--tf,'Montserrat',sans-serif);font-weight:900;font-size:11cqw;line-height:1;text-transform:uppercase;background:url("img/tester-bg.jpg") center/cover;-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:brightness(1.6) saturate(1.3) drop-shadow(0 .5cqw 0 rgba(0,0,0,.75)) drop-shadow(0 1.5cqw 2cqw rgba(0,0,0,.5))}
+.tout.d3{font-family:var(--tf,'Montserrat',sans-serif);font-weight:900;font-size:15cqw;line-height:1;text-transform:uppercase;color:#bfe3ff;
+  text-shadow:0 1px 0 #8fb4d6,0 2px 0 #7fa3c4,0 3px 0 #6f92b2,0 4px 0 #5f81a0,0 5px 0 #4f708e,0 6px 0 #40607c,0 14px 22px rgba(0,0,0,.6)}
+.tctl{display:flex;flex-direction:column;gap:12px;min-width:0}
+.tctl .lbl{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tctl input[type=text]{font:inherit;font-size:16px;padding:13px 15px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+.tchips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:13.5px;font-weight:500;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.say{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:13px 15px;font-size:15.5px}
+.say small{display:block;font-family:var(--f-mono);font-size:10.5px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em}
+.say b{color:var(--bronze)}
+
+/* acesso completo */
+.access{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:48px;align-items:center}
+.list{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:10px}
+.list li{display:flex;gap:11px;align-items:flex-start;font-size:15.5px}
+.list li::before{content:"";width:18px;height:18px;flex:none;margin-top:2px;border-radius:5px;background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fffcf6' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/12px no-repeat}
+.files{background:var(--night);border-radius:20px;color:var(--night-ink);box-shadow:0 40px 60px -34px rgba(22,19,15,.7);overflow:hidden}
+.files .mbar{padding:12px 14px;border-bottom:1px solid var(--night-line)}
+.fbody{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;padding:14px}
+.tree{display:flex;flex-direction:column;gap:4px;min-width:0;font-family:var(--f-mono);font-size:12.5px}
+.tree .g{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;background:var(--night-2);color:var(--night-ink)}
+.tree .g svg{width:15px;height:15px;color:var(--bronze-l);flex:none}
+.tree .g em{font-style:normal;margin-left:auto;color:var(--night-muted)}
+.tree .s{padding:2px 10px 2px 33px;color:var(--night-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.files .phone{width:clamp(140px,13vw,176px)}
+
+/* prova real */
+.proof{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin-top:28px}
+.chat{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:10px;justify-content:center}
+.msg{max-width:88%;padding:11px 15px;border-radius:18px;font-size:15px;line-height:1.45}
+.msg small{display:block;font-family:var(--f-mono);font-size:10.5px;opacity:.75;margin-bottom:3px}
+.msg.you{align-self:flex-end;background:var(--ink);color:var(--paper);border-bottom-right-radius:5px}
+.msg.ai{align-self:flex-start;background:var(--soft);border-bottom-left-radius:5px}
+.cmp{position:relative;border-radius:var(--r);overflow:hidden;background:#0c0e13;min-height:260px;cursor:ew-resize;touch-action:none;user-select:none}
+.cmp .lay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Georgia,"Times New Roman",serif;letter-spacing:.05em;font-size:clamp(24px,3.4vw,36px);color:#f2efe8}
+.cmp .old{font-variant-numeric:oldstyle-nums;background:#1d1610}
+.cmp .new{font-variant-numeric:lining-nums;background:#0f1218;clip-path:inset(0 0 0 var(--x,50%))}
+.cmp .bar{position:absolute;top:0;bottom:0;left:var(--x,50%);width:3px;background:#fff;transform:translateX(-50%)}
+.cmp .bar::after{content:"⇆";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:#fff;color:#16130f;display:flex;align-items:center;justify-content:center;font-size:18px}
+.cmp .t{position:absolute;top:14px;font-family:var(--f-mono);font-size:11px;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.14);color:#fff}
+.cmp .t.l{left:14px}.cmp .t.r{right:14px;background:var(--ok)}
+
+/* oferta */
+.offer{background:var(--night);color:var(--night-ink);border-radius:26px;padding:clamp(24px,4vw,44px);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.9fr) minmax(0,1fr);gap:32px;align-items:center;position:relative;overflow:hidden}
+.offer::before{content:"";position:absolute;left:30%;top:-40%;width:50%;height:120%;background:radial-gradient(closest-side,rgba(214,164,102,.22),transparent);pointer-events:none}
+.offer > *{position:relative;min-width:0}
+.badge{display:inline-block;background:var(--bronze-l);color:var(--night);font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
+.offer h2{font-size:clamp(28px,3.4vw,38px);font-weight:800;line-height:1.05;margin-top:14px}
+.offer .d{color:var(--night-muted);font-size:15px;margin-top:10px;max-width:40ch}
+.offer .fine{color:var(--night-muted);margin-top:18px;font-size:13px}
+.price{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;padding-inline:8px;border-inline:1px solid var(--night-line)}
+.price .v{font-family:var(--f-display);font-weight:800;letter-spacing:-.04em;line-height:1;font-size:clamp(44px,5vw,60px)}
+.price .v small{font-size:.42em;letter-spacing:0;margin-right:4px;vertical-align:.7em}
+.price .u{font-size:13.5px;color:var(--night-muted)}
+.price .btn{margin-top:14px;white-space:nowrap}
+.bonus h3{font-family:var(--f-mono);font-size:11.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--bronze-l)}
+.bonus ul{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px;font-size:14.5px}
+.bonus li{display:flex;gap:10px;align-items:flex-start}
+.bonus li svg{width:16px;height:16px;flex:none;margin-top:3px;color:var(--bronze-l)}
+
+/* perguntas */
+.faq{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px;align-items:start;margin-top:28px}
+.qs{display:flex;flex-direction:column;gap:8px}
+details{background:var(--paper);border:1px solid var(--line);border-radius:14px}
+summary{list-style:none;cursor:pointer;padding:15px 18px;font-weight:600;font-size:15.5px;display:flex;justify-content:space-between;gap:16px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";width:9px;height:9px;flex:none;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg) translateY(-3px);transition:transform .2s}
+details[open] summary::after{transform:rotate(-135deg) translateY(-2px)}
+details p{padding:0 18px 16px;color:var(--muted);font-size:15px;max-width:66ch}
+.guar{background:var(--night);color:var(--night-ink);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;gap:12px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px)}
+.guar .seal{width:56px;height:56px;border-radius:50%;border:2px solid var(--bronze-l);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--f-display);font-weight:800;line-height:1;color:var(--bronze-l)}
+.guar .seal small{font-family:var(--f-mono);font-size:8.5px;font-weight:400;letter-spacing:.06em;text-transform:uppercase}
+.guar h3{font-size:22px;font-weight:800}
+.guar p{color:var(--night-muted);font-size:15px}
+.guar .btn{align-self:flex-start;margin-top:6px}
+
+footer{border-top:1px solid var(--line);padding-block:28px 100px;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;flex-direction:column;gap:6px}
+
+.bar-m{display:none;position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--night);color:var(--night-ink);
+  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));align-items:center;justify-content:space-between;gap:12px}
+.bar-m b{font-family:var(--f-display);font-size:20px;letter-spacing:-.02em}
+.bar-m small{display:block;font-size:11.5px;color:var(--night-muted)}
+.bar-m .btn{padding:12px 18px;font-size:15px}
+
+@media (max-width:980px){
+  .links{display:none}
+  .hero,.what,.access{grid-template-columns:minmax(0,1fr);gap:36px}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:20px}
+  .offer{grid-template-columns:minmax(0,1fr)}
+  .price{border-inline:0;border-block:1px solid var(--night-line);padding-block:24px}
+  .faq,.proof,.tester{grid-template-columns:minmax(0,1fr)}
+  .guar{position:static}
+}
+@media (max-width:620px){
+  section{padding-block:56px}
+  .nav .btn{display:none}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mscreen{grid-template-columns:minmax(0,1fr);padding:12px}
+  .mscreen .phone{order:-1;width:min(180px,52%);margin-inline:auto}
+  .step code{display:none}
+  .fbody{grid-template-columns:minmax(0,1fr)}
+  .files .phone{width:min(170px,50%);margin-inline:auto}
+  .tile .nm{flex-direction:column;gap:0}
+  .bar-m{display:flex}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.btn,.btn .arr,summary::after{transition:none}}
+</style>
+
+<header class="wrap nav">
+  <a class="logo" href="#inicio" aria-label="Editor no Piloto, início">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2.5 11.2 21 3.5l-4.6 17.3-5.1-5.2-3.5 3.1.4-4.9L17.6 6 6.9 12.6z"/></svg>Editor no Piloto
+  </a>
+  <nav class="links" aria-label="Seções">
+    <a href="#exemplos">Exemplos</a><a href="#o-que-e">O que é</a><a href="#legendas">Legendas</a><a href="#efeitos">Efeitos</a><a href="#oferta">Oferta</a><a href="#perguntas">Perguntas</a>
+  </nav>
+  <a class="btn" href="#oferta">Quero acessar <span class="arr">→</span></a>
+</header>
+
+<main id="inicio">
+<div class="wrap hero">
+  <div>
+    <span class="tag"><i></i>Para criadores de conteúdo</span>
+    <h1>Transforme ideias em <em>vídeos completos.</em></h1>
+    <p class="sub">Um pacote de skills para o Claude Code que faz <b>roteiro, narração, legenda animada, efeitos, música e o texto do post</b>. Você manda uma frase em português; ele devolve o vídeo pronto.</p>
+    <div class="cta">
+      <a class="btn" href="#oferta">Quero acessar agora <span class="arr">→</span></a>
+      <div class="fine">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>Acesso imediato</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>7 dias de garantia</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>Pagamento único</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="desk">
+    <div class="monitor">
+      <div class="mbar" aria-hidden="true"><i></i><i></i><i></i><span>Claude Code · editor no piloto</span></div>
+      <div class="mscreen">
+        <div class="steps" id="steps">
+          <div class="ask"><small>você</small>Faz um vídeo sobre recomeçar.</div>
+          <div class="step on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><b>Ideia</b><code>3 roteiros, 3 ganchos</code></div>
+          <div class="step on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><b>Narração</b><code>/voz</code></div>
+          <div class="step on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><b>Fundo</b><code>NASA, domínio público</code></div>
+          <div class="step on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><b>Legenda</b><code>/sample-yellow</code></div>
+          <div class="step on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><b>Efeitos</b><code>cinema + sonho</code></div>
+          <div class="step on"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><b>Edição e trilha</b><code>cortes na fala</code></div>
+          <div class="step on done"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><b>Pronto para postar</b><code>/post</code></div>
+        </div>
+        <div class="phone">
+          <video id="v-hero" src="vid/mandei.mp4" poster="vid/mandei.jpg" autoplay muted loop playsinline preload="metadata"></video>
+          <button class="sound" data-v="v-hero" type="button">Ativar som</button>
+        </div>
+      </div>
+    </div>
+    <div class="stand" aria-hidden="true"></div><div class="base" aria-hidden="true"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="stats">
+    <div class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><div><b>37</b><span>skills prontas</span></div></div>
+    <div class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg><div><b>13</b><span>estilos de legenda</span></div></div>
+    <div class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg><div><b>10</b><span>pacotes de efeitos</span></div></div>
+    <div class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20 11 4h2l6 16M8 14h8"/></svg><div><b>37</b><span>fontes para qualquer legenda</span></div></div>
+    <div class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg><div><b>6</b><span>formatos de vídeo</span></div></div>
+  </div>
+  <div class="proofrow">
+    <p class="real"><span class="dot"><i></i></span><span><b>Nasceu num canal de verdade.</b> Cada estilo foi criado e aprovado vídeo a vídeo num canal que posta todo dia no YouTube, Instagram, TikTok e Facebook.</span></p>
+    <div class="niches"><small>Crie vídeos para qualquer nicho:</small><div><span>Motivacional</span><span>Religioso</span><span>Anime</span><span>Futebol</span><span>Lifestyle</span><span>Dark</span><span>e muito mais</span></div></div>
+  </div>
+</div>
+
+<section id="exemplos">
+  <div class="wrap">
+    <div class="shead">
+      <div><span class="eyebrow">Exemplos reais</span><h2 class="h2">Veja o resultado na prática.</h2><p class="lead">Vídeos feitos com as skills do Editor no Piloto, cada um com o comando que o gerou.</p></div>
+      <div class="arrows"><button type="button" data-s="ex-strip" data-d="-1" aria-label="Voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" data-s="ex-strip" data-d="1" aria-label="Avançar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
+    </div>
+    <div class="strip" id="ex-strip">
+      <article class="ex"><div class="pic"><video src="vid/mandei.mp4" poster="vid/mandei.jpg" autoplay muted loop playsinline preload="metadata"></video><span class="live">rodando</span></div><div><h3>Narração motivacional</h3><p>Sample Yellow + fonte gótica + cinema e sonho</p><code>/video-narracao</code></div></article>
+      <article class="ex"><div class="pic"><img src="img/vid-verso.jpg" alt="Vídeo do Salmo 46:10 com legenda serifada sobre cena de anime" loading="lazy"></div><div><h3>Versículo</h3><p>Salmo 46:10, com a referência no topo</p><code>/video-narracao</code></div></article>
+      <article class="ex"><div class="pic"><img src="img/vid-edit-musica.jpg" alt="Edit do Goku com arte de mangá em preto e branco" loading="lazy"></div><div><h3>Edit com música</h3><p>Digite "Goku": ele anima artes que já existem na batida</p><code>/edit-musica</code></div></article>
+      <article class="ex"><div class="pic"><img src="img/vid-lado.jpg" alt="Personagem falando com legenda ao lado" loading="lazy"></div><div><h3>Personagem falando</h3><p>Áudio original e legenda ao lado de quem fala</p><code>/video-fala</code></div></article>
+      <article class="ex"><div class="pic"><img src="img/vid-shorts-gif.jpg" alt="Shorts de GIF de 1 Samuel 16:1-13 com legenda amarela" loading="lazy"></div><div><h3>Shorts de GIF</h3><p>1 Samuel 16:1-13 sobre GIF em loop, legenda Sample Yellow</p><code>/video-gif</code></div></article>
+    </div>
+  </div>
+</section>
+
+<section id="o-que-e" style="padding-top:8px">
+  <div class="wrap what">
+    <div class="win" aria-label="Uma conversa no Claude Code">
+      <div class="mbar" aria-hidden="true"><i></i><i></i><i></i><span>conversa</span></div>
+      <div class="thread">
+        <div class="b you"><small>você · /comecar</small>Quero um canal de motivação com voz grave e imagens épicas.</div>
+        <div class="b ai"><small>padrão do canal</small>Fechado: legenda Red Sharp com efeito sombrio, vídeos de 40 s, voz grave. Postar às 19h.</div>
+        <div class="b you"><small>você · /roteiro</small>Faz um sobre começar de novo depois de perder tudo.</div>
+        <div class="b ai"><small>3 roteiros · 3 ganchos cada</small>A opção 2 abre com: "Ninguém aplaude o primeiro dia."</div>
+        <div class="b you"><small>você</small>Vai na 2.</div>
+        <div class="b ai"><small>voz · fundo · edição</small>Pronto. Voz gerada, fundo escolhido, legenda e trilha no lugar.
+          <div class="vm"><video src="vid/t-red-sharp.mp4" autoplay muted loop playsinline preload="metadata"></video><span>versão 1</span></div></div>
+        <div class="b you"><small>você</small>Aprovado.</div>
+      </div>
+    </div>
+    <div>
+      <span class="eyebrow">O que é</span>
+      <h2 class="h2">Editor no Piloto?</h2>
+      <p class="lead">Um conjunto de skills para o Claude Code que faz o trabalho todo de um vídeo curto. Você conta a ideia e aprova; o resto ele faz.</p>
+      <div class="feat"><ul>
+        <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6M9 18h4"/></svg></span><div><b>Roteiro</b><span>3 opções com 3 aberturas cada, em linguagem de gente.</span></div></li>
+        <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span><div><b>Narração</b><span>ElevenLabs, Fish Audio ou a sua própria voz.</span></div></li>
+        <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></span><div><b>Legenda animada</b><span>13 estilos, palavra por palavra no tempo da fala.</span></div></li>
+        <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span><div><b>Efeitos</b><span>10 pacotes. Use um ou vários juntos, com qualquer legenda.</span></div></li>
+        <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span><div><b>Edição e música</b><span>Cortes, fundo, enquadramento e trilha no volume certo.</span></div></li>
+        <li><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l16-8-6 16-2-6z"/></svg></span><div><b>Post pronto</b><span>Título, legenda, tags e o melhor horário para postar.</span></div></li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="legendas" style="padding-top:8px">
+  <div class="wrap">
+    <div class="shead">
+      <div><span class="eyebrow">13 estilos de legenda</span><h2 class="h2">Legendas para qualquer estilo.</h2><p class="lead">Do minimalista ao cinematográfico. Cada uma é um comando, e qualquer uma aceita qualquer uma das 37 fontes.</p></div>
+      <div class="arrows"><button type="button" data-s="leg-strip" data-d="-1" aria-label="Voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" data-s="leg-strip" data-d="1" aria-label="Avançar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
+    </div>
+    <div class="strip" id="leg-strip">
+      <div class="tile"><div class="pic"><video src="vid/t-sample-yellow.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Sample Yellow</b><code>/sample-yellow</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-street.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Street</b><code>/street</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-red-sharp.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Red Sharp</b><code>/red-sharp</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-rocks.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Rocks</b><code>/rocks</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-mistury.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Mistury</b><code>/mistury</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-3d-invisivel.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>3D Invisível</b><code>/legenda-3d-invisivel</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-samplerocks.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Samplerocks</b><code>/samplerocks</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-dinamica.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Dinâmica</b><code>/legenda-dinamica</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-invisible.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Invisible</b><code>/invisible</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-black-sample.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Black Sample</b><code>/black-sample</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-black-point.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Black Point</b><code>/black-point</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-bruce.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Bruce</b><code>/bruce</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-basic-on.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Basic On</b><code>/basic-on</code></div></div>
+    </div>
+
+    <div class="tester">
+      <div class="tframe" id="t-frame"><div class="tout sy" id="t-out"></div></div>
+      <div class="tctl">
+        <label for="t-in" class="lbl">Teste com a sua frase</label>
+        <input id="t-in" type="text" maxlength="60" value="recomeçar não tem cara de filme" autocomplete="off">
+        <span class="lbl">Estilo</span>
+        <div class="tchips" id="t-est">
+          <button class="chip" data-v="sy" aria-pressed="true" type="button">Sample Yellow</button>
+          <button class="chip" data-v="st" type="button">Street</button>
+          <button class="chip" data-v="rs" type="button">Red Sharp</button>
+          <button class="chip" data-v="mi" type="button">Mistury</button>
+          <button class="chip" data-v="ro" type="button">Rocks</button>
+          <button class="chip" data-v="sr" type="button">Samplerocks</button>
+          <button class="chip" data-v="di" type="button">Dinâmica</button>
+          <button class="chip" data-v="iv" type="button">Invisible</button>
+          <button class="chip" data-v="d3" type="button">3D Invisível</button>
+          <button class="chip" data-v="bs" type="button">Black Sample</button>
+          <button class="chip" data-v="bp" type="button">Black Point</button>
+          <button class="chip" data-v="bu" type="button">Bruce</button>
+          <button class="chip" data-v="bo" type="button">Basic On</button>
+        </div>
+        <span class="lbl">Fonte</span>
+        <div class="tchips" id="t-fon">
+          <button class="chip" data-f="'Roboto',sans-serif" data-i="1" data-n="original" aria-pressed="true" type="button">Original</button>
+          <button class="chip" data-f="'Pirata One',serif" data-n="pirata-one" type="button">Pirata One</button>
+          <button class="chip" data-f="'UnifrakturMaguntia',serif" data-n="unifrakturmaguntia" type="button">Unifraktur</button>
+          <button class="chip" data-f="'Bebas Neue',sans-serif" data-n="bebas-neue" type="button">Bebas Neue</button>
+          <button class="chip" data-f="'Playfair Display',serif" data-i="1" data-n="playfair-display" type="button">Playfair</button>
+          <button class="chip" data-f="'Kaushan Script',cursive" data-n="kaushan-script" type="button">Kaushan</button>
+          <button class="chip" data-f="'Luckiest Guy',cursive" data-n="luckiest-guy" type="button">Luckiest Guy</button>
+          <button class="chip" data-f="'Bangers',cursive" data-n="bangers" type="button">Bangers</button>
+          <button class="chip" data-f="'Cinzel',serif" data-n="cinzel" type="button">Cinzel</button>
+          <button class="chip" data-f="'Metal Mania',cursive" data-n="metal-mania" type="button">Metal Mania</button>
+          <button class="chip" data-f="'Great Vibes',cursive" data-n="great-vibes" type="button">Great Vibes</button>
+          <button class="chip" data-f="'Abril Fatface',serif" data-n="abril-fatface" type="button">Abril</button>
+          <button class="chip" data-f="'Montserrat',sans-serif" data-n="montserrat" type="button">Montserrat</button>
+          <button class="chip" data-f="'DM Sans',sans-serif" data-n="dm-sans" type="button">DM Sans</button>
+        </div>
+        <div class="say" aria-live="polite"><small>Você manda para o Claude</small><span id="t-say"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="efeitos" style="padding-top:8px">
+  <div class="wrap">
+    <div class="shead">
+      <div><span class="eyebrow">10 pacotes de efeitos</span><h2 class="h2">Deixe seus vídeos com aparência única.</h2><p class="lead">Mudam a cor, a textura e o clima do vídeo inteiro. Some quantos quiser com qualquer legenda.</p></div>
+      <div class="arrows"><button type="button" data-s="efe-strip" data-d="-1" aria-label="Voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" data-s="efe-strip" data-d="1" aria-label="Avançar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
+    </div>
+    <div class="strip" id="efe-strip">
+      <div class="tile"><div class="pic"><video src="vid/t-cinema.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Cinema</b><code>/efeito-cinema</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-filme-antigo.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Filme antigo</b><code>/efeito-filme-antigo</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-xerox.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Xerox</b><code>/efeito-xerox</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-parallax.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Parallax</b><code>/efeito-parallax</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-black-and-white.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Black and White</b><code>/efeito-black-and-white</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-manga.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Mangá</b><code>/efeito-manga</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-sonho.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Sonho</b><code>/efeito-sonho</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-vhs.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>VHS</b><code>/efeito-vhs</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-sombrio.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Sombrio</b><code>/efeito-sombrio</code></div></div>
+      <div class="tile"><div class="pic"><video src="vid/t-rua.mp4" autoplay muted loop playsinline preload="metadata"></video></div><div class="nm"><b>Rua</b><code>/efeito-rua</code></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="pacote" style="padding-top:8px">
+  <div class="wrap access">
+    <div>
+      <span class="eyebrow">O que você recebe</span>
+      <h2 class="h2">Acesso completo a tudo isso.</h2>
+      <p class="lead">Instale todas as skills ou só as que for usar. No Claude, você escreve "instalar" e ele faz o resto.</p>
+      <ul class="list">
+        <li>37 skills prontas para usar</li>
+        <li>13 estilos de legenda animada</li>
+        <li>37 fontes para trocar em qualquer legenda</li>
+        <li>10 pacotes de efeitos que se somam</li>
+        <li>6 formatos: narração, personagem falando, GIF, edit com música, vídeo longo e aesthetic</li>
+        <li>Roteiros com 3 opções e 3 ganchos cada</li>
+        <li>Narração com ElevenLabs, Fish Audio ou a sua voz</li>
+        <li>Busca de fundo: GIFs, fotos e cenas, com a fonte anotada</li>
+        <li>Título, legenda, tags e horário de cada post</li>
+        <li>Guia de instalação em PDF, passo a passo</li>
+      </ul>
+    </div>
+    <div class="files">
+      <div class="mbar" aria-hidden="true"><i></i><i></i><i></i><span>Editor-no-Piloto/skills</span></div>
+      <div class="fbody">
+        <div class="tree">
+          <span class="g"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>1-base<em>motor</em></span>
+          <span class="g"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>2-roteiro-voz-post<em>6</em></span>
+          <span class="s">comecar · roteiro · voz · buscar-midia · musicas · post</span>
+          <span class="g"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>3-legendas<em>14</em></span>
+          <span class="s">sample-yellow · street · rocks · fontes …</span>
+          <span class="g"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>4-efeitos<em>11</em></span>
+          <span class="s">cinema · xerox · parallax · vhs …</span>
+          <span class="g"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>5-formatos-de-video<em>6</em></span>
+          <span class="s">video-narracao · video-fala · edit-musica …</span>
+        </div>
+        <div class="phone">
+          <video id="v-leg" src="vid/legendas.mp4" autoplay muted loop playsinline preload="metadata"></video>
+          <button class="sound" data-v="v-leg" type="button">Ativar som</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:8px">
+  <div class="wrap">
+    <span class="eyebrow">Feito num canal de verdade</span>
+    <h2 class="h2">Ele aprende o seu gosto.</h2>
+    <p class="lead">O que você corrige uma vez, ele anota e não erra de novo. Este ajuste é de uma conversa real com o dono do canal onde tudo foi testado.</p>
+    <div class="proof">
+      <div class="chat" aria-label="Ajuste feito numa conversa real">
+        <div class="msg you"><small>dono do canal</small>Coloca o "1 Samuel 16" como é escrito na Bíblia. Ficou feinho.</div>
+        <div class="msg ai"><small>Claude Code</small>Pronto: agora está 1 Samuel 16:1-13, com os números do tamanho das letras. Anotei como regra para os próximos vídeos.</div>
+        <div class="msg you"><small>dono do canal</small>Aprovado, meu bom.</div>
+      </div>
+      <div class="cmp" id="cmp" tabindex="0" role="slider" aria-label="Arraste para comparar antes e depois" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+        <div class="lay old">1 Samuel 16</div>
+        <div class="lay new">1 Samuel 16:1-13</div>
+        <span class="t l">antes</span><span class="t r">depois</span>
+        <span class="bar"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="oferta" style="padding-top:8px">
+  <div class="wrap">
+    <div class="offer">
+      <div>
+        <span class="badge">Preço de lançamento</span>
+        <h2>Editor no Piloto completo</h2>
+        <p class="d">As 37 skills, o guia de instalação e tudo o que aparece nesta página. Basta uma conta no Claude; com o plano Pro sai mais rápido e com mais limite.</p>
+        <div class="fine">
+          <span>Acesso imediato</span><span>Pagamento único</span><span>Garantia de 7 dias</span>
+        </div>
+      </div>
+      <div class="price">
+        <span class="v"><small>R$</small>27,99</span>
+        <span class="u">pagamento único</span>
+        <a class="btn light" href="#oferta" id="comprar">Quero acessar agora <span class="arr">→</span></a>
+      </div>
+      <div class="bonus">
+        <h3>Vem junto</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6"/></svg>Guia COMECE AQUI em PDF: instalar no app, no terminal ou pelo celular</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/></svg>Passo a passo de voz de personagem com o Fish Audio</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg>Busca de fundo: ele acha GIFs, fotos e cenas para você</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h6"/></svg>Instale só o que usar: cada skill é independente</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="perguntas" style="padding-top:8px">
+  <div class="wrap">
+    <span class="eyebrow">Dúvidas frequentes</span>
+    <h2 class="h2">Perguntas frequentes.</h2>
+    <div class="faq">
+      <div class="qs">
+        <details><summary>Como recebo o acesso?</summary><p>Logo depois do pagamento você recebe um arquivo com as skills e o guia COMECE AQUI. Abre a pasta no Claude, escreve "instalar" e ele instala tudo.</p></details>
+        <details><summary>Preciso ter o Claude Pro?</summary><p>Não. Precisa de uma conta no Claude. Com o plano Pro sai mais rápido e com mais limite de uso.</p></details>
+        <details><summary>Preciso saber editar ou programar?</summary><p>Não. Você conversa em português com o Claude Code. As skills já trazem as regras de edição.</p></details>
+        <details><summary>Funciona para qualquer nicho?</summary><p>Funciona. Motivação, fé, anime, futebol, curiosidades: você escolhe o assunto, a legenda e os efeitos, e ele monta o padrão do seu canal.</p></details>
+        <details><summary>Dá para juntar estilos?</summary><p>Dá. Qualquer legenda com qualquer fonte, e um ou vários efeitos juntos. Por exemplo, a Sample Yellow com a letra gótica da Street e os efeitos cinema e sonho.</p></details>
+        <details><summary>Dá para usar pelo celular?</summary><p>Dá. Pela versão do Claude Code na nuvem, você manda a ideia pelo app e recebe o vídeo no chat.</p></details>
+        <details><summary>Preciso escrever o texto ou gravar a voz?</summary><p>Não. O roteiro sai da sua ideia e a voz é gerada pelo ElevenLabs ou pelo Fish Audio. Se preferir, use a sua voz.</p></details>
+        <details><summary>Posso usar cenas de anime e músicas famosas?</summary><p>O pacote edita o material que você escolher. Material de terceiros pode gerar reivindicação de direitos (Content ID) no YouTube; a escolha é sua.</p></details>
+      </div>
+      <aside class="guar">
+        <span class="seal">7<small>dias</small></span>
+        <h3>Teste por 7 dias.</h3>
+        <p>Faça seus vídeos, teste as legendas e os efeitos. Se não for para você, peça o reembolso dentro de 7 dias.</p>
+        <a class="btn light" href="#oferta">Quero acessar <span class="arr">→</span></a>
+      </aside>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Editor no Piloto é um pacote independente de skills para o Claude Code. Não é um produto da Anthropic. Claude é marca da Anthropic.</span>
+    <span>Vídeos feitos com o próprio pacote. Fundo do vídeo de abertura: NASA (domínio público).</span>
+  </div>
+</footer>
+
+<div class="bar-m"><div><b>R$ 27,99</b><small>pagamento único · 7 dias de garantia</small></div><a class="btn light" href="#oferta">Quero o meu</a></div>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s);}, $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s));};
+  var toca=function(v){var p=v.play();if(p&&p.catch)p.catch(function(){});};
+
+  // som dos vídeos grandes
+  $$('.sound').forEach(function(b){
+    var v=document.getElementById(b.dataset.v);
+    b.addEventListener('click',function(){ v.muted=!v.muted; if(!v.muted){ v.currentTime=0; toca(v);} b.textContent=v.muted?'Ativar som':'Sem som'; });
+  });
+
+  // vídeos só tocam quando aparecem na tela
+  var vids=$$('video');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting) toca(e.target); else e.target.pause(); });},{rootMargin:'120px'});
+    vids.forEach(function(v){io.observe(v);});
+  }
+
+  // setas das faixas
+  $$('.arrows button').forEach(function(b){
+    b.addEventListener('click',function(){ var s=document.getElementById(b.dataset.s); s.scrollBy({left:+b.dataset.d*Math.max(220,s.clientWidth*.8),behavior:'smooth'}); });
+  });
+
+  // passos do monitor: acendem um por um, em ciclo
+  var calmo=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var steps=$$('#steps .step');
+  if(!calmo){
+    var i=0;
+    setInterval(function(){
+      i=(i+1)%(steps.length+3);
+      steps.forEach(function(s,j){ s.classList.toggle('on',j<i); s.classList.toggle('done',j===steps.length-1&&i>=steps.length); });
+    },900);
+  }
+
+  // botões de escolha
+  function grupo(sel,cb){
+    var bs=$$(sel+' .chip');
+    bs.forEach(function(b){ b.addEventListener('click',function(){ bs.forEach(function(x){x.setAttribute('aria-pressed','false');}); b.setAttribute('aria-pressed','true'); cb(b); }); });
+  }
+
+  // testador: as 13 legendas, cada uma com a fonte original ou a escolhida
+  var tin=$('#t-in'), tout=$('#t-out'), tfr=$('#t-frame'), tsay=$('#t-say'), est='sy', fnt=$('#t-fon .chip[aria-pressed="true"]');
+  var esc=function(x){return x.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
+  var TNOME={bs:'/black-sample',bp:'/black-point',bu:'/bruce',bo:'/basic-on',sy:'/sample-yellow',st:'/street',rs:'/red-sharp',mi:'/mistury',ro:'/rocks',sr:'/samplerocks',di:'/legenda-dinamica',iv:'/invisible',d3:'/legenda-3d-invisivel'};
+  var TONDE={st:' (nos gritos)',rs:' (no impacto)',mi:' (na palavra forte)'};
+  var TPOS={bs:'',bp:'',bu:'tr',bo:'m',sy:'',st:'',rs:'c',mi:'c',ro:'bl',sr:'bl',di:'tl',iv:'c',d3:'c'};
+  function tpinta(){
+    var t=(tin.value||'escreva sua frase').trim(), w=t.split(/\s+/).map(esc), n=w.length, k=0;
+    w.forEach(function(x,i){ if(x.length>w[k].length) k=i; });
+    var kw='<span class="k">'+w[k]+'</span>', comK=w.map(function(x,i){return i===k?kw:x;}).join(' '), h='';
+    if(est==='sy') h='<span>'+w.join(' ')+'</span>';
+    else if(est==='st') h='<small>'+comK+'</small><b style="font-size:'+Math.min(17,100/Math.max(w[k].length,1)).toFixed(1)+'cqw">'+w[k]+'</b>';
+    else if(est==='rs'){ var u=w.slice(-4); h='<i>'+(n>4?w.slice(0,-4).join(' '):'legenda pequena')+'</i>'+u.map(function(x,i){return '<span'+(i===u.length-1?' class="u"':'')+'>'+x+'</span>';}).join(''); }
+    else if(est==='mi'){ var an=w.slice(0,k), dp=w.slice(k+1);
+      h=(an.length>1?'<span class="s">'+an.slice(0,-1).join(' ')+'</span>':'')+(an.length?'<span class="c">'+an[an.length-1]+'</span>':'')+'<span class="g">'+w[k]+'</span>'+(dp.length?'<span class="s">'+dp.join(' ')+'</span>':''); }
+    else if(est==='ro'||est==='sr'){ var m=Math.ceil(n/2), l1=w.slice(0,m), l2=w.slice(m);
+      var lin=function(a,o){return a.map(function(x,i){return o+i===k&&est==='sr'?'<span class="k" style="display:inline">'+x+'</span>':x;}).join(' ');};
+      var p1=lin(l1,0); if(est==='ro') p1='<em>'+w[0].charAt(0)+'</em>'+(l1.join(' ').slice(1));
+      var mx=Math.max(l1.join(' ').length+(est==='ro'?1:0),l2.join(' ').length+(est==='sr'?0:2),1), fs=Math.min(est==='ro'?8.5:7.5,(est==='ro'?118:112)/mx).toFixed(1);
+      h='<span style="font-size:'+fs+'cqw">'+p1+'</span>'+(l2.length?'<span style="font-size:'+fs+'cqw">'+lin(l2,m)+'</span>':''); }
+    else if(est==='di') h=comK;
+    else if(est==='bs') h='<span>'+w.join(' ')+'</span>';
+    else if(est==='bp'){ var cores=['#2f55e0','#f4f2ee','#e0262f'], kk=w[k], a3=Math.floor(kk.length/3); h='<span class="cx">'+w.map(function(x,i){ if(i!==k) return x; return '<span style="color:'+cores[0]+'">'+kk.slice(0,a3)+'</span><span style="color:'+cores[1]+'">'+kk.slice(a3,2*a3)+'</span><span style="color:'+cores[2]+'">'+kk.slice(2*a3)+'</span>'; }).join(' ')+'...</span>'; }
+    else if(est==='bu') h=w.slice(0,2).join(' ');
+    else if(est==='bo'||est==='iv') h=w.join(' ');
+    else h=w[k];
+    tout.className='tout '+est; tout.innerHTML=h; tfr.className='tframe '+TPOS[est];
+    if(fnt.dataset.n==='original'){ tout.style.removeProperty('--tf'); tout.style.removeProperty('--ti'); }
+    else { tout.style.setProperty('--tf',fnt.dataset.f); tout.style.setProperty('--ti',fnt.dataset.i?'italic':'normal'); }
+    tsay.innerHTML=fnt.dataset.n==='original'?'Faz com a <b>'+TNOME[est]+'</b>.':'Faz com a <b>'+TNOME[est]+'</b>, só que com a fonte <b>'+fnt.dataset.n+'</b>'+(TONDE[est]||'')+'.';
+  }
+  $$('.chip').forEach(function(b){ if(!b.hasAttribute('aria-pressed')) b.setAttribute('aria-pressed','false'); });
+  grupo('#t-est',function(b){ est=b.dataset.v; tpinta(); });
+  grupo('#t-fon',function(b){ fnt=b; tpinta(); });
+  tin.addEventListener('input',tpinta); tpinta();
+
+  // antes/depois arrastável
+  var cmp=$('#cmp'), arr=false;
+  function poe(x){ x=Math.max(0,Math.min(100,x)); cmp.style.setProperty('--x',x+'%'); cmp.setAttribute('aria-valuenow',Math.round(x)); }
+  function ponto(e){ var r=cmp.getBoundingClientRect(); poe((e.clientX-r.left)/r.width*100); }
+  cmp.addEventListener('pointerdown',function(e){arr=true;cmp.setPointerCapture(e.pointerId);ponto(e);});
+  cmp.addEventListener('pointermove',function(e){if(arr)ponto(e);});
+  cmp.addEventListener('pointerup',function(){arr=false;}); cmp.addEventListener('pointercancel',function(){arr=false;});
+  cmp.addEventListener('keydown',function(e){var v=+cmp.getAttribute('aria-valuenow'); if(e.key==='ArrowLeft'){poe(v-5);e.preventDefault();} if(e.key==='ArrowRight'){poe(v+5);e.preventDefault();}});
+})();
+</script>
