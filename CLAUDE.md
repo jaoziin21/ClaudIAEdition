@@ -25,8 +25,9 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
   créditos acabam (fere os termos; risco de bloqueio dos alunos). Aviso sobre "voz de pessoa real" foi tirado da página a pedido dele.
 - Página: nada com cara de IA. Ele REJEITOU: escuro + vermelho, escuro + amarelo, a seção "Combinações reais", a seção de nichos
   (Fé/Motivação/Anime/Futebol). Ele APROVOU: claro + azul cobalto, 3D, (o misturador "Monte sua combinação" foi aprovado em 13/out, mas em 14/out ele pediu para TIRAR: não recolocar).
-- Música de terceiros dentro do produto pago: avisado que é distribuição; decisão pendente (ver PLANO). Trilha original sem direitos:
-  `trilha/compor.py` do motor.
+- MÚSICAS (15/out): ele mandou ESQUECER o assunto ("esquece essa porra dessas músicas"). NÃO tocar mais no tema nem oferecer
+  alternativas sem ele pedir. Estado: skill `/musicas` pronta (lista os nomes); os .mp3 dele de terceiros NÃO entram no produto
+  (o sistema bloqueia; já explicado). Cópia das 13 músicas no canal: getsemani-videos/musicas/. Trilha original: `trilha/compor.py`.
 - NÃO escrever que o plano pago do Claude (Pro) é obrigatório (pedido dele, 14/out: testou no chat dele e gerou vídeo, só mais
   devagar). Escrever "conta no Claude; com o Pro sai mais rápido e com mais limite". Comando que o comprador digita: "instalar".
   Textos para o comprador em português correto (ele cobrou "instala" sem o R).
@@ -97,4 +98,5 @@ Sem preço e sem link de pagamento ainda (botões vão para #oferta). Garantia d
    (= Helvetica Bold, URW, AGPL c/ exceção de fonte; arquivos de licença juntos em `arquivos/fontes/nimbus-sans/`).
    render_lado.mjs do motor passa: glitch, piscar, reticencias, coresChave, credito, cor2, falante/falantes.
    Página atualizada com tudo isso (14/out, noite).
-5. **Pendências dele:** deixar este repositório PRIVADO (está público e as skills estão aqui); mandar as músicas para a `/musica`.
+5. **Pendências dele:** deixar este repositório PRIVADO (está público e as skills estão aqui; daqui não dá para mudar a visibilidade —
+   ele faz em Settings → Change visibility).
