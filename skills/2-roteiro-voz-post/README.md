@@ -26,6 +26,11 @@ Procura GIFs, fotos, animações e cenas na internet, mostra as opções, baixa 
 
 <sub>Pasta: [`buscar-midia/`](buscar-midia/) · Precisa de: acesso à internet</sub>
 
+### `/musicas`
+Mostra o nome de todas as músicas da biblioteca, escolhe a que combina com o vídeo, começa no ponto em que ela já está tocando e mistura baixinho por baixo da voz.
+
+<sub>Pasta: [`musicas/`](musicas/) · Precisa de: motor</sub>
+
 ### `/post`
 Quando o vídeo é aprovado, entrega título, legenda do Instagram/TikTok, descrição e tags do YouTube, além de horários para postar.
 

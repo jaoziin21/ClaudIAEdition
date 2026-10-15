@@ -62,7 +62,7 @@ pasta-do-canal/
 6. **Quadros de teste**: `node render_lado.mjs $P $P/faixa.mp4 $P/audio.wav /tmp/teste <duração> check 3,10,20` →
    olhar os PNGs e mandar ao usuário.
 7. **Render**: `node render_lado.mjs $P $P/faixa.mp4 $P/audio.wav $P/final_voz.mp4 <duração>` (alguns minutos).
-8. **Música** (skill /musica ou arquivo do usuário): medir em que segundo a faixa já está tocando de verdade
+8. **Música** (skill /musicas ou arquivo do usuário): medir em que segundo a faixa já está tocando de verdade
    (`volumedetect` por segundo) e começar dali, sem fade-in:
    `bash musica.sh $P/final_voz.mp4 <musica.mp3> $P/final.mp4 <início_s> -6 0`.
 9. **Conferir**: duração, volume (`ffmpeg -i final.mp4 -af ebur128=peak=true -f null -` ≈ −14 LUFS), uma folha de quadros.

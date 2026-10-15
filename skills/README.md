@@ -2,7 +2,7 @@
 
 # Editor no Piloto · skills
 
-37 skills para o Claude Code que fazem vídeos curtos (Reels, TikTok, Shorts) a partir de uma frase: roteiro, voz, legenda,
+38 skills para o Claude Code que fazem vídeos curtos (Reels, TikTok, Shorts) a partir de uma frase: roteiro, voz, legenda,
 edição, música, efeitos e post. Cada skill é independente: instale todas ou só as que quiser. O **motor** vai junto sempre.
 
 ## As pastas
@@ -10,7 +10,7 @@ edição, música, efeitos e post. Cada skill é independente: instale todas ou 
 <table>
 <tr>
 <td width="50%" valign="top"><a href="1-base/"><img src="1-base/capa.png" width="100%"></a><br><b><a href="1-base/">1 · Base</a></b> <sub>(1)</sub><br><sub>A base que todas as outras skills usam. O instalador coloca ela junto sempre, você não precisa pedir.</sub></td>
-<td width="50%" valign="top"><a href="2-roteiro-voz-post/"><img src="2-roteiro-voz-post/capa.png" width="100%"></a><br><b><a href="2-roteiro-voz-post/">2 · Começo, roteiro, voz e post</a></b> <sub>(5)</sub><br><sub>Tudo o que vem antes e depois da edição: você conta a ideia, ele escreve, narra, acha o fundo e entrega o texto para postar.</sub></td>
+<td width="50%" valign="top"><a href="2-roteiro-voz-post/"><img src="2-roteiro-voz-post/capa.png" width="100%"></a><br><b><a href="2-roteiro-voz-post/">2 · Começo, roteiro, voz e post</a></b> <sub>(6)</sub><br><sub>Tudo o que vem antes e depois da edição: você conta a ideia, ele escreve, narra, acha o fundo e entrega o texto para postar.</sub></td>
 </tr>
 <tr>
 <td width="50%" valign="top"><a href="3-legendas/"><img src="3-legendas/capa.png" width="100%"></a><br><b><a href="3-legendas/">3 · Legendas</a></b> <sub>(14)</sub><br><sub>Cada uma é um estilo completo de legenda animada. Dá para trocar a fonte de qualquer uma (`/fontes`) e somar os efeitos que quiser.</sub></td>
@@ -88,6 +88,7 @@ Por dentro (no `lado.json` do projeto): `"estilo": "sample-yellow", "trocaFonte"
 | `/roteiro` | A partir de um tema, entrega 3 roteiros com 3 ganchos cada, de 45 a 60 segundos, com linguagem de gente e sem cara de texto de IA. | — |
 | `/voz` | Gera a narração pelo ElevenLabs conectado, ou passa o passo a passo do Fish Audio (gratuito, vozes de personagens), ou usa a sua voz gravada. | conta no ElevenLabs ou Fish Audio |
 | `/buscar-midia` | Procura GIFs, fotos, animações e cenas na internet, mostra as opções, baixa a escolhida e anota a fonte. Diz quais sites liberar se a rede bloquear. | acesso à internet |
+| `/musicas` | Mostra o nome de todas as músicas da biblioteca, escolhe a que combina com o vídeo, começa no ponto em que ela já está tocando e mistura baixinho por baixo da voz. | motor |
 | `/post` | Quando o vídeo é aprovado, entrega título, legenda do Instagram/TikTok, descrição e tags do YouTube, além de horários para postar. | — |
 
 **[Legendas](3-legendas/)**

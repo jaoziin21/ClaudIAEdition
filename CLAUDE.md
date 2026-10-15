@@ -35,12 +35,16 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
   Wikimedia (limite de requisições) e Internet Archive funcionam (NASA "EarthInHd" e "Gulliver's Travels 1939" = domínio público).
 
 ## Onde está cada coisa
-- `skills/` — 36 skills + motor, cada uma independente, DIVIDIDAS EM GRUPOS (pedido dele, 14/out: "não joga tudo numa pasta só"):
+- `skills/` — 37 skills + motor, cada uma independente, DIVIDIDAS EM GRUPOS (pedido dele, 14/out: "não joga tudo numa pasta só"):
   `1-base/` (motor), `2-roteiro-voz-post/`, `3-legendas/`, `4-efeitos/`, `5-formatos-de-video/`. Cada grupo tem README com vitrine
   e `capa.png`. Instalação: `bash skills/instalar.sh <pasta-do-canal> [skills ou grupos]` (ex.: `legendas efeitos`); no canal do
   aluno tudo fica plano em `.claude/skills/<nome>/`. Catálogo: `skills/README.md`. Skill nova: pasta no grupo certo + uma linha em
   `GRUPOS` no `venda/ferramentas/readmes.py` + rodar readmes.py e capas.cjs.
-  Testado instalando só motor + 1 skill numa pasta vazia. FALTA: `/musica` (ele vai mandar as músicas).
+  Testado instalando só motor + 1 skill numa pasta vazia.
+  FEITO 15/out: `/musicas` (`2-roteiro-voz-post/musicas/`): mostra o NOME de todas as músicas (`arquivos/musicas/LISTA.md` → motor/musicas/),
+  escolhe, começa já tocando, mixa e confere o volume nas pausas. Os .mp3 das 13 músicas dele NÃO estão no repositório (público =
+  distribuir música de terceiros; o sistema bloqueou): ficam só locais em `venda/musicas/` (no .gitignore) e no canal
+  (getsemani-videos/musicas/). Quando ele deixar o repositório PRIVADO: mover para `skills/2-roteiro-voz-post/musicas/arquivos/musicas/`.
 - `venda/entrega/` — o que o COMPRADOR recebe (14/out): `CLAUDE.md` (o Claude dele lê e instala tudo quando ele escreve "instala";
   a pasta descompactada vira o canal), `guia.html` → `COMECE-AQUI.pdf` (7 páginas: caminhos A app do Claude [recomendado],
   B terminal, C nuvem/celular via GitHub privado + upload do ZIP; primeiro vídeo; comandos; dicas; problemas), `TERMOS-DE-USO.txt`,
@@ -55,7 +59,7 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
 - `venda/demo-recomecar/` — vídeo "Mandei uma frase. Isso voltou." (feito de verdade: roteiro, voz ElevenLabs, NASA, Sample Yellow
   + fonte gótica pirata-one + cinema + sonho, trilha original) + `chat.html` (abertura) + NOTAS.md.
 
-## Página de vendas (estado em 14/out, noite: 36 skills, 13 legendas, 10 efeitos, +490 mil combinações)
+## Página de vendas (estado em 15/out: 37 skills, 13 legendas, 10 efeitos, +490 mil combinações)
 Clara, azul cobalto, fontes Bricolage Grotesque + Geist. Seções: topo 3D (celular inclinado com legenda/comandos saindo da tela,
 vídeo "mandei uma frase") + BOTÃO 3D grande centralizado embaixo (pedido 14/out; no celular vem antes do celular 3D) → números → "Tudo em uma skill só" (7 cartões que se juntam ao rolar e terminam encaixados num bloco; o cartão preto "Editor no Piloto" do fim foi TIRADO a pedido dele 14/out)
 → dores que viram (flip) + calculadora de horas → compilados (13 legendas, 10 efeitos) → conversa animada (como funciona) →

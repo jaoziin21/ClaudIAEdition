@@ -16,6 +16,7 @@ GRUPOS = [
         ('roteiro', '/roteiro', 'A partir de um tema, entrega 3 roteiros com 3 ganchos cada, de 45 a 60 segundos, com linguagem de gente e sem cara de texto de IA.', '—'),
         ('voz', '/voz', 'Gera a narração pelo ElevenLabs conectado, ou passa o passo a passo do Fish Audio (gratuito, vozes de personagens), ou usa a sua voz gravada.', 'conta no ElevenLabs ou Fish Audio'),
         ('buscar-midia', '/buscar-midia', 'Procura GIFs, fotos, animações e cenas na internet, mostra as opções, baixa a escolhida e anota a fonte. Diz quais sites liberar se a rede bloquear.', 'acesso à internet'),
+        ('musicas', '/musicas', 'Mostra o nome de todas as músicas da biblioteca, escolhe a que combina com o vídeo, começa no ponto em que ela já está tocando e mistura baixinho por baixo da voz.', 'motor'),
         ('post', '/post', 'Quando o vídeo é aprovado, entrega título, legenda do Instagram/TikTok, descrição e tags do YouTube, além de horários para postar.', '—'),
     ]),
     ('3-legendas', 'legendas', 'Legendas', 'Cada uma é um estilo completo de legenda animada. Dá para trocar a fonte de qualquer uma (`/fontes`) e somar os efeitos que quiser.', [
