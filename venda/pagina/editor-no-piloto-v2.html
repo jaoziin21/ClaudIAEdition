@@ -364,15 +364,15 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
 <section id="exemplos">
   <div class="wrap">
     <div class="shead">
-      <div><span class="eyebrow">Exemplos reais</span><h2 class="h2">Veja o resultado na prática.</h2><p class="lead">Vídeos postados no canal onde o Editor no Piloto nasceu. Toque em "Ativar som" para ouvir o primeiro.</p></div>
+      <div><span class="eyebrow">Exemplos reais</span><h2 class="h2">Veja o resultado na prática.</h2><p class="lead">Vídeos postados no canal onde o Editor no Piloto nasceu. Toque em "Ativar som" para ouvir.</p></div>
       <div class="arrows"><button type="button" data-s="ex-strip" data-d="-1" aria-label="Voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" data-s="ex-strip" data-d="1" aria-label="Avançar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
     </div>
     <div class="strip" id="ex-strip">
       <article class="ex"><div class="pic"><video id="v-jesus" src="vid/ex-jesus.mp4" poster="vid/ex-jesus.jpg" autoplay muted loop playsinline preload="metadata"></video><button class="sound" data-v="v-jesus" type="button">Ativar som</button></div></article>
-      <article class="ex"><div class="pic"><video src="vid/ex-lucas11.mp4" poster="vid/ex-lucas11.jpg" autoplay muted loop playsinline preload="metadata"></video></div></article>
-      <article class="ex"><div class="pic"><video src="vid/ex-davi.mp4" poster="vid/ex-davi.jpg" autoplay muted loop playsinline preload="metadata"></video></div></article>
-      <article class="ex"><div class="pic"><video src="vid/ex-moises.mp4" poster="vid/ex-moises.jpg" autoplay muted loop playsinline preload="metadata"></video></div></article>
-      <article class="ex"><div class="pic"><video src="vid/ex-marta.mp4" poster="vid/ex-marta.jpg" autoplay muted loop playsinline preload="metadata"></video></div></article>
+      <article class="ex"><div class="pic"><video id="v-lucas11" src="vid/ex-lucas11.mp4" poster="vid/ex-lucas11.jpg" autoplay muted loop playsinline preload="metadata"></video><button class="sound" data-v="v-lucas11" type="button">Ativar som</button></div></article>
+      <article class="ex"><div class="pic"><video id="v-davi" src="vid/ex-davi.mp4" poster="vid/ex-davi.jpg" autoplay muted loop playsinline preload="metadata"></video><button class="sound" data-v="v-davi" type="button">Ativar som</button></div></article>
+      <article class="ex"><div class="pic"><video id="v-moises" src="vid/ex-moises.mp4" poster="vid/ex-moises.jpg" autoplay muted loop playsinline preload="metadata"></video><button class="sound" data-v="v-moises" type="button">Ativar som</button></div></article>
+      <article class="ex"><div class="pic"><video id="v-marta" src="vid/ex-marta.mp4" poster="vid/ex-marta.jpg" autoplay muted loop playsinline preload="metadata"></video><button class="sound" data-v="v-marta" type="button">Ativar som</button></div></article>
     </div>
   </div>
 </section>
@@ -627,10 +627,15 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
   var $=function(s){return document.querySelector(s);}, $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s));};
   var toca=function(v){var p=v.play();if(p&&p.catch)p.catch(function(){});};
 
-  // som dos vídeos grandes
-  $$('.sound').forEach(function(b){
+  // som dos vídeos: só um tocando com som por vez
+  var sons=$$('.sound');
+  sons.forEach(function(b){
     var v=document.getElementById(b.dataset.v);
-    b.addEventListener('click',function(){ v.muted=!v.muted; if(!v.muted){ v.currentTime=0; toca(v);} b.textContent=v.muted?'Ativar som':'Sem som'; });
+    b.addEventListener('click',function(){
+      var liga=v.muted;
+      sons.forEach(function(o){ var ov=document.getElementById(o.dataset.v); ov.muted=true; o.textContent='Ativar som'; });
+      if(liga){ v.muted=false; v.currentTime=0; toca(v); b.textContent='Sem som'; }
+    });
   });
 
   // vídeos só tocam quando aparecem na tela
