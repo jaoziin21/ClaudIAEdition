@@ -58,6 +58,10 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
   monitor no topo, faixas de legendas/efeitos, oferta escura, FAQ + selo de garantia). Artifact: https://claude.ai/artifact/UteKgi6mFeciysfYycxupk
   Preço provisório R$ 27,99 (ele ainda não fechou; quer preço baixo). SEM WhatsApp/grupo/suporte (ainda não existe), SEM
   depoimentos, "+1.000 criadores" ou visualizações inventadas, SEM preço "de/por" falso. Ele vai comparar com a atual e escolher.
+  Ajustes dele (15/out): topo = botão 3D "Quero acessar agora" (brilho + anel pulsando) e vídeo de Jesus Lucas 11:5-13 no monitor
+  (`vid/hero-jesus.mp4`, só a voz; ele vai GRAVAR um vídeo dele explicando para pôr ali). "Veja o resultado na prática" = SÓ o vídeo,
+  SEM títulos/subtítulos, TODOS com "Ativar som" (um som por vez), vídeos inteiros do canal com voz sem música, recorte 1080x940:
+  `vid/ex-jesus` (Amigo à meia-noite), `ex-lucas11` (1º vídeo do canal, exemplos/lucas11), `ex-davi`, `ex-moises` (v2), `ex-marta`.
 - `venda/site/` — a mesma página pronta para hospedar (`index.html` + vídeos, 28 MB). Ele recebeu `editor-no-piloto-site.zip`.
 - `venda/vitrine/` e `venda/ferramentas/monta.py`, `junta.sh` — geram os compilados (13 legendas / 10 efeitos na mesma cena de anime). Rodar UM monta.py por vez
   (legendas e efeitos ao mesmo tempo misturam os arquivos do motor); depois `bash venda/vitrine/junta.sh` (copia para pagina/ e site/).
