@@ -60,8 +60,10 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
   depoimentos, "+1.000 criadores" ou visualizações inventadas, SEM preço "de/por" falso. Ele vai comparar com a atual e escolher.
   Ajustes dele (15/out): topo = botão 3D "Quero acessar agora" (brilho + anel pulsando) e vídeo de Jesus Lucas 11:5-13 no monitor
   (`vid/hero-jesus.mp4`, só a voz; ele vai GRAVAR um vídeo dele explicando para pôr ali). "Veja o resultado na prática" = SÓ o vídeo,
-  SEM títulos/subtítulos, TODOS com "Ativar som" (um som por vez), vídeos inteiros do canal com voz sem música, recorte 1080x940:
-  `vid/ex-jesus` (Amigo à meia-noite), `ex-lucas11` (1º vídeo do canal, exemplos/lucas11), `ex-davi`, `ex-moises` (v2), `ex-marta`.
+  SEM títulos/subtítulos, TODOS com "Ativar som" (um som por vez), vídeos inteiros do canal com voz sem música, recorte 1080x940
+  (`crop=1080:940:0:420,scale=540:-2`, do `final_voz_fim.mp4`/`final_voz.mp4` do projeto). Ordem (15/out, pedido dele: Toji e os de
+  ontem/hoje primeiro, manter Lucas): `ex-toji-provocacao`, `ex-toji-sol`, `ex-pedro` (GIFs do Toji), `ex-creio` (The Chosen),
+  `ex-salmo13`, `ex-jesus` (Amigo à meia-noite), `ex-lucas11` (1º vídeo do canal). Saíram da v2: ex-davi, ex-moises, ex-marta.
 - `venda/site/` — a mesma página pronta para hospedar (`index.html` + vídeos, 28 MB). Ele recebeu `editor-no-piloto-site.zip`.
 - `venda/vitrine/` e `venda/ferramentas/monta.py`, `junta.sh` — geram os compilados (13 legendas / 10 efeitos na mesma cena de anime). Rodar UM monta.py por vez
   (legendas e efeitos ao mesmo tempo misturam os arquivos do motor); depois `bash venda/vitrine/junta.sh` (copia para pagina/ e site/).
