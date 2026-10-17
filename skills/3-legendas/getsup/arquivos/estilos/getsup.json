@@ -1,0 +1,8 @@
+{
+ "nome": "Getsup",
+ "cena": "scene_getsup.html",
+ "tamanho": 44,
+ "maxch": 36,
+ "maxw": 0.9,
+ "filtro": "estilos/filtro_getsup.txt"
+}

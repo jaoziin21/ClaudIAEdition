@@ -33,6 +33,7 @@ GRUPOS = [
         ('black-point', '/black-point', 'Itálico branco numa caixa escura, reticências que entram ponto a ponto e palavra-chave em 3 cores.', 'motor'),
         ('bruce', '/bruce', 'Uma ou duas palavras em maiúsculas serifadas ao lado de quem fala, surgindo do desfoque; imagem escura de filme.', 'motor'),
         ('basic-on', '/basic-on', 'Frase inteira em Helvetica Bold sem caixa, corte seco; a 2ª pessoa do diálogo em amarelo e crédito do filme.', 'motor'),
+        ('getsup', '/getsup', 'Times apertada: narração branca pequena somando palavra por palavra e letreiros vermelhos (empilhados ou em maiúsculas espaçadas) nas frases de impacto.', 'motor'),
         ('fontes', '/fontes', 'Troca a fonte de qualquer legenda: 37 fontes prontas (mostruário) ou qualquer uma do Google Fonts.', 'motor + uma legenda'),
     ]),
     ('4-efeitos', 'efeitos', 'Efeitos', 'Pacotes de efeito que somam com qualquer legenda. Peça um ou vários no mesmo vídeo: eles se juntam na ordem pedida.', [

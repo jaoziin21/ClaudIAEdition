@@ -12,10 +12,10 @@ words = json.load(open(f'{PROJ}/words.json'))
 cortes = sorted({c['t'] for c in json.load(open(f'{PROJ}/lado.json'))['cenas']})
 
 JAN = [(5.2, 10.4), (10.4, 14.6), (14.6, 21.8), (23.0, 26.4), (26.4, 31.4), (31.4, 35.6), (35.6, 39.5), (39.5, 45.4), (45.4, 51.0),
-       (51.6, 56.4), (57.0, 62.5), (67.0, 71.0), (72.3, 75.6)]
+       (51.6, 56.4), (57.0, 62.5), (67.0, 71.0), (72.3, 75.6), (88.6, 92.3)]
 POS = {'street': (0.5, 0.5), 'sample-yellow': (0.5, 0.86), 'rocks': (0.32, 0.76), 'samplerocks': (0.33, 0.76), 'mistury': (0.36, 0.42),
        'dinamica': (0.3, 0.3), 'invisible': (0.5, 0.5), '3d-invisivel': (0.5, 0.5), 'red-sharp': (0.5, 0.55),
-       'black-sample': (0.5, 0.88), 'black-point': (0.5, 0.9), 'bruce': (0.87, 0.3), 'basic-on': (0.5, 0.72)}
+       'black-sample': (0.5, 0.88), 'black-point': (0.5, 0.9), 'bruce': (0.87, 0.3), 'basic-on': (0.5, 0.72), 'getsup': (0.5, 0.5)}
 if modo == 'legendas':
     SEG = [('street', 'Street', '/street', None, {'gritos': ['pequeno', 'Thors'], 'keywords': ['Thorfinn', 'treinado']}),
            ('sample-yellow', 'Sample Yellow', '/sample-yellow', None, {'keywords': ['volta?']}),
@@ -29,7 +29,8 @@ if modo == 'legendas':
            ('black-sample', 'Black Sample', '/black-sample', None, {'keywords': []}),
            ('black-point', 'Black Point', '/black-point', None, {'keywords': ['sangue.']}),
            ('bruce', 'Bruce', '/bruce', None, {'keywords': []}),
-           ('basic-on', 'Basic On', '/basic-on', None, {'keywords': [], 'credito': {'titulo': 'Nome do Filme (2019)', 'sub': '@seucanal'}})]
+           ('basic-on', 'Basic On', '/basic-on', None, {'keywords': [], 'credito': {'titulo': 'Nome do Filme (2019)', 'sub': '@seucanal'}}),
+           ('getsup', 'Getsup', '/getsup', None, {'keywords': [], 'cenas': [{'t': 0, 'x': 0.5, 'y': 0.5, 'look': 'caixa'}]})]
 else:
     PAC = [('filme-antigo', 'Filme antigo'), ('manga', 'Mangá'), ('sonho', 'Sonho'), ('vhs', 'VHS'), ('sombrio', 'Sombrio'), ('cinema', 'Cinema'), ('rua', 'Rua'),
            ('xerox', 'Xerox'), ('parallax', 'Parallax'), ('black-and-white', 'Black and White')]

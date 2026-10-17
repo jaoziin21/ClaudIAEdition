@@ -1,0 +1,73 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:GT;src:url("node_modules/@fontsource/tinos/files/tinos-latin-400-normal.woff2");font-weight:400}
+@font-face{font-family:GT;src:url("node_modules/@fontsource/tinos/files/tinos-latin-700-normal.woff2");font-weight:700}
+html,body{margin:0;background:transparent;overflow:hidden;width:100vw;height:100vh}
+/* "Getsup": Times (Tinos) APERTADA na horizontal, letras quase encostando.
+   3 modos — linha: branca pequena no centro, palavras somando SECAS na mesma linha (posição da frase inteira, o começo não anda);
+   empilha: VERMELHA grande, minúscula, linhas SOBREPOSTAS alinhadas à esquerda; caixa: VERMELHA versal estreita com ESPAÇO GRANDE
+   entre as palavras, no alto à esquerda. Tudo entra seco palavra por palavra e sai seco. */
+#ln{position:absolute;left:0;top:0;white-space:pre;font-family:GT;transform-origin:0 0}
+#ln span{visibility:hidden}
+#ln span.on{visibility:visible}
+.linha{font-weight:400;color:#fbf8f2;letter-spacing:-.035em;word-spacing:-.06em;line-height:1.05;
+  text-shadow:0 .04em .08em rgba(0,0,0,.55),0 0 .35em rgba(0,0,0,.18)}
+.empilha{font-weight:400;color:#e5141c;letter-spacing:-.05em;line-height:.70;text-transform:lowercase;
+  text-shadow:0 .02em .05em rgba(60,0,0,.45)}
+.caixa{font-weight:400;color:#e3121a;letter-spacing:-.02em;word-spacing:.9em;line-height:1.02;text-transform:uppercase;
+  text-shadow:0 .02em .05em rgba(40,0,0,.5)}
+</style></head><body><div id="ln"></div>
+<script src="lado_data.js"></script>
+<script>
+// Modo do bloco: "look" da cena ("linha" | "empilha" | "caixa"); sem look → frase com palavra-chave alterna empilha/caixa, o resto é linha.
+const D = LADO, W = innerWidth, H = innerHeight;
+const BAND = (H >= 1900 && D.band) ? D.band : { y: 0, h: H };
+const ln = document.getElementById('ln');
+const S = D.size || 40;
+const SX = { linha: 0.70, empilha: 0.78, caixa: 0.46 };          // aperto horizontal de cada modo
+const TAM = { linha: 1, empilha: 3.6, caixa: 3.0 };              // tamanho relativo ao "tamanho" do preset
+const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+let alt = 0;
+for (const B of D.blocks) {
+  const temK = B.lines.flat().some(w => w.k);
+  B.modo = ['linha', 'empilha', 'caixa'].includes(B.look) ? B.look : (temK ? (alt++ % 2 ? 'caixa' : 'empilha') : 'linha');
+}
+let cur = null, spans = [];
+window.render = t => {
+  const B = D.blocks.find(b => t >= b.start && t < b.end) || null;
+  if (B !== cur) {
+    cur = B;
+    if (B) {
+      const m = B.modo, fs = S * TAM[m] * (B.esc || 1), ws = B.lines.flat();
+      ln.className = m; ln.style.fontSize = fs + 'px';
+      if (m === 'empilha') {   // 1–2 palavras por linha, como "criando / cenários / na sua / cabeça"
+        const rows = []; let r = [];
+        for (const w of ws) { const n = r.reduce((a, x) => a + x.w.length, 0); if (r.length && (n + w.w.length > 7 || r.length >= 2)) { rows.push(r); r = []; } r.push(w); }
+        if (r.length) rows.push(r);
+        ln.innerHTML = rows.map(rw => rw.map(w => `<span>${esc(w.w)}</span>`).join(' ')).join('\n');
+      } else if (m === 'caixa') {   // versal espaçada, quebra em linhas de ~3 palavras
+        const rows = []; for (let i = 0; i < ws.length; i += 3) rows.push(ws.slice(i, i + 3));
+        ln.innerHTML = rows.map(rw => rw.map(w => `<span>${esc(w.w)}</span>`).join(' ')).join('\n');
+      } else ln.innerHTML = ws.map(w => `<span>${esc(w.w)}</span>`).join(' ');
+      spans = [...ln.querySelectorAll('span')].map((el, i) => ({ el, s: ws[i].s }));
+      const sx = SX[m], lw = ln.offsetWidth * sx, lh = ln.offsetHeight, maxW = W * 0.9, k = Math.min(1, maxW / lw);
+      ln.style.transform = `scale(${(sx * k).toFixed(4)}, ${k.toFixed(4)})`;
+      let x, y;
+      if (m === 'linha') {      // centralizada pela FRASE INTEIRA (o começo fica parado enquanto as palavras somam)
+        x = clamp(B.x * W - lw * k / 2, W * 0.04, W * 0.96 - lw * k); y = BAND.y + clamp(B.y * BAND.h - lh * k / 2, 8, BAND.h - lh * k - 8);
+      } else if (m === 'empilha') {   // à esquerda, um pouco acima do meio
+        x = W * (B.x < 0.5 ? B.x : 0.05); y = BAND.y + clamp(BAND.h * 0.12, 4, BAND.h - lh * k - 4);
+      } else {                   // caixa: no alto à esquerda da imagem
+        x = W * 0.035; y = BAND.y + BAND.h * 0.03;
+      }
+      ln.style.left = x + 'px'; ln.style.top = y + 'px';
+    }
+  }
+  for (const s of spans) s.el.classList.toggle('on', t >= s.s - 0.02);
+  ln.style.opacity = B ? 1 : 0;
+};
+window.fontsOK = async () => { await document.fonts.load(`400 ${S}px GT`); await document.fonts.ready;
+  return document.fonts.check(`400 ${S}px GT`) ? 'ok' : 'font missing'; };
+</script></body></html>

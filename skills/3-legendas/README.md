@@ -29,6 +29,7 @@ Cada uma é um estilo completo de legenda animada. Dá para trocar a fonte de qu
 </tr>
 <tr>
 <td width="33%" valign="top"><a href="basic-on/"><img src="basic-on/exemplo.jpg" width="100%"></a><br><b><code>/basic-on</code></b><br><sub>Frase inteira em Helvetica Bold sem caixa, corte seco; a 2ª pessoa do diálogo em amarelo e crédito do filme.</sub></td>
+<td width="33%" valign="top"><a href="getsup/"><img src="getsup/exemplo.jpg" width="100%"></a><br><b><code>/getsup</code></b><br><sub>Times apertada: narração branca pequena somando palavra por palavra e letreiros vermelhos (empilhados ou em maiúsculas espaçadas) nas frases de impacto.</sub></td>
 <td width="33%" valign="top"><a href="fontes/"><img src="fontes/mostruario.jpg" width="100%"></a><br><b><code>/fontes</code></b><br><sub>Troca a fonte de qualquer legenda: 37 fontes prontas (mostruário) ou qualquer uma do Google Fonts.</sub></td>
 </tr>
 </table>

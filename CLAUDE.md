@@ -36,7 +36,7 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
   Wikimedia (limite de requisições) e Internet Archive funcionam (NASA "EarthInHd" e "Gulliver's Travels 1939" = domínio público).
 
 ## Onde está cada coisa
-- `skills/` — 37 skills + motor, cada uma independente, DIVIDIDAS EM GRUPOS (pedido dele, 14/out: "não joga tudo numa pasta só"):
+- `skills/` — 38 skills + motor, cada uma independente, DIVIDIDAS EM GRUPOS (pedido dele, 14/out: "não joga tudo numa pasta só"):
   `1-base/` (motor), `2-roteiro-voz-post/`, `3-legendas/`, `4-efeitos/`, `5-formatos-de-video/`. Cada grupo tem README com vitrine
   e `capa.png`. Instalação: `bash skills/instalar.sh <pasta-do-canal> [skills ou grupos]` (ex.: `legendas efeitos`); no canal do
   aluno tudo fica plano em `.claude/skills/<nome>/`. Catálogo: `skills/README.md`. Skill nova: pasta no grupo certo + uma linha em
@@ -70,7 +70,7 @@ rapidez: faça, mostre, ajuste. Commit + push na `main` ao fim de cada etapa, se
 - `venda/demo-recomecar/` — vídeo "Mandei uma frase. Isso voltou." (feito de verdade: roteiro, voz ElevenLabs, NASA, Sample Yellow
   + fonte gótica pirata-one + cinema + sonho, trilha original) + `chat.html` (abertura) + NOTAS.md.
 
-## Página de vendas (estado em 15/out: 37 skills, 13 legendas, 10 efeitos, +490 mil combinações)
+## Página de vendas (estado em 17/out: 38 skills, 14 legendas, 10 efeitos, +530 mil combinações = 14 legendas × 37 fontes × 2^10 efeitos)
 Clara, azul cobalto, fontes Bricolage Grotesque + Geist. Seções: topo 3D (celular inclinado com legenda/comandos saindo da tela,
 vídeo "mandei uma frase") + BOTÃO 3D grande centralizado embaixo (pedido 14/out; no celular vem antes do celular 3D) → números → "Tudo em uma skill só" (7 cartões que se juntam ao rolar e terminam encaixados num bloco; o cartão preto "Editor no Piloto" do fim foi TIRADO a pedido dele 14/out)
 → dores que viram (flip) + calculadora de horas → compilados (13 legendas, 10 efeitos) → conversa animada (como funciona) →
@@ -108,5 +108,9 @@ Sem preço e sem link de pagamento ainda (botões vão para #oferta). Garantia d
    (= Helvetica Bold, URW, AGPL c/ exceção de fonte; arquivos de licença juntos em `arquivos/fontes/nimbus-sans/`).
    render_lado.mjs do motor passa: glitch, piscar, reticencias, coresChave, credito, cor2, falante/falantes.
    Página atualizada com tudo isso (14/out, noite).
+   FEITO 17/out: legenda `/getsup` (`skills/3-legendas/getsup/`, referência TikTok dele, APROVADA no canal): Times (Tinos) apertada,
+   branca pequena somando palavras secas + letreiro VERMELHO (empilhado minúsculo ou versal espaçada); filtro_getsup.txt. Vitrine s13
+   ("EU NÃO TENHO INIMIGOS", janela 88,6–92,3 s, look caixa) → legendas.mp4 + t-getsup.mp4; carrossel, testador (chip "gs"),
+   números 14/38/+530 mil nas páginas v1, v2 e site/; readmes + capas + gera_entrega (ZIP: 39 pastas = 38 skills + motor).
 5. **Pendências dele:** deixar este repositório PRIVADO (está público e as skills estão aqui; daqui não dá para mudar a visibilidade —
    ele faz em Settings → Change visibility).

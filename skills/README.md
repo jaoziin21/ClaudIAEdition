@@ -2,7 +2,7 @@
 
 # Editor no Piloto · skills
 
-38 skills para o Claude Code que fazem vídeos curtos (Reels, TikTok, Shorts) a partir de uma frase: roteiro, voz, legenda,
+39 skills para o Claude Code que fazem vídeos curtos (Reels, TikTok, Shorts) a partir de uma frase: roteiro, voz, legenda,
 edição, música, efeitos e post. Cada skill é independente: instale todas ou só as que quiser. O **motor** vai junto sempre.
 
 ## As pastas
@@ -13,7 +13,7 @@ edição, música, efeitos e post. Cada skill é independente: instale todas ou 
 <td width="50%" valign="top"><a href="2-roteiro-voz-post/"><img src="2-roteiro-voz-post/capa.png" width="100%"></a><br><b><a href="2-roteiro-voz-post/">2 · Começo, roteiro, voz e post</a></b> <sub>(6)</sub><br><sub>Tudo o que vem antes e depois da edição: você conta a ideia, ele escreve, narra, acha o fundo e entrega o texto para postar.</sub></td>
 </tr>
 <tr>
-<td width="50%" valign="top"><a href="3-legendas/"><img src="3-legendas/capa.png" width="100%"></a><br><b><a href="3-legendas/">3 · Legendas</a></b> <sub>(14)</sub><br><sub>Cada uma é um estilo completo de legenda animada. Dá para trocar a fonte de qualquer uma (`/fontes`) e somar os efeitos que quiser.</sub></td>
+<td width="50%" valign="top"><a href="3-legendas/"><img src="3-legendas/capa.png" width="100%"></a><br><b><a href="3-legendas/">3 · Legendas</a></b> <sub>(15)</sub><br><sub>Cada uma é um estilo completo de legenda animada. Dá para trocar a fonte de qualquer uma (`/fontes`) e somar os efeitos que quiser.</sub></td>
 <td width="50%" valign="top"><a href="4-efeitos/"><img src="4-efeitos/capa.png" width="100%"></a><br><b><a href="4-efeitos/">4 · Efeitos</a></b> <sub>(11)</sub><br><sub>Pacotes de efeito que somam com qualquer legenda. Peça um ou vários no mesmo vídeo: eles se juntam na ordem pedida.</sub></td>
 </tr>
 <tr>
@@ -108,6 +108,7 @@ Por dentro (no `lado.json` do projeto): `"estilo": "sample-yellow", "trocaFonte"
 | `/black-point` | Itálico branco numa caixa escura, reticências que entram ponto a ponto e palavra-chave em 3 cores. | motor |
 | `/bruce` | Uma ou duas palavras em maiúsculas serifadas ao lado de quem fala, surgindo do desfoque; imagem escura de filme. | motor |
 | `/basic-on` | Frase inteira em Helvetica Bold sem caixa, corte seco; a 2ª pessoa do diálogo em amarelo e crédito do filme. | motor |
+| `/getsup` | Times apertada: narração branca pequena somando palavra por palavra e letreiros vermelhos (empilhados ou em maiúsculas espaçadas) nas frases de impacto. | motor |
 | `/fontes` | Troca a fonte de qualquer legenda: 37 fontes prontas (mostruário) ou qualquer uma do Google Fonts. | motor + uma legenda |
 
 **[Efeitos](4-efeitos/)**
